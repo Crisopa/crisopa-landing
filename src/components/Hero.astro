@@ -1,34 +1,28 @@
 ---
 import ShinyText from './react/ShinyText.tsx'
-import ShapeGrid from './react/ShapeGrid.jsx'
+import Aurora from './react/Aurora.tsx'
 const appUrl = 'https://panel.crisopa.app'
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 ---
 
 <section class="relative overflow-hidden pt-32 pb-20 sm:pt-44 sm:pb-28 lg:min-h-screen flex items-center">
-  <!-- Fondo: crema + DotField interactivo esmeralda -->
+  <!-- Fondo: crema + Aurora esmeralda animada (misma paleta que el CTA final) -->
   <div class="absolute inset-0 -z-10 overflow-hidden">
-    <!-- Tinte cálido superior (base para legibilidad del texto) -->
-    <div class="absolute inset-0 bg-gradient-to-b from-primary-50/40 via-background/55 to-background/70"></div>
-    <!-- Parcelario animado: catastro de fincas en diagonal. Lindes gruesas
-         delimitan parcelas irregulares, algunas salen tintadas (finca ocupada)
-         y el hover pinta una parcela bajo el cursor. -->
-    <ShapeGrid
-      client:idle
-      direction="diagonal"
-      speed={0.3}
-      squareSize={56}
-      mobileSquareSize={38}
-      borderColor="rgba(16, 150, 120, 0.2)"
-      lindeColor="rgba(16, 150, 120, 0.5)"
-      lindeWidth={1.75}
-      lindeChance={0.32}
-      parcelFillColor="rgba(16, 150, 120, 0.07)"
-      parcelChance={0.1}
-      hoverFillColor="rgba(16, 150, 120, 0.55)"
-      hoverTrailAmount={8}
-    />
-    <!-- Desvanecido inferior: la cuadrícula se funde hacia el crema -->
+    <!-- Base crema -->
+    <div class="absolute inset-0 bg-background"></div>
+    <!-- Aurora animada (WebGL, lazy, respeta prefers-reduced-motion) -->
+    <div class="absolute inset-0 opacity-60 pointer-events-none" aria-hidden="true">
+      <Aurora
+        client:visible
+        colorStops={['#2fd6a0', '#7eecc4', '#0c9b6e']}
+        amplitude={1.1}
+        blend={0.6}
+        speed={0.4}
+      />
+    </div>
+    <!-- Velo cálido para legibilidad del texto oscuro sobre la aurora -->
+    <div class="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80"></div>
+    <!-- Desvanecido inferior: el fondo se funde hacia el crema -->
     <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-background"></div>
   </div>
 
