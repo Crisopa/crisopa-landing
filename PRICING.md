@@ -24,7 +24,7 @@ debe reflejarlo.
    moderno. (Profesional es de **1 usuario**; el salto de capacidad es **cambiar de plan**, no sumar
    asientos.)
 5. **Solo cobro anual.** El uso es estacional (por campaña), el onboarding es caro y el mensual
-   invita al *churn*. La rampa de entrada es la **prueba gratis de 30 días sin tarjeta**, no el pago
+   invita al *churn*. La rampa de entrada es la **prueba gratis de 15 días sin tarjeta**, no el pago
    mensual.
 ---
  
