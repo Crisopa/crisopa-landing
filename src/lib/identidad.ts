@@ -1,17 +1,14 @@
 /**
  * Identidad legal y contactos usados en las páginas legales.
  *
- * PENDIENTE: los valores marcados con `⟨…⟩` son marcadores de posición. Hay que
- * sustituirlos por los datos reales ANTES de publicar: una política de privacidad
- * sin responsable identificado no cumple el artículo 13 del RGPD.
- *
- * Este archivo es el espejo de `src/app/(legal)/identidad.ts` en el repo de la
- * aplicación. Si cambian los datos, cámbialos en los dos sitios.
+ * El responsable es una persona física, no una sociedad: de ahí `responsable` y
+ * no «razón social». Estos datos son obligatorios en la información al
+ * interesado (art. 13 RGPD) y en el aviso legal (art. 10 LSSI-CE).
  */
 export const IDENTIDAD = {
-  razonSocial: '⟨razón social⟩',
-  nif: '⟨NIF⟩',
-  domicilio: '⟨domicilio social⟩',
+  responsable: 'Pablo Reina Gálvez',
+  nif: '32732929L',
+  domicilio: 'Calle Huerta de Santa Isabel, 12, 1.º 1, 14011 Córdoba (España)',
   emailSeguridad: 'seguridad@crisopa.app',
 } as const
 
