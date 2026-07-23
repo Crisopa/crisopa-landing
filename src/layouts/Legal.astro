@@ -1,0 +1,68 @@
+---
+/**
+ * Chrome común de las páginas legales (privacidad, términos, soporte): cabecera
+ * mínima con vuelta al inicio, cuerpo en `.prose` y footer del sitio.
+ */
+import Layout from './Layout.astro'
+import Footer from '../components/Footer.astro'
+
+interface Props {
+  title: string
+  description: string
+  encabezado: string
+  /** Fecha de última revisión. Se omite en páginas que no son un documento legal. */
+  actualizado?: string
+}
+
+const { title, description, encabezado, actualizado } = Astro.props
+---
+
+<Layout title={title} description={description}>
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="/" class="group flex items-center gap-2.5">
+          <svg
+            class="h-8 w-8 text-primary-600 transition-transform duration-300 group-hover:scale-110"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M11.264 2.205A4 4 0 0 0 6.42 4.211l-4 8a4 4 0 0 0 1.359 5.117l6 4a4 4 0 0 0 4.438 0l6-4a4 4 0 0 0 1.576-4.592l-2-6a4 4 0 0 0-2.53-2.53z"/>
+            <path d="M11.99 22 14 12l7.822 3.184"/>
+            <path d="M14 12 8.47 2.302"/>
+          </svg>
+          <span class="font-logo text-xl font-bold text-gray-900">crisopa</span>
+        </a>
+        <a
+          href="/"
+          class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
+        >
+          &larr; Volver al inicio
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-16 lg:py-24">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12">
+        <h1 class="font-display text-4xl font-bold text-gray-900 sm:text-5xl">
+          {encabezado}
+        </h1>
+        {actualizado && (
+          <p class="mt-4 text-gray-500">Última actualización: {actualizado}</p>
+        )}
+      </div>
+
+      <div class="prose prose-gray prose-lg max-w-none">
+        <slot />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

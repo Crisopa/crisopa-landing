@@ -1,162 +1,163 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import Footer from '../components/Footer.astro'
-
-const lastUpdated = '26 de enero de 2025'
+import Legal from '../layouts/Legal.astro'
+import { IDENTIDAD, EMAIL_SOPORTE, ACTUALIZADO } from '../lib/identidad'
 ---
 
-<Layout
-  title="Términos de uso - Cuaderno"
-  description="Términos y condiciones de uso del servicio Cuaderno de crisopa."
+<Legal
+  title="Términos del servicio — Crisopa"
+  description="Condiciones de uso de Crisopa: suscripción, responsabilidades y límites del servicio."
+  encabezado="Términos del servicio"
+  actualizado={ACTUALIZADO}
 >
-  <!-- Simple Header -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="/" class="group flex items-center gap-2.5">
-          <svg
-            class="h-8 w-8 text-primary-600 transition-transform duration-300 group-hover:scale-110"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M11.264 2.205A4 4 0 0 0 6.42 4.211l-4 8a4 4 0 0 0 1.359 5.117l6 4a4 4 0 0 0 4.438 0l6-4a4 4 0 0 0 1.576-4.592l-2-6a4 4 0 0 0-2.53-2.53z"/>
-            <path d="M11.99 22 14 12l7.822 3.184"/>
-            <path d="M14 12 8.47 2.302"/>
-          </svg>
-          <span class="font-logo text-xl font-bold text-gray-900">crisopa</span>
-        </a>
-        <a
-          href="/"
-          class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
-        >
-          &larr; Volver al inicio
-        </a>
-      </div>
-    </div>
-  </header>
+  <p class="lead">
+    Estas condiciones regulan el uso de Crisopa, prestado por {IDENTIDAD.razonSocial} (NIF {
+      IDENTIDAD.nif
+    }, domicilio en {IDENTIDAD.domicilio}). Al crear una cuenta las aceptas.
+  </p>
 
-  <main class="py-16 lg:py-24">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="mb-12">
-        <h1 class="font-display text-4xl font-bold text-gray-900 sm:text-5xl">
-          Términos de uso
-        </h1>
-        <p class="mt-4 text-gray-500">
-          Última actualización: {lastUpdated}
-        </p>
-      </div>
+  <h2>Qué es Crisopa</h2>
+  <p>
+    Una herramienta de trabajo para asesores agronómicos y explotaciones agrícolas: diario de campo,
+    planificación, registro de tratamientos, fertilización y riego, gestión de almacén y asistencia
+    para elaborar el cuaderno de explotación agrícola. Incluye un asistente conversacional y un
+    conector que permite operar el cuaderno desde asistentes externos.
+  </p>
 
-      <!-- Content -->
-      <div class="prose prose-gray prose-lg max-w-none">
-        <p class="lead">
-          Bienvenido a Cuaderno, un servicio de CRISOPA. Al acceder y utilizar nuestra plataforma, aceptas estos términos de uso en su totalidad.
-        </p>
+  <h2>Límites del asesoramiento agronómico</h2>
+  <p>Este punto importa más que ningún otro, así que lo decimos sin rodeos:</p>
+  <ul>
+    <li>
+      Crisopa es una <strong>herramienta de apoyo a la decisión</strong>, no un asesor. Las
+      recomendaciones de producto, dosis, plazos o momento de aplicación son orientativas y deben ser
+      validadas por un técnico competente antes de aplicarlas.
+    </li>
+    <li>
+      La <strong>fuente de verdad es siempre la ficha oficial del producto</strong> en el registro del
+      Ministerio de Agricultura, Pesca y Alimentación, y la etiqueta del envase. Nuestros datos derivan
+      de ese registro, pero pueden estar desactualizados o incompletos respecto a él.
+    </li>
+    <li>
+      Las validaciones normativas que ejecuta la aplicación señalan posibles desajustes; que no
+      aparezca ninguna alerta <strong>no acredita</strong> que un tratamiento sea conforme.
+    </li>
+    <li>
+      La responsabilidad sobre lo que se aplica en campo, sobre la veracidad de lo anotado en el
+      cuaderno y sobre el cumplimiento normativo es de la persona usuaria y del titular de la
+      explotación.
+    </li>
+  </ul>
+  <p>
+    El asistente utiliza modelos de lenguaje y puede equivocarse o afirmar algo incorrecto con
+    aparente seguridad. Revisa siempre lo que proponga antes de darlo por bueno, especialmente cuando
+    escriba datos en el cuaderno.
+  </p>
 
-        <h2>1. Identificación del prestador</h2>
-        <p>
-          Este sitio web y la aplicación Cuaderno son propiedad de <strong>CRISOPA</strong>.
-        </p>
-        <ul>
-          <li><strong>Email de contacto:</strong> hola@crisopa.app</li>
-          <li><strong>Sitio web:</strong> cuaderno.es</li>
-        </ul>
+  <h2>Tu cuenta</h2>
+  <ul>
+    <li>Debes ser mayor de edad y facilitar datos veraces.</li>
+    <li>Eres responsable de tus credenciales y de la actividad de tu cuenta.</li>
+    <li>
+      Si invitas a otras personas a tu organización, respondes de que su acceso sea el adecuado y de
+      retirarlo cuando proceda.
+    </li>
+    <li>
+      Si introduces datos de terceros (titulares, aplicadores, proveedores), garantizas que tienes
+      base jurídica para hacerlo y que les has informado.
+    </li>
+  </ul>
 
-        <h2>2. Objeto del servicio</h2>
-        <p>
-          Cuaderno es una plataforma de software como servicio (SaaS) diseñada para la gestión digital de cuadernos de explotación agrícola, conforme al Real Decreto 1311/2012 y normativa aplicable.
-        </p>
-        <p>
-          El servicio permite:
-        </p>
-        <ul>
-          <li>Registro de tratamientos fitosanitarios</li>
-          <li>Gestión de parcelas SIGPAC</li>
-          <li>Control de fertilización</li>
-          <li>Gestión de maquinaria y aplicadores</li>
-          <li>Registro de riegos</li>
-          <li>Seguimiento de eco-regímenes</li>
-        </ul>
+  <h2>Periodo de prueba</h2>
+  <p>
+    Ofrecemos <strong>15 días de prueba gratuita</strong> sin introducir datos de pago, con acceso
+    completo a las funciones del plan que elijas. Al terminar, decides si contratas: no se hace
+    ningún cargo automático.
+  </p>
 
-        <h2>3. Condiciones de acceso y uso</h2>
-        <p>
-          Para utilizar Cuaderno debes:
-        </p>
-        <ul>
-          <li>Ser mayor de 18 años o tener capacidad legal suficiente</li>
-          <li>Proporcionar información veraz y actualizada en el registro</li>
-          <li>Mantener la confidencialidad de tus credenciales de acceso</li>
-          <li>Utilizar el servicio de forma lícita y conforme a estos términos</li>
-        </ul>
+  <h2>Suscripción y pago</h2>
+  <p>
+    El servicio se presta por suscripción periódica según el plan contratado. Los pagos se procesan a
+    través de Stripe. La renovación es automática salvo cancelación, que puedes solicitar en
+    cualquier momento y surte efecto al final del periodo ya pagado, sin reembolso del periodo en
+    curso salvo que la ley te lo reconozca.
+  </p>
+  <p>
+    Podemos modificar los precios avisando con al menos treinta días de antelación. Si no te conviene
+    el nuevo precio, puedes cancelar antes de que entre en vigor.
+  </p>
+  <p>
+    La contratación se realiza siempre en nuestro sitio web. Si has llegado a Crisopa desde un
+    asistente o directorio de aplicaciones de terceros, la relación contractual y el cobro siguen
+    siendo con nosotros.
+  </p>
 
-        <h2>4. Periodo de prueba</h2>
-        <p>
-          Ofrecemos un periodo de prueba gratuito de <strong>15 días</strong> sin necesidad de introducir datos de pago. Durante este periodo tendrás acceso completo a las funcionalidades del plan seleccionado.
-        </p>
-        <p>
-          Al finalizar el periodo de prueba, podrás optar por contratar un plan de pago o dejar de usar el servicio. No se realizará ningún cargo automático.
-        </p>
+  <h2>Uso aceptable</h2>
+  <p>No está permitido:</p>
+  <ul>
+    <li>Usar el servicio para actividades ilícitas o para falsear registros oficiales.</li>
+    <li>Introducir datos de terceros sin legitimación para ello.</li>
+    <li>
+      Intentar acceder a datos de otra organización, ni sondear o eludir los controles de acceso.
+    </li>
+    <li>Extraer masivamente los catálogos oficiales para revenderlos o redistribuirlos.</li>
+    <li>Someter el servicio a una carga que degrade su funcionamiento para otros.</li>
+  </ul>
 
-        <h2>5. Planes y precios</h2>
-        <p>
-          Los precios y características de cada plan están disponibles en nuestra página de precios. Nos reservamos el derecho de modificar los precios, notificándote con al menos 30 días de antelación.
-        </p>
-        <p>
-          <strong>Sin permanencia:</strong> Puedes cancelar tu suscripción en cualquier momento. El servicio permanecerá activo hasta el final del periodo facturado.
-        </p>
+  <h2>Tus datos y contenidos</h2>
+  <p>
+    El contenido que introduces es tuyo. No lo usamos para nada distinto de prestarte el servicio ni
+    lo cedemos a terceros con fines comerciales. Puedes exportar tu cuaderno desde la aplicación
+    mientras tu cuenta esté activa; hazlo antes de darla de baja.
+  </p>
+  <p>
+    El tratamiento de datos personales se rige por nuestra <a href="/privacidad"
+      >política de privacidad</a
+    >.
+  </p>
 
-        <h2>6. Propiedad de los datos</h2>
-        <p>
-          <strong>Tus datos son tuyos.</strong> Mantienes la propiedad completa de toda la información que introduces en Cuaderno. Nosotros solo actuamos como encargados del tratamiento para prestarte el servicio.
-        </p>
-        <p>
-          Puedes exportar todos tus datos en cualquier momento en formatos estándar (PDF, Excel).
-        </p>
+  <h2>Disponibilidad</h2>
+  <p>
+    Hacemos lo razonable por mantener el servicio disponible, pero no garantizamos que funcione sin
+    interrupciones ni errores. Podemos realizar paradas de mantenimiento y avisaremos con antelación
+    cuando sean previsibles.
+  </p>
+  <p>
+    Crisopa depende de fuentes y servicios externos —el registro del Ministerio, SIGPAC, proveedores
+    de infraestructura y de modelos de lenguaje— cuya disponibilidad y exactitud no controlamos.
+  </p>
 
-        <h2>7. Disponibilidad del servicio</h2>
-        <p>
-          Nos esforzamos por mantener Cuaderno disponible 24/7, pero no garantizamos un tiempo de actividad específico. Podremos realizar mantenimientos programados, que serán comunicados con antelación cuando sea posible.
-        </p>
+  <h2>Responsabilidad</h2>
+  <p>
+    En la medida que permita la ley, no respondemos de daños indirectos, lucro cesante ni pérdida de
+    oportunidad. Nuestra responsabilidad total frente a ti queda limitada al importe que hayas
+    abonado en los doce meses anteriores al hecho que la origine.
+  </p>
+  <p>
+    Nada de lo anterior limita la responsabilidad que no pueda excluirse legalmente, ni los derechos
+    que te correspondan como persona consumidora.
+  </p>
 
-        <h2>8. Limitación de responsabilidad</h2>
-        <p>
-          Cuaderno es una herramienta de ayuda para la gestión agrícola. Aunque está diseñado para cumplir con el RD 1311/2012:
-        </p>
-        <ul>
-          <li>La responsabilidad del cumplimiento normativo recae en el usuario</li>
-          <li>No sustituye el asesoramiento profesional agrícola o legal</li>
-          <li>No nos hacemos responsables de sanciones derivadas de información incorrecta introducida por el usuario</li>
-        </ul>
+  <h2>Terminación</h2>
+  <p>
+    Puedes dejar de usar el servicio cuando quieras. Podemos suspender o cerrar una cuenta que
+    incumpla estas condiciones o que suponga un riesgo para el servicio o para terceros, avisando
+    previamente salvo que la urgencia lo impida.
+  </p>
 
-        <h2>9. Propiedad intelectual</h2>
-        <p>
-          Todos los derechos de propiedad intelectual sobre Cuaderno (software, diseño, marca, contenidos) pertenecen a CRISOPA. No se concede ningún derecho más allá de la licencia de uso del servicio contratado.
-        </p>
+  <h2>Cambios</h2>
+  <p>
+    Si modificamos estas condiciones actualizaremos la fecha de arriba y avisaremos de los cambios
+    relevantes con antelación razonable. Seguir usando el servicio después implica aceptarlas.
+  </p>
 
-        <h2>10. Modificaciones</h2>
-        <p>
-          Podemos actualizar estos términos ocasionalmente. Te notificaremos los cambios significativos por email o mediante aviso en la plataforma. El uso continuado del servicio tras los cambios implica su aceptación.
-        </p>
-
-        <h2>11. Legislación aplicable</h2>
-        <p>
-          Estos términos se rigen por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales de España.
-        </p>
-
-        <h2>12. Contacto</h2>
-        <p>
-          Para cualquier consulta sobre estos términos, puedes contactarnos en:
-        </p>
-        <p>
-          <strong>Email:</strong> <a href="mailto:hola@crisopa.app">hola@crisopa.app</a>
-        </p>
-      </div>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+  <h2>Ley aplicable</h2>
+  <p>
+    Se aplica la legislación española. Si eres persona consumidora, podrás acudir a los tribunales de
+    tu domicilio; en el resto de casos, las partes se someten a los juzgados y tribunales del
+    domicilio del prestador.
+  </p>
+  <p>
+    Para cualquier duda sobre estas condiciones escríbenos a <a href={`mailto:${EMAIL_SOPORTE}`}
+      >{EMAIL_SOPORTE}</a
+    >.
+  </p>
+</Legal>

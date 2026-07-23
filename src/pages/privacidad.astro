@@ -1,186 +1,297 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import Footer from '../components/Footer.astro'
-
-const lastUpdated = '26 de enero de 2025'
+import Legal from '../layouts/Legal.astro'
+import { IDENTIDAD, EMAIL_PRIVACIDAD, ACTUALIZADO } from '../lib/identidad'
 ---
 
-<Layout
-  title="Política de privacidad - Cuaderno"
-  description="Política de privacidad y protección de datos de Cuaderno de crisopa."
+<Legal
+  title="Política de privacidad — Crisopa"
+  description="Qué datos personales trata Crisopa, con qué finalidad, a quién se comunican y cómo ejercer tus derechos."
+  encabezado="Política de privacidad"
+  actualizado={ACTUALIZADO}
 >
-  <!-- Simple Header -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="/" class="group flex items-center gap-2.5">
-          <svg
-            class="h-8 w-8 text-primary-600 transition-transform duration-300 group-hover:scale-110"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M11.264 2.205A4 4 0 0 0 6.42 4.211l-4 8a4 4 0 0 0 1.359 5.117l6 4a4 4 0 0 0 4.438 0l6-4a4 4 0 0 0 1.576-4.592l-2-6a4 4 0 0 0-2.53-2.53z"/>
-            <path d="M11.99 22 14 12l7.822 3.184"/>
-            <path d="M14 12 8.47 2.302"/>
-          </svg>
-          <span class="font-logo text-xl font-bold text-gray-900">crisopa</span>
-        </a>
-        <a
-          href="/"
-          class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
-        >
-          &larr; Volver al inicio
-        </a>
-      </div>
-    </div>
-  </header>
+  <p class="lead">
+    Crisopa es un cuaderno de campo y asistente agronómico dirigido a asesores y explotaciones
+    agrícolas. Esta política explica qué datos personales tratamos, por qué, con quién los
+    compartimos y qué puedes hacer al respecto.
+  </p>
 
-  <main class="py-16 lg:py-24">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="mb-12">
-        <h1 class="font-display text-4xl font-bold text-gray-900 sm:text-5xl">
-          Política de privacidad
-        </h1>
-        <p class="mt-4 text-gray-500">
-          Última actualización: {lastUpdated}
-        </p>
-      </div>
+  <h2>Quién es el responsable</h2>
+  <p>
+    {IDENTIDAD.razonSocial}, con NIF {IDENTIDAD.nif} y domicilio en {IDENTIDAD.domicilio}. Puedes
+    escribirnos a <a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a> para cualquier
+    cuestión relativa a esta política o al ejercicio de tus derechos.
+  </p>
 
-      <!-- Content -->
-      <div class="prose prose-gray prose-lg max-w-none">
-        <p class="lead">
-          En CRISOPA nos tomamos muy en serio la protección de tus datos personales. Esta política explica qué información recopilamos, cómo la usamos y cuáles son tus derechos.
-        </p>
+  <h2>Dos papeles distintos</h2>
+  <p>Conviene distinguirlos porque determinan a quién debes dirigirte:</p>
+  <ul>
+    <li>
+      <strong>Somos responsables</strong> de los datos de tu cuenta y de tu organización: quién
+      contrata Crisopa, quién accede y cómo se factura.
+    </li>
+    <li>
+      <strong>Somos encargados del tratamiento</strong> del contenido que introduces en el cuaderno.
+      Los datos de titulares de explotación, aplicadores, proveedores y terceros los decides tú:
+      nosotros solo los alojamos y procesamos siguiendo tus instrucciones. Si eres asesor y gestionas
+      explotaciones de clientes, el responsable frente a esas personas eres tú, y te corresponde
+      informarles y tener base jurídica para ello.
+    </li>
+  </ul>
 
-        <h2>1. Responsable del tratamiento</h2>
-        <ul>
-          <li><strong>Identidad:</strong> CRISOPA</li>
-          <li><strong>Email:</strong> hola@crisopa.app</li>
-          <li><strong>Sitio web:</strong> cuaderno.es</li>
-        </ul>
+  <h2>Qué datos tratamos</h2>
 
-        <h2>2. Datos que recopilamos</h2>
+  <h3>De tu cuenta</h3>
+  <ul>
+    <li>Identificación y contacto: nombre, correo electrónico, teléfono, cargo, DNI y avatar.</li>
+    <li>Datos profesionales: número de registro de asesor (ROPO).</li>
+    <li>Datos de la organización: nombre, CIF, dirección, teléfono y correo.</li>
+    <li>Registro de accesos: fecha y hora de cada inicio de sesión.</li>
+    <li>Facturación: identificadores de cliente y suscripción en Stripe.</li>
+  </ul>
 
-        <h3>2.1. Datos de registro</h3>
-        <p>Al crear una cuenta recopilamos:</p>
-        <ul>
-          <li>Nombre y apellidos</li>
-          <li>Dirección de email</li>
-          <li>Teléfono (opcional)</li>
-          <li>Datos de la explotación agrícola</li>
-        </ul>
+  <h3>Del contenido del cuaderno</h3>
+  <ul>
+    <li>
+      <strong>Titulares de explotación</strong>: nombre, NIF, dirección, localidad, código postal,
+      provincia, teléfono y correo.
+    </li>
+    <li>
+      <strong>Aplicadores</strong>: nombre, NIF, número y tipo de carné, sección ROPO, vigencia y
+      empresa externa. Son datos exigidos por el RD 1311/2012 para el registro de tratamientos.
+    </li>
+    <li><strong>Proveedores y empresas de servicios</strong>: nombre, NIF/CIF y número ROPO.</li>
+    <li>
+      <strong>Localización de parcelas</strong>: referencias SIGPAC y geometrías de recinto. No
+      identifican a una persona por sí solas, pero sí a su explotación.
+    </li>
+    <li>
+      <strong>Texto libre</strong>: visitas del diario de campo, tareas y observaciones. Puede
+      contener datos personales que escribas tú; te recomendamos no incluir más de los necesarios.
+    </li>
+    <li>
+      <strong>Documentos e imágenes</strong>: fotos de visitas, y PDF de facturas y albaranes, que
+      suelen incluir datos fiscales de proveedor y titular.
+    </li>
+  </ul>
+  <p>
+    No tratamos categorías especiales de datos (salud, biometría, ideología y demás del artículo 9
+    del RGPD). No los introduzcas en el cuaderno.
+  </p>
 
-        <h3>2.2. Datos de uso del servicio</h3>
-        <p>Al utilizar Cuaderno, almacenamos la información que introduces:</p>
-        <ul>
-          <li>Datos de parcelas y cultivos</li>
-          <li>Tratamientos fitosanitarios</li>
-          <li>Registros de fertilización</li>
-          <li>Información de maquinaria y aplicadores</li>
-          <li>Registros de riego</li>
-        </ul>
+  <h3>De tu visita a este sitio web</h3>
+  <p>
+    En <strong>crisopa.app</strong> usamos analítica y medición de campañas publicitarias, que solo
+    se activan si aceptas las cookies correspondientes. Lo detallamos más abajo y en la <a
+      href="/cookies">política de cookies</a
+    >.
+  </p>
 
-        <h3>2.3. Datos técnicos</h3>
-        <p>Recopilamos automáticamente:</p>
-        <ul>
-          <li>Dirección IP</li>
-          <li>Tipo de navegador y dispositivo</li>
-          <li>Páginas visitadas y tiempo de uso</li>
-          <li>Cookies (ver nuestra <a href="/cookies">política de cookies</a>)</li>
-        </ul>
+  <h2>Para qué y con qué base jurídica</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Finalidad</th>
+        <th>Base jurídica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Prestar el servicio: cuenta, cuaderno, asistente y generación de documentación</td>
+        <td>Ejecución del contrato</td>
+      </tr>
+      <tr>
+        <td>Cumplimiento del cuaderno de explotación agrícola y normativa asociada</td>
+        <td>Obligación legal del titular, a la que damos soporte</td>
+      </tr>
+      <tr>
+        <td>Facturación y gestión de la suscripción</td>
+        <td>Ejecución del contrato y obligaciones fiscales</td>
+      </tr>
+      <tr>
+        <td>Seguridad, prevención de abuso y diagnóstico de errores</td>
+        <td>Interés legítimo en mantener el servicio operativo y seguro</td>
+      </tr>
+      <tr>
+        <td>Comunicaciones sobre el servicio (avisos, cambios, soporte)</td>
+        <td>Ejecución del contrato</td>
+      </tr>
+      <tr>
+        <td>Analítica y medición de campañas en el sitio web</td>
+        <td>Tu consentimiento, que puedes retirar cuando quieras</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    No vendemos tus datos y no hacemos perfilado ni decisiones automatizadas con efectos jurídicos
+    sobre ti. El contenido de tu cuaderno nunca se usa con fines publicitarios.
+  </p>
 
-        <h2>3. Finalidad del tratamiento</h2>
-        <p>Utilizamos tus datos para:</p>
-        <ul>
-          <li><strong>Prestación del servicio:</strong> Gestionar tu cuenta y proporcionarte acceso a Cuaderno</li>
-          <li><strong>Comunicaciones:</strong> Enviarte información sobre tu cuenta, actualizaciones del servicio y soporte técnico</li>
-          <li><strong>Mejora del servicio:</strong> Analizar el uso para mejorar la plataforma</li>
-          <li><strong>Obligaciones legales:</strong> Cumplir con requerimientos legales cuando sea necesario</li>
-        </ul>
+  <h2>Inteligencia artificial</h2>
+  <p>
+    Crisopa incorpora funciones de asistente que envían datos a modelos de lenguaje de <strong
+      >Anthropic</strong
+    > para poder responder. Queremos ser explícitos sobre qué sale:
+  </p>
+  <ul>
+    <li>
+      <strong>Asistente dentro de la app</strong>: lo que escribes y el resultado de las consultas
+      que necesita para responderte, que puede incluir parcelas, tratamientos y datos de aplicadores.
+    </li>
+    <li>
+      <strong>Lectura automática de facturas y albaranes</strong>: se envía el PDF completo, no solo
+      los campos extraídos. Incluye por tanto los datos fiscales impresos en el documento.
+    </li>
+    <li>
+      <strong>Importación desde hoja de cálculo</strong>: cabeceras y filas de muestra del fichero
+      que subes, para deducir a qué campo corresponde cada columna.
+    </li>
+    <li>
+      <strong>Asistente de plan de abonado</strong>: solo datos agronómicos de la parcela (cultivo,
+      superficie, provincia, zona vulnerable). No se envían datos de personas.
+    </li>
+  </ul>
+  <p>Anthropic actúa como encargado y no utiliza este contenido para entrenar sus modelos.</p>
+  <p>
+    Si conectas Crisopa a un asistente externo mediante nuestro conector (ChatGPT, Claude u otro),
+    ese asistente accede a los datos de tu organización que tú le pidas consultar, y su tratamiento
+    se rige además por la política de privacidad de ese proveedor. La conexión requiere que autorices
+    el acceso de forma expresa y puedes revocarla en cualquier momento.
+  </p>
 
-        <h2>4. Base legal del tratamiento</h2>
-        <ul>
-          <li><strong>Ejecución del contrato:</strong> El tratamiento es necesario para prestarte el servicio contratado</li>
-          <li><strong>Interés legítimo:</strong> Para mejorar nuestros servicios y prevenir fraudes</li>
-          <li><strong>Consentimiento:</strong> Para comunicaciones comerciales (siempre opcional)</li>
-          <li><strong>Obligación legal:</strong> Cuando la ley nos obligue a conservar ciertos datos</li>
-        </ul>
+  <h2>Quién más accede a los datos</h2>
+  <p>Trabajamos con los siguientes proveedores, todos como encargados del tratamiento:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Proveedor</th>
+        <th>Para qué</th>
+        <th>Ubicación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Supabase</td>
+        <td>
+          Base de datos, autenticación, almacenamiento de ficheros y envío de correos de cuenta
+        </td>
+        <td>Unión Europea</td>
+      </tr>
+      <tr>
+        <td>Vercel</td>
+        <td>Alojamiento de la aplicación y del sitio web, y analítica de visitas</td>
+        <td>EE. UU. / UE</td>
+      </tr>
+      <tr>
+        <td>Google Cloud</td>
+        <td>Procesos auxiliares: generación de PDF y consulta a registros oficiales (ROMA, ROPO)</td>
+        <td>Unión Europea</td>
+      </tr>
+      <tr>
+        <td>Google Ads</td>
+        <td>Medición de campañas publicitarias en el sitio web, solo con tu consentimiento</td>
+        <td>EE. UU.</td>
+      </tr>
+      <tr>
+        <td>Anthropic</td>
+        <td>Modelos de lenguaje del asistente</td>
+        <td>EE. UU.</td>
+      </tr>
+      <tr>
+        <td>Stripe</td>
+        <td>Pagos y suscripciones</td>
+        <td>EE. UU. / UE</td>
+      </tr>
+      <tr>
+        <td>WorkOS</td>
+        <td>Autorización del conector con asistentes externos</td>
+        <td>EE. UU.</td>
+      </tr>
+      <tr>
+        <td>Sentry</td>
+        <td>Registro de errores de la aplicación</td>
+        <td>EE. UU. / UE</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Las transferencias fuera del Espacio Económico Europeo se amparan en las cláusulas contractuales
+    tipo de la Comisión Europea. También comunicamos datos a administraciones públicas cuando una
+    norma lo exige.
+  </p>
 
-        <h2>5. Conservación de datos</h2>
-        <p>Conservamos tus datos mientras mantengas tu cuenta activa. Tras la cancelación:</p>
-        <ul>
-          <li><strong>Datos de cuenta:</strong> Se eliminan en un plazo de 30 días</li>
-          <li><strong>Datos de explotación:</strong> Puedes exportarlos antes de cancelar</li>
-          <li><strong>Datos fiscales:</strong> Se conservan el tiempo legalmente requerido (generalmente 5 años)</li>
-        </ul>
+  <h2>Cuánto tiempo los conservamos</h2>
+  <p>
+    Mientras tu cuenta esté activa. El cuaderno de explotación agrícola debe conservarse un mínimo de
+    tres años desde el registro de cada anotación, por lo que no borramos automáticamente el
+    histórico. Al cerrar la cuenta eliminamos los datos en un plazo de treinta días, salvo lo que
+    debamos conservar para atender obligaciones legales o fiscales, que queda bloqueado hasta su
+    prescripción.
+  </p>
+  <p>
+    Puedes borrar explotaciones y sus registros desde la propia aplicación en cualquier momento; el
+    borrado es definitivo y no reversible.
+  </p>
 
-        <h2>6. Destinatarios de los datos</h2>
-        <p>No vendemos ni compartimos tus datos con terceros para fines comerciales. Solo compartimos datos con:</p>
-        <ul>
-          <li><strong>Proveedores de infraestructura:</strong> Servicios de hosting y almacenamiento en la nube (dentro de la UE o con garantías adecuadas)</li>
-          <li><strong>Procesadores de pago:</strong> Para gestionar las suscripciones de forma segura</li>
-          <li><strong>Autoridades:</strong> Solo cuando exista obligación legal</li>
-        </ul>
+  <h2>Tus derechos</h2>
+  <p>
+    Puedes solicitar acceso, rectificación, supresión, limitación, portabilidad y oposición
+    escribiendo a <a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a> desde la dirección
+    asociada a tu cuenta. Responderemos en el plazo de un mes.
+  </p>
+  <p>
+    Si el tratamiento se refiere a datos que un asesor introdujo sobre ti (por ejemplo, como titular
+    de explotación o aplicador), dirígete en primer lugar a esa persona u organización: es quien
+    decide sobre esos datos. Si nos escribes a nosotros, trasladaremos la solicitud.
+  </p>
+  <p>
+    En cualquier caso puedes reclamar ante la Agencia Española de Protección de Datos (<a
+      href="https://www.aepd.es"
+      target="_blank"
+      rel="noopener noreferrer">aepd.es</a
+    >).
+  </p>
 
-        <h2>7. Transferencias internacionales</h2>
-        <p>
-          Tus datos se almacenan en servidores ubicados en la Unión Europea. Si fuera necesaria alguna transferencia fuera de la UE, nos aseguramos de que existan garantías adecuadas (cláusulas contractuales tipo, decisiones de adecuación, etc.).
-        </p>
+  <h2>Cookies</h2>
+  <p>El uso de cookies difiere entre el sitio web y la aplicación:</p>
+  <ul>
+    <li>
+      <strong>En este sitio web</strong> (crisopa.app) usamos, además de las necesarias, cookies de
+      analítica y de medición publicitaria que solo se activan si las aceptas en el aviso de cookies.
+      Puedes cambiar de opinión cuando quieras. El detalle está en la <a href="/cookies"
+        >política de cookies</a
+      >.
+    </li>
+    <li>
+      <strong>Dentro de la aplicación</strong> solo usamos cookies necesarias para que funcione: la de
+      sesión, la que recuerda en qué explotación trabajabas, la del estado del menú lateral y la de las
+      sesiones de soporte. No hay analítica ni cookies publicitarias, y por eso allí no mostramos ningún
+      aviso.
+    </li>
+  </ul>
 
-        <h2>8. Tus derechos</h2>
-        <p>Según el RGPD, tienes derecho a:</p>
-        <ul>
-          <li><strong>Acceso:</strong> Solicitar una copia de tus datos personales</li>
-          <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos</li>
-          <li><strong>Supresión:</strong> Solicitar la eliminación de tus datos</li>
-          <li><strong>Portabilidad:</strong> Recibir tus datos en formato estructurado</li>
-          <li><strong>Oposición:</strong> Oponerte al tratamiento en ciertos casos</li>
-          <li><strong>Limitación:</strong> Solicitar la restricción del tratamiento</li>
-        </ul>
-        <p>
-          Para ejercer estos derechos, escríbenos a <a href="mailto:hola@crisopa.app">hola@crisopa.app</a>.
-        </p>
+  <h2>Seguridad</h2>
+  <p>
+    Los datos viajan cifrados y se alojan en infraestructura gestionada dentro de la Unión Europea. El
+    acceso está segregado por organización: ninguna organización puede ver los datos de otra. Las
+    contraseñas las custodia nuestro proveedor de autenticación y nunca son visibles para nosotros.
+  </p>
+  <p>
+    Nuestro equipo de soporte puede acceder puntualmente a tu cuenta para resolver una incidencia.
+    Estos accesos caducan en una hora y quedan registrados con la identidad de quien accede. Si
+    detectas un problema de seguridad, escríbenos a <a
+      href={`mailto:${IDENTIDAD.emailSeguridad}`}>{IDENTIDAD.emailSeguridad}</a
+    >.
+  </p>
 
-        <h2>9. Seguridad</h2>
-        <p>Implementamos medidas técnicas y organizativas para proteger tus datos:</p>
-        <ul>
-          <li>Cifrado de datos en tránsito (HTTPS/TLS)</li>
-          <li>Cifrado de datos en reposo</li>
-          <li>Acceso restringido a los datos</li>
-          <li>Copias de seguridad periódicas</li>
-          <li>Monitorización de seguridad</li>
-        </ul>
+  <h2>Menores</h2>
+  <p>
+    Crisopa es una herramienta profesional y no está dirigida a menores de 18 años. No recopilamos
+    conscientemente datos de menores; si detectamos que lo hemos hecho, los eliminamos.
+  </p>
 
-        <h2>10. Menores</h2>
-        <p>
-          Cuaderno no está dirigido a menores de 18 años. No recopilamos conscientemente datos de menores. Si detectamos que hemos recopilado datos de un menor, los eliminaremos.
-        </p>
-
-        <h2>11. Cambios en esta política</h2>
-        <p>
-          Podemos actualizar esta política ocasionalmente. Te notificaremos los cambios significativos por email o mediante aviso en la plataforma.
-        </p>
-
-        <h2>12. Reclamaciones</h2>
-        <p>
-          Si consideras que no hemos tratado tus datos correctamente, puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong>: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>
-        </p>
-
-        <h2>13. Contacto</h2>
-        <p>
-          Para cualquier consulta sobre privacidad:
-        </p>
-        <p>
-          <strong>Email:</strong> <a href="mailto:hola@crisopa.app">hola@crisopa.app</a>
-        </p>
-      </div>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+  <h2>Cambios</h2>
+  <p>
+    Si modificamos esta política actualizaremos la fecha de arriba y, cuando el cambio sea relevante,
+    te avisaremos por correo o dentro de la aplicación.
+  </p>
+</Legal>

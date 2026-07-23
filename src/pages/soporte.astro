@@ -1,0 +1,81 @@
+---
+import Legal from '../layouts/Legal.astro'
+import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
+---
+
+<Legal
+  title="Soporte — Crisopa"
+  description="Cómo contactar con el equipo de Crisopa: incidencias, privacidad y seguridad."
+  encabezado="Soporte"
+>
+  <p class="lead">
+    Escríbenos y te respondemos. Somos un equipo pequeño, así que lo normal es que conteste alguien
+    que conoce el producto a fondo.
+  </p>
+
+  <h2>A dónde escribir</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Asunto</th>
+        <th>Correo</th>
+        <th>Respuesta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dudas de uso, incidencias, facturación</td>
+        <td><a href={`mailto:${EMAIL_SOPORTE}`}>{EMAIL_SOPORTE}</a></td>
+        <td>1 día laborable</td>
+      </tr>
+      <tr>
+        <td>Privacidad y ejercicio de derechos</td>
+        <td><a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a></td>
+        <td>1 mes (plazo legal)</td>
+      </tr>
+      <tr>
+        <td>Vulnerabilidades de seguridad</td>
+        <td><a href={`mailto:${IDENTIDAD.emailSeguridad}`}>{IDENTIDAD.emailSeguridad}</a></td>
+        <td>2 días laborables</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Si ya tienes cuenta, puedes abrir una incidencia desde la propia aplicación: llega con el
+    contexto de lo que estabas haciendo y suele resolverse antes.
+  </p>
+
+  <h2>Para que podamos ayudarte rápido</h2>
+  <ul>
+    <li>Cuéntanos qué esperabas que pasara y qué pasó en su lugar.</li>
+    <li>Indícanos la explotación y la parcela o el registro concreto, si aplica.</li>
+    <li>Una captura de pantalla ahorra varios correos.</li>
+    <li>
+      No nos envíes contraseñas. Si necesitamos entrar en tu cuenta para reproducir el problema, te
+      lo diremos: el acceso caduca en una hora y queda registrado.
+    </li>
+  </ul>
+
+  <h2>Reportar un problema de seguridad</h2>
+  <p>
+    Si has encontrado una vulnerabilidad, escríbenos a <a
+      href={`mailto:${IDENTIDAD.emailSeguridad}`}>{IDENTIDAD.emailSeguridad}</a
+    > con los pasos para reproducirla. Te pedimos que no la hagas pública hasta que hayamos podido corregirla
+    y que no accedas a datos de otras organizaciones ni los descargues. Agradecemos el aviso y te mantendremos
+    al corriente de la corrección.
+  </p>
+
+  <h2>Asistentes externos</h2>
+  <p>
+    Si usas Crisopa desde ChatGPT, Claude u otro asistente y algo no funciona, dinos qué le pediste y
+    qué respondió. Puedes revocar el acceso del asistente en cualquier momento desde los ajustes de
+    tu cuenta en ese servicio.
+  </p>
+
+  <h2>Documentos</h2>
+  <ul>
+    <li><a href="/privacidad">Política de privacidad</a></li>
+    <li><a href="/terminos">Términos del servicio</a></li>
+    <li><a href="/cookies">Política de cookies</a></li>
+  </ul>
+</Legal>
