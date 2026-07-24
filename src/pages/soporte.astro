@@ -14,32 +14,23 @@ import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
   </p>
 
   <h2>A dónde escribir</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Asunto</th>
-        <th>Correo</th>
-        <th>Respuesta</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Dudas de uso, incidencias, facturación</td>
-        <td><a href={`mailto:${EMAIL_SOPORTE}`}>{EMAIL_SOPORTE}</a></td>
-        <td>1 día laborable</td>
-      </tr>
-      <tr>
-        <td>Privacidad y ejercicio de derechos</td>
-        <td><a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a></td>
-        <td>1 mes (plazo legal)</td>
-      </tr>
-      <tr>
-        <td>Vulnerabilidades de seguridad</td>
-        <td><a href={`mailto:${IDENTIDAD.emailSeguridad}`}>{IDENTIDAD.emailSeguridad}</a></td>
-        <td>2 días laborables</td>
-      </tr>
-    </tbody>
-  </table>
+  <dl class="canales">
+    <div class="canal">
+      <dt>Dudas de uso, incidencias, facturación</dt>
+      <dd class="correo"><a href={`mailto:${EMAIL_SOPORTE}`}>{EMAIL_SOPORTE}</a></dd>
+      <dd class="plazo">Respuesta en 1 día laborable</dd>
+    </div>
+    <div class="canal">
+      <dt>Privacidad y ejercicio de derechos</dt>
+      <dd class="correo"><a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a></dd>
+      <dd class="plazo">Respuesta en 1 mes (plazo legal)</dd>
+    </div>
+    <div class="canal">
+      <dt>Vulnerabilidades de seguridad</dt>
+      <dd class="correo"><a href={`mailto:${IDENTIDAD.emailSeguridad}`}>{IDENTIDAD.emailSeguridad}</a></dd>
+      <dd class="plazo">Respuesta en 2 días laborables</dd>
+    </div>
+  </dl>
   <p>
     Si ya tienes cuenta, puedes abrir una incidencia desde la propia aplicación: llega con el
     contexto de lo que estabas haciendo y suele resolverse antes.
@@ -79,3 +70,62 @@ import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
     <li><a href="/cookies">Política de cookies</a></li>
   </ul>
 </Legal>
+
+<style>
+  /* Lista de canales de contacto. Se evita `<table>` con `<a>` en las celdas
+     porque el compilador reconstruye el ancla tras `</table>` y arrastra el
+     estilo de enlace al resto de la página. */
+  .canales {
+    margin: 2em 0;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .canal {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'asunto correo'
+      'asunto plazo';
+    gap: 0.15rem 1.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .canal dt {
+    grid-area: asunto;
+    font-weight: 600;
+    color: #111827;
+    align-self: center;
+  }
+
+  .canal .correo {
+    grid-area: correo;
+    margin: 0;
+    text-align: right;
+  }
+
+  .canal .plazo {
+    grid-area: plazo;
+    margin: 0;
+    text-align: right;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  @media (max-width: 640px) {
+    .canal {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'asunto'
+        'correo'
+        'plazo';
+      gap: 0.35rem;
+    }
+
+    .canal .correo,
+    .canal .plazo {
+      text-align: left;
+    }
+  }
+</style>
