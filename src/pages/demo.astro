@@ -1,0 +1,104 @@
+---
+/**
+ * Vídeos de demostración del conector de Crisopa para ChatGPT. Es la URL que se
+ * entrega a OpenAI al enviar la app a su directorio: una sola página que reúne
+ * las tres grabaciones (web, iOS y Android).
+ *
+ * Los MP4 viven en el bucket `other` de Supabase Storage, no en el repo (evita
+ * arrastrar decenas de MB en el historial de git). Las URLs son las PÚBLICAS de
+ * cada objeto, no firmadas: las firmadas caducan y el revisor se encontraría un
+ * enlace muerto. Requiere que el bucket sea público.
+ */
+import Legal from '../layouts/Legal.astro'
+
+const BASE = 'https://hwidbacayscfyzxdkzgw.supabase.co/storage/v1/object/public/other'
+
+/** Los nombres llevan espacios: hay que codificarlos o la URL se rompe. */
+const urlVideo = (fichero: string) => `${BASE}/${encodeURIComponent(fichero)}`
+
+/** `vertical` controla el ancho: las grabaciones de móvil son en retrato. */
+const VIDEOS = [
+  {
+    id: 'web',
+    titulo: 'Web',
+    pie: 'Consulta de parcela, validación del tratamiento contra el registro del MAPA y orden para el aplicador.',
+    url: urlVideo('Demo web.mp4'),
+    vertical: false,
+  },
+  {
+    id: 'android',
+    titulo: 'Android',
+    pie: 'Consulta de almacén, ficha de parcela y número de tratamientos.',
+    url: urlVideo('Demo Android.mp4'),
+    vertical: true,
+  },
+  {
+    id: 'ios',
+    titulo: 'iOS',
+    pie: 'Consulta de almacén y resumen de la última visita.',
+    url: urlVideo('Demo iOS.mp4'),
+    vertical: true,
+  },
+]
+
+const horizontales = VIDEOS.filter((v) => !v.vertical)
+const verticales = VIDEOS.filter((v) => v.vertical)
+---
+
+<Legal
+  title="Crisopa en ChatGPT — demostración"
+  description="Vídeos de demostración del conector de Crisopa para ChatGPT en web, iOS y Android."
+  encabezado="Crisopa en ChatGPT"
+>
+  <!-- Para el revisor de OpenAI, no para buscadores. -->
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+
+  <p>
+    Consulta del cuaderno de campo, validación de tratamientos contra el registro del
+    MAPA y órdenes para el aplicador, desde una conversación en ChatGPT.
+  </p>
+
+  {
+    horizontales.map((video) => (
+      <section class="not-prose mb-12">
+        <h2 class="mb-3 text-xl font-semibold text-gray-900">{video.titulo}</h2>
+        <video
+          controls
+          playsinline
+          preload="metadata"
+          class="w-full rounded-xl border border-gray-200 bg-black shadow-sm"
+        >
+          <source src={video.url} type="video/mp4" />
+          <p>
+            Tu navegador no puede reproducir el vídeo.
+            <a href={video.url}>Descárgalo aquí</a>.
+          </p>
+        </video>
+        <p class="mt-3 text-sm text-gray-500">{video.pie}</p>
+      </section>
+    ))
+  }
+
+  <div class="not-prose grid gap-8 sm:grid-cols-2">
+    {
+      verticales.map((video) => (
+        <section>
+          <h2 class="mb-3 text-xl font-semibold text-gray-900">{video.titulo}</h2>
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            class="w-full rounded-xl border border-gray-200 bg-black shadow-sm"
+          >
+            <source src={video.url} type="video/mp4" />
+            <p>
+              Tu navegador no puede reproducir el vídeo.
+              <a href={video.url}>Descárgalo aquí</a>.
+            </p>
+          </video>
+          <p class="mt-3 text-sm text-gray-500">{video.pie}</p>
+        </section>
+      ))
+    }
+  </div>
+</Legal>

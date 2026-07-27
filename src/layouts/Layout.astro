@@ -67,6 +67,9 @@ const {
       gtag('js', new Date());
       gtag('config', 'AW-18086869043');
     </script>
+
+    <!-- Etiquetas extra de cada página (p. ej. robots noindex). -->
+    <slot name="head" />
   </head>
   <body class="font-sans antialiased text-foreground bg-background overflow-x-hidden">
     <slot />
