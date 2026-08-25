@@ -14,9 +14,14 @@ import CTADemo from '../components/CTADemo.astro'
 import CTA from '../components/CTA.astro'
 import ContactSales from '../components/ContactSales.astro'
 import Footer from '../components/Footer.astro'
+import { faqs } from '../lib/faqs'
+import { softwareApplicationSchema, faqSchema } from '../lib/schema'
+
+// La home no pasa `title` ni `description`: los del Layout ya están escritos
+// para ella y son los que se usan por defecto.
 ---
 
-<Layout>
+<Layout schema={[softwareApplicationSchema, faqSchema(faqs)]}>
   <Header />
   <main>
     <Hero />

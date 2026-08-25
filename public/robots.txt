@@ -1,0 +1,10 @@
+# https://crisopa.app
+#
+# No se bloquea nada por aquí a propósito. Las landings de campaña (/hola, /demo)
+# se mantienen fuera del índice con `noindex` en la propia página, y para que
+# Google llegue a leer esa etiqueta necesita poder rastrearlas: un Disallow aquí
+# se lo impediría y acabarían indexadas igualmente, solo que sin descripción.
+User-agent: *
+Allow: /
+
+Sitemap: https://crisopa.app/sitemap-index.xml
