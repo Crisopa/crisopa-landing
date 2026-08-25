@@ -5,15 +5,34 @@ import Analytics from '@vercel/analytics/astro'
 import CookieBanner from '../components/CookieBanner.astro'
 import ClickSpark from '../components/react/ClickSpark.tsx'
 
+import { organizationSchema, websiteSchema } from '../lib/schema'
+
 interface Props {
   title?: string
   description?: string
+  /** Imagen social propia de la página; por defecto, la genérica del sitio. */
+  image?: string
+  /** Esquemas JSON-LD que añade la página al grafo base (sitio + organización). */
+  schema?: Record<string, unknown>[]
 }
 
 const {
   title = 'Crisopa — Copiloto agronómico con IA | Cuaderno de campo digital',
-  description = 'Lleva todo tu trabajo agronómico —agenda, planificación, planes de abonado, tratamientos y el cuaderno de campo— en minutos con IA. Habla con ChatGPT o Claude o trabaja desde el ordenador. Reserva una demo.'
+  description = 'Lleva todo tu trabajo agronómico —agenda, planificación, planes de abonado, tratamientos y el cuaderno de campo— en minutos con IA. Habla con ChatGPT o Claude o trabaja desde el ordenador. Reserva una demo.',
+  image = '/og-image.png',
+  schema = []
 } = Astro.props
+
+// URL canónica de ESTA página. Antes `og:url` estaba fijo a la home, así que
+// todo lo que se compartía de /precios o /soporte se anunciaba como si fuera la
+// portada. `Astro.site` viene de `site` en astro.config.mjs.
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const imagenSocial = new URL(image, Astro.site).href
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [websiteSchema, organizationSchema, ...schema]
+}
 ---
 
 <!doctype html>
@@ -22,6 +41,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -30,8 +50,10 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://crisopa.app/" />
-    <meta property="og:image" content="https://crisopa.app/og-image.png" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Crisopa" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content={imagenSocial} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -39,8 +61,12 @@ const {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagenSocial} />
 
     <title>{title}</title>
+
+    <!-- Datos estructurados: un solo grafo por página (ver lib/schema.ts). -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
     <ClientRouter />
 
     <!-- Google tag (gtag.js) + Consent Mode v2 -->

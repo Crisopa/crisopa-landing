@@ -43,6 +43,10 @@ const features = [
   title="Demo para asesores agronómicos | Crisopa"
   description="Reserva una demo de 30 min y descubre el copiloto agronómico que lleva el papeleo de todas tus fincas. Hablas con ChatGPT o Claude y recuperas tus horas de oficina."
 >
+  <!-- Landing de campaña: fuera del índice para que no compita con la home, que
+       cubre el mismo terreno. Quítalo si algún día debe posicionar por sí sola. -->
+  <meta name="robots" content="noindex, follow" slot="head" />
+
   <main>
     <!-- ==================== HERO ==================== -->
     <section class="relative overflow-hidden bg-gradient-to-b from-primary-50/80 via-white to-white pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pb-32 lg:min-h-screen flex items-center">
