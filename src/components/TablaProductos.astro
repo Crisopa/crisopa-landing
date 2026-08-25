@@ -1,0 +1,66 @@
+---
+/**
+ * Tabla de productos autorizados para un par cultivo × plaga.
+ *
+ * Scroll horizontal propio en móvil: la alternativa (apilar cada producto en
+ * una tarjeta) hace ilegible la comparación entre dosis, que es justo para lo
+ * que se consulta esta tabla.
+ */
+import { dosisTexto, plazoTexto, type Producto } from '../lib/plagas'
+
+interface Props {
+  productos: Producto[]
+}
+
+const { productos } = Astro.props
+
+// Por sustancia y luego por nombre: quien compara quiere ver juntos los
+// productos que comparten modo de acción.
+const ordenados = [...productos].sort(
+  (a, b) => (a.sustancias ?? '').localeCompare(b.sustancias ?? '') || a.nombre.localeCompare(b.nombre)
+)
+---
+
+<div class="mt-6 overflow-x-auto rounded-2xl border border-gray-200/80">
+  <table class="w-full min-w-[52rem] border-collapse text-left text-sm">
+    <caption class="sr-only">
+      Productos fitosanitarios autorizados, con sustancia activa, dosis registrada, plazo de
+      seguridad y número máximo de aplicaciones.
+    </caption>
+    <thead class="bg-gray-50 text-xs uppercase tracking-wider text-foreground-muted">
+      <tr>
+        <th scope="col" class="px-4 py-3 font-semibold">Producto</th>
+        <th scope="col" class="px-4 py-3 font-semibold">Sustancia activa</th>
+        <th scope="col" class="px-4 py-3 font-semibold">Dosis</th>
+        <th scope="col" class="px-4 py-3 font-semibold">Plazo seguridad</th>
+        <th scope="col" class="px-4 py-3 font-semibold">Aplic. máx.</th>
+        <th scope="col" class="px-4 py-3 font-semibold">Titular</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ordenados.map((p) => (
+        <tr class="border-t border-gray-200/70 align-top transition-colors hover:bg-primary-50/40">
+          <td class="px-4 py-3">
+            <span class="font-medium text-foreground">{p.nombre}</span>
+            {p.eco && (
+              <span class="ml-2 inline-block rounded-full bg-primary-100 px-2 py-0.5 text-[0.7rem] font-semibold text-primary-800">
+                eco
+              </span>
+            )}
+            <span class="mt-0.5 block font-data text-xs text-foreground-muted">nº {p.registro}</span>
+          </td>
+          <td class="px-4 py-3 text-foreground-muted">{p.sustancias?.toLowerCase() ?? '—'}</td>
+          <td class="px-4 py-3 font-data whitespace-nowrap text-foreground">{dosisTexto(p)}</td>
+          <td class="px-4 py-3 font-data whitespace-nowrap text-foreground">{plazoTexto(p)}</td>
+          <td class="px-4 py-3 font-data text-foreground">{p.maxAplicaciones ?? '—'}</td>
+          <td class="px-4 py-3 text-xs text-foreground-muted">{p.titular ?? '—'}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<p class="mt-3 text-xs text-foreground-muted">
+  «—» significa que el registro no fija ese valor para este uso. La dosis es la del uso
+  autorizado en este cultivo contra esta plaga, no la genérica del producto.
+</p>

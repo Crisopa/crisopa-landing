@@ -1,0 +1,158 @@
+---
+/**
+ * Página de un par cultivo × plaga: el listado de productos autorizados.
+ *
+ * Es la pieza que capta el tráfico frío del cluster `fito_plaga`. Quien llega
+ * aquí no busca Crisopa, busca una tabla; el producto se presenta al final,
+ * cuando ya se le ha dado lo que venía a buscar.
+ */
+import Layout from '../../../layouts/Layout.astro'
+import Header from '../../../components/Header.astro'
+import Footer from '../../../components/Footer.astro'
+import TablaProductos from '../../../components/TablaProductos.astro'
+import CTAPlaga from '../../../components/CTAPlaga.astro'
+import Migas from '../../../components/Migas.astro'
+import { PARES, ACTUALIZADO_TEXTO, plagaPorSlug, type Par } from '../../../lib/plagas'
+import { breadcrumbSchema } from '../../../lib/schema'
+
+export function getStaticPaths() {
+  return PARES.map((par) => ({
+    params: { plaga: par.plagaSlug, cultivo: par.cultivoSlug },
+    props: { par },
+  }))
+}
+
+interface Props {
+  par: Par
+}
+
+const { par } = Astro.props
+const grupo = plagaPorSlug(par.plagaSlug)!
+const otrosCultivos = grupo.pares.filter((p) => p.cultivoSlug !== par.cultivoSlug)
+
+const total = par.productos.length
+const ecologicos = par.productos.filter((p) => p.eco).length
+const conPlazo = par.productos.filter((p) => p.plazo !== null)
+const plazoMin = conPlazo.length ? Math.min(...conPlazo.map((p) => p.plazo!)) : null
+
+// Sustancias activas distintas: es el dato que de verdad usa un técnico para
+// alternar modos de acción y no generar resistencias.
+const sustancias = [...new Set(par.productos.flatMap((p) => (p.sustancias ?? '').split(' + ')).filter(Boolean))]
+
+const titulo = `${total} productos autorizados para ${par.plaga.toLowerCase()} en ${par.cultivo.toLowerCase()} | Crisopa`
+const descripcion = `Listado completo y actualizado de los ${total} fitosanitarios autorizados por el MAPA contra ${par.plaga.toLowerCase()} en ${par.cultivo.toLowerCase()}, con dosis, plazo de seguridad y sustancia activa. Datos a ${ACTUALIZADO_TEXTO}.`
+
+const ruta = `/plagas/${par.plagaSlug}/${par.cultivoSlug}`
+const migas = [
+  { nombre: 'Plagas', ruta: '/plagas' },
+  { nombre: par.plaga, ruta: `/plagas/${par.plagaSlug}` },
+  { nombre: par.cultivo, ruta },
+]
+---
+
+<Layout title={titulo} description={descripcion} schema={[breadcrumbSchema(migas)]}>
+  <Header />
+
+  <main>
+    <article class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-28 pb-16 sm:pt-36">
+      <Migas items={migas} />
+
+      <header class="mt-6">
+        <h1 class="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl [text-wrap:balance]">
+          Productos autorizados para {par.plaga.toLowerCase()} en {par.cultivo.toLowerCase()}
+        </h1>
+
+        {par.cientifico && (
+          <p class="mt-3 text-lg italic text-foreground-muted">{par.cientifico}</p>
+        )}
+
+        <p class="mt-6 text-lg leading-relaxed text-foreground">
+          El registro del Ministerio de Agricultura recoge <strong>{total} productos
+          fitosanitarios</strong> con autorización vigente contra {par.plaga.toLowerCase()} en
+          {' '}{par.cultivo.toLowerCase()}, repartidos en <strong>{sustancias.length} sustancias
+          activas</strong> distintas. Abajo tienes todos, con su dosis registrada, el plazo de
+          seguridad y el número máximo de aplicaciones.
+        </p>
+      </header>
+
+      <!-- Cifras de un vistazo -->
+      <dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {[
+          { valor: String(total), etiqueta: 'productos autorizados' },
+          { valor: String(sustancias.length), etiqueta: 'sustancias activas' },
+          { valor: String(ecologicos), etiqueta: 'aptos en ecológico' },
+          { valor: plazoMin === null ? '—' : plazoMin === 0 ? 'Sin plazo' : `${plazoMin} d`, etiqueta: 'plazo mínimo' },
+        ].map((dato) => (
+          <div class="rounded-2xl border border-gray-200/80 bg-surface p-5">
+            <dt class="font-data text-3xl font-bold text-primary-700">{dato.valor}</dt>
+            <dd class="mt-1 text-sm text-foreground-muted">{dato.etiqueta}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <!-- Aviso: la fuente oficial manda. No es letra pequeña defensiva, es que
+           un asesor necesita saber a qué fecha corresponde lo que está leyendo. -->
+      <p class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-relaxed text-amber-900">
+        <strong>Datos del Registro de Productos Fitosanitarios del MAPA, actualizados a
+        {' '}{ACTUALIZADO_TEXTO}.</strong> Las autorizaciones cambian: antes de aplicar, comprueba
+        la etiqueta del envase y la ficha vigente en el registro oficial. Esta página es
+        informativa y no sustituye al asesoramiento de un técnico ni a la etiqueta del producto.
+      </p>
+
+      <h2 class="mt-14 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        Los {total} productos, con dosis y plazo de seguridad
+      </h2>
+
+      <TablaProductos productos={par.productos} />
+
+      <!-- Sustancias activas: contenido propio que ningún competidor da, y que
+           responde a la pregunta real del técnico (con qué alternar). -->
+      <section class="mt-14">
+        <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Sustancias activas disponibles
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-foreground">
+          Alternar sustancias con distinto modo de acción es lo que evita que la población se
+          haga resistente. Estas son las {sustancias.length} que el registro autoriza para este
+          uso:
+        </p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {sustancias.sort().map((s) => (
+            <li class="rounded-full border border-primary-200/70 bg-primary-50 px-3.5 py-1.5 text-sm font-medium text-primary-800">
+              {s.toLowerCase()}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <CTAPlaga plaga={par.plaga} cultivo={par.cultivo} total={total} />
+
+      <!-- Enlaces internos: reparten autoridad y dan al rastreador camino entre
+           las páginas del corpus, que si no quedarían aisladas. -->
+      {otrosCultivos.length > 0 && (
+        <section class="mt-14">
+          <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            {par.plaga} en otros cultivos
+          </h2>
+          <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+            {otrosCultivos.map((otro) => (
+              <li>
+                <a
+                  href={`/plagas/${otro.plagaSlug}/${otro.cultivoSlug}`}
+                  class="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-surface px-5 py-4 transition-colors hover:border-primary-300 hover:bg-primary-50/50"
+                >
+                  <span class="font-medium text-foreground">{otro.cultivo}</span>
+                  <span class="font-data text-sm text-foreground-muted">
+                    {otro.productos.length} productos
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </article>
+  </main>
+
+  <Footer />
+</Layout>
