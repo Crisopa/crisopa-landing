@@ -1,0 +1,32 @@
+---
+/**
+ * Migas de pan. El marcado equivalente en JSON-LD lo emite la página
+ * (`breadcrumbSchema`), porque Google exige que lo estructurado se corresponda
+ * con algo visible.
+ */
+interface Props {
+  items: { nombre: string; ruta: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<nav aria-label="Migas de pan" class="text-sm">
+  <ol class="flex flex-wrap items-center gap-1.5 text-foreground-muted">
+    <li>
+      <a href="/" class="transition-colors hover:text-primary-700">Inicio</a>
+    </li>
+    {items.map((item, i) => (
+      <>
+        <li aria-hidden="true" class="select-none text-gray-300">/</li>
+        <li>
+          {i === items.length - 1 ? (
+            <span aria-current="page" class="text-foreground">{item.nombre}</span>
+          ) : (
+            <a href={item.ruta} class="transition-colors hover:text-primary-700">{item.nombre}</a>
+          )}
+        </li>
+      </>
+    ))}
+  </ol>
+</nav>

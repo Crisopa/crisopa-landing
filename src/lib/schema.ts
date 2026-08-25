@@ -88,6 +88,23 @@ export const softwareApplicationSchema = {
 }
 
 /**
+ * Migas de pan. Es el marcado que más rinde en estas páginas: Google sustituye
+ * la URL del resultado por la ruta legible, y en una jerarquía profunda como
+ * /plagas/repilo-del-olivo/olivo-de-almazara eso mejora el CTR.
+ */
+export function breadcrumbSchema(items: { nombre: string; ruta: string }[]) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.nombre,
+      item: `${SITIO}${item.ruta}`,
+    })),
+  }
+}
+
+/**
  * Construye un `FAQPage` a partir del mismo array que pinta el acordeón, para
  * que el marcado y lo que se ve no puedan desincronizarse.
  */
