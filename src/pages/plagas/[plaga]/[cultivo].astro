@@ -14,7 +14,9 @@ import CTAPlaga from '../../../components/CTAPlaga.astro'
 import Migas from '../../../components/Migas.astro'
 import FaqFicha from '../../../components/FaqFicha.astro'
 import Prosa from '../../../components/Prosa.astro'
+import ContrasteDestino from '../../../components/ContrasteDestino.astro'
 import { PARES, ACTUALIZADO_TEXTO, plagaPorSlug, nombrePlaga, type Par } from '../../../lib/plagas'
+import { contraste } from '../../../lib/destinos'
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema'
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 
@@ -53,6 +55,11 @@ const sustancias = [...new Set(par.productos.flatMap((p) => (p.sustancias ?? '')
 // El registro acumula sinónimos en el mismo campo («Algodón del olivo,
 // tramilla»), y encadenarlos da títulos que no dice nadie. Ver `lib/nombres.ts`.
 const nombre = nombrePlaga(par.plaga, par.cientifico)
+
+// El MAPA no autoriza «olivo», autoriza «olivo de verdeo» y «olivo de almazara»
+// por separado. Contrastarlos es lo único que distingue estas páginas de su
+// gemela, y de paso es el dato que no publica nadie. Ver `lib/destinos.ts`.
+const destinos = contraste(par, PARES)
 
 const titulo = `${total} productos autorizados para ${nombre.principal.toLowerCase()} en ${par.cultivo.toLowerCase()} | Crisopa`
 const descripcion = `Listado completo y actualizado de los ${total} fitosanitarios autorizados por el MAPA contra ${nombre.principal.toLowerCase()} en ${par.cultivo.toLowerCase()}, con dosis, plazo de seguridad y sustancia activa. Datos a ${ACTUALIZADO_TEXTO}.`
@@ -143,6 +150,15 @@ if (ficha) {
       </h2>
 
       <TablaProductos productos={par.productos} />
+
+      {destinos && (
+        <ContrasteDestino
+          contraste={destinos}
+          plaga={nombre.principal}
+          cultivo={par.cultivo}
+          plagaSlug={par.plagaSlug}
+        />
+      )}
 
       <!-- Sustancias activas: contenido propio que ningún competidor da, y que
            responde a la pregunta real del técnico (con qué alternar). -->

@@ -59,6 +59,11 @@ Lo que SÍ es tuyo, porque cambia de un cultivo a otro:
 6. **No uses encabezados** del tipo «Qué es», «Ciclo», «Síntomas»,
    «Descripción» o «Biología»: son las secciones que no te tocan.
 7. **El nombre científico va en cursiva**: `*Tuta absoluta*`.
+8. **No compares destinos del mismo cultivo.** Si el cultivo es olivo de verdeo,
+   de almazara, vid de mesa o de vinificación, la página ya lleva una sección
+   propia que contrasta con el otro destino producto a producto, sacada del
+   registro. Lo tuyo es el manejo en ESTE destino; repetirlo con adjetivos y sin
+   cifras solo resta.
 
 ## Cómo se escribe
 

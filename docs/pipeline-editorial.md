@@ -425,11 +425,41 @@ Los avisos de redacción fueron menores y de margen: 902 palabras contra un tope
 de 900, primeros párrafos de 56 contra un máximo de 55. Merece la pena mirar la
 primera tanda de verdad antes de tocar esos números.
 
-## Abierto
+## Los destinos de un mismo cultivo
 
-- Los 17 pares con tablas idénticas siguen siendo duplicados: la ficha no lo
-  arregla porque tendrán también composiciones idénticas. Fusión pendiente
-  aparte, con coste de 17 redirecciones 301.
+Aquí había apuntado que 17 pares tenían tablas idénticas y que tocaba fusionarlos
+con sus 301. Era falso, y de una forma que habría hecho daño: los pares gemelos
+son 8, no 17, y **la mitad no son iguales**. Contra repilo, CABRIO WG tiene 28
+días de plazo en olivo de verdeo y 105 en almazara. Fusionar habría obligado a
+elegir un número y a mentirle a la mitad de quien lo lee.
+
+El MAPA no autoriza «olivo»: autoriza «olivo de verdeo» y «olivo de almazara»
+como usos distintos, igual que parte la vid en mesa y vinificación. Así que la
+solución no es fusionar sino lo contrario, **contrastar**: cada una de esas 22
+páginas cuenta qué cambia respecto a su gemela.
+
+- Contra mildiu, 18 productos autorizados en vid de vinificación no lo están en
+  vid de mesa, y 16 más cambian de dosis o plazo.
+- Contra repilo, tres productos cambian de plazo de seguridad.
+- Contra glifodes, tuberculosis y algodón del olivo no cambia nada, y decirlo
+  también responde a quien lo pregunta.
+
+Eso resuelve el duplicado dando algo, en vez de quitando: las páginas dejan de
+ser calcadas porque cada una lleva una sección que la otra no puede tener, y de
+paso publican un dato que no está en ningún otro sitio. Cero redirecciones y
+cero URLs indexadas tiradas a la basura.
+
+Vive en `lib/destinos.ts`, sale entero del volcado y **no lo escribe un modelo**:
+es la misma regla de siempre —los datos los pone el código, la prosa el LLM—
+aplicada a una sección que es toda datos.
+
+La lista de familias (`FAMILIAS`) está escrita a mano y cerrada a propósito.
+Emparejar por parecido juntaría limonero con naranjo, que comparten casi todos
+los productos pero son dos especies, no dos destinos de una. Ese duplicado lo
+tiene que resolver la prosa editorial, que sí difiere porque la fenología
+difiere.
+
+## Abierto
 - La función semanal (`feat/corpus-plagas-semanal` en `crisopa-functions`) sigue
   sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN`. La lista
   de pares ya no la bloquea: está en `src/data/paginas-prioritarias.csv`.

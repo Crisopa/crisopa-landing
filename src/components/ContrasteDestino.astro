@@ -1,0 +1,194 @@
+---
+/**
+ * Qué cambia entre los dos destinos de un mismo cultivo.
+ *
+ * Esta sección existe por dos motivos que apuntan al mismo sitio. El de dentro:
+ * quien tiene olivo de verdeo y de almazara —o vid de las dos clases, que es lo
+ * normal— necesita saber si puede aplicar lo mismo en las dos parcelas, y eso
+ * no lo publica nadie. El de fuera: sin ella, las 22 páginas de olivo y vid son
+ * casi calcadas dos a dos y el buscador se queda con una sola.
+ *
+ * Todo sale del volcado del MAPA. Ni una cifra la escribe un modelo.
+ */
+import { dosisTexto, plazoTexto, type Producto } from '../lib/plagas'
+import { sinDiferencias, type Campo, type Contraste } from '../lib/destinos'
+
+interface Props {
+  contraste: Contraste<Producto>
+  plaga: string
+  cultivo: string
+  plagaSlug: string
+}
+
+const { contraste: c, plaga, cultivo, plagaSlug } = Astro.props
+
+const aqui = cultivo.toLowerCase()
+const alla = c.otro.cultivo.toLowerCase()
+const rutaOtro = `/plagas/${plagaSlug}/${c.otro.cultivoSlug}`
+
+const ETIQUETA: Record<Campo, string> = {
+  dosis: 'Dosis',
+  plazo: 'Plazo de seguridad',
+  aplicaciones: 'Aplicaciones máximas',
+  intervalo: 'Intervalo entre aplicaciones',
+}
+
+function valor(p: Producto, campo: Campo): string {
+  if (campo === 'dosis') return dosisTexto(p)
+  if (campo === 'plazo') return plazoTexto(p)
+  if (campo === 'aplicaciones') return p.maxAplicaciones === null ? '—' : String(p.maxAplicaciones)
+  return p.intervalo === null ? '—' : `${p.intervalo} días`
+}
+
+const igual = sinDiferencias(c)
+
+/**
+ * El resumen se arma aquí y no encadenando condicionales en el marcado: allí
+ * cada rama vacía deja su hueco y la frase acaba con un espacio antes del
+ * punto. Aquí además se puede afinar el plural y decir de qué lado falta cada
+ * producto, que es lo que se quiere saber.
+ */
+function plural(n: number, singular: string, plural: string): string {
+  return n === 1 ? `${n} ${singular}` : `${n} ${plural}`
+}
+
+const piezas: string[] = []
+if (c.cambios.length > 0) {
+  piezas.push(plural(c.cambios.length, 'producto cambia', 'productos cambian') + ' de dosis o plazo')
+}
+if (c.soloAlla.length > 0 && c.soloAqui.length > 0) {
+  piezas.push(
+    `${c.soloAlla.length + c.soloAqui.length} solo valen para uno de los dos destinos`
+  )
+} else if (c.soloAlla.length > 0) {
+  piezas.push(plural(c.soloAlla.length, 'producto está', 'productos están') + ` autorizado${c.soloAlla.length === 1 ? '' : 's'} en ${alla} y no aquí`)
+} else if (c.soloAqui.length > 0) {
+  piezas.push(plural(c.soloAqui.length, 'producto está', 'productos están') + ` autorizado${c.soloAqui.length === 1 ? '' : 's'} solo en ${aqui}`)
+}
+const resumen = piezas.join(', y ')
+---
+
+<section class="mt-14">
+  <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+    ¿Sirve lo mismo en {alla}?
+  </h2>
+
+  {/* Primer párrafo autosuficiente: responde con cifras sin que haga falta
+      leer nada más arriba, que es lo que necesita quien nos cita. */}
+  {igual ? (
+    <p class="mt-4 text-lg leading-relaxed text-foreground">
+      Sí. El registro autoriza contra {plaga.toLowerCase()} exactamente los mismos productos en
+      {' '}{aqui} y en {alla}, con idénticas dosis, plazos de seguridad y número máximo de
+      aplicaciones. Esta misma tabla vale para las dos parcelas.
+    </p>
+  ) : (
+    <p class="mt-4 text-lg leading-relaxed text-foreground">
+      No del todo. Aunque el cultivo sea el mismo, el registro trata cada destino como un uso
+      aparte: contra {plaga.toLowerCase()}, <strong>{resumen}</strong>. Trasladar a {alla} lo que
+      se aplica en {aqui} sin comprobarlo puede dejar la cosecha fuera de norma.
+    </p>
+  )}
+
+  {/* El porqué solo cuando hay algo que explicar: si no cambia nada, contar que
+      la norma los separa sobra y contradice a la frase de arriba. */}
+  {!igual && <p class="mt-4 text-base leading-relaxed text-foreground-muted">{c.motivo}</p>}
+
+  {/* Lo que aquí no se puede usar. Va primero porque es el error caro: dar por
+      hecho que un producto de la otra parcela también vale en esta. */}
+  {c.soloAlla.length > 0 && (
+    <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
+      <h3 class="text-base font-semibold text-amber-900">
+        {c.soloAlla.length} producto{c.soloAlla.length === 1 ? '' : 's'} autorizado{c.soloAlla.length === 1 ? '' : 's'}
+        {' '}en {alla} y no en {aqui}
+      </h3>
+      <p class="mt-1 text-sm text-amber-900/80">
+        No aparecen en la tabla de arriba porque no tienen autorización para este destino.
+      </p>
+      <ul class="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-sm text-amber-900">
+        {c.soloAlla.map((p, i) => (
+          <li>
+            {p.nombre}{i < c.soloAlla.length - 1 ? ',' : ''}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* Lo que sí se puede usar aquí y allí no: ventaja de esta parcela. */}
+  {c.soloAqui.length > 0 && (
+    <div class="mt-4 rounded-2xl border border-gray-200/80 bg-surface px-5 py-4">
+      <h3 class="text-base font-semibold text-foreground">
+        {c.soloAqui.length} solo autorizado{c.soloAqui.length === 1 ? '' : 's'} en {aqui}
+      </h3>
+      <p class="mt-1 text-sm text-foreground-muted">
+        Están en la tabla de arriba, pero no los traslades a {alla}.
+      </p>
+      <ul class="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-sm text-foreground">
+        {c.soloAqui.map((p, i) => (
+          <li>
+            {p.nombre}{i < c.soloAqui.length - 1 ? ',' : ''}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* Mismo producto, distinto número. Es el caso que más engaña porque el
+      envase es idéntico: solo cambia la ficha del uso. */}
+  {c.cambios.length > 0 && (
+    <div class="mt-8">
+      <h3 class="text-base font-semibold text-foreground">
+        Mismo producto, distinto dato según el destino
+      </h3>
+      <div class="mt-3 overflow-x-auto rounded-2xl border border-gray-200/80">
+        <table class="w-full min-w-[38rem] border-collapse text-left text-sm">
+          <caption class="sr-only">
+            Productos cuya dosis, plazo de seguridad, número de aplicaciones o intervalo cambia
+            entre {aqui} y {alla}.
+          </caption>
+          <thead class="bg-gray-50 text-xs uppercase tracking-wider text-foreground-muted">
+            <tr>
+              <th scope="col" class="px-4 py-3 font-semibold">Producto</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Dato</th>
+              <th scope="col" class="px-4 py-3 font-semibold">{cultivo}</th>
+              <th scope="col" class="px-4 py-3 font-semibold">{c.otro.cultivo}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {c.cambios.flatMap((cambio) =>
+              cambio.campos.map((campo, i) => (
+                <tr class="border-t border-gray-200/70 align-top">
+                  <td class="px-4 py-3">
+                    {i === 0 && (
+                      <>
+                        <span class="font-medium text-foreground">{cambio.aqui.nombre}</span>
+                        <span class="mt-0.5 block font-data text-xs text-foreground-muted">
+                          nº {cambio.aqui.registro}
+                        </span>
+                      </>
+                    )}
+                  </td>
+                  <td class="px-4 py-3 text-foreground-muted">{ETIQUETA[campo]}</td>
+                  <td class="px-4 py-3 font-data whitespace-nowrap font-semibold text-primary-800">
+                    {valor(cambio.aqui, campo)}
+                  </td>
+                  <td class="px-4 py-3 font-data whitespace-nowrap text-foreground-muted">
+                    {valor(cambio.alla, campo)}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )}
+
+  <p class="mt-4 text-sm text-foreground-muted">
+    Consulta también el <a
+      href={rutaOtro}
+      class="font-medium text-primary-700 underline underline-offset-2 hover:text-primary-800"
+      >listado completo para {plaga.toLowerCase()} en {alla}</a
+    >.
+  </p>
+</section>
