@@ -20,7 +20,8 @@ Lo que falta es la capa editorial. Lo que **no** falta es nada de datos.
 | **Composición** | La página que junta las dos | En cada build | Astro |
 
 La propiedad que importa: **el LLM no toca nunca los datos**. Una alucinación
-puede estropear la prosa, jamás una dosis ni un plazo de seguridad.
+puede estropear la prosa, jamás una dosis ni un plazo de seguridad. Quien la
+sostiene no es la separación de ficheros sino el validador; ver más abajo.
 
 Efecto lateral útil: el raíl automático escribe `plagas.json` y el editorial
 escribe `src/content/`. Nunca tocan el mismo fichero, así que el bot semanal y
@@ -37,11 +38,81 @@ tratamiento. Si alguien detecta un fallo, se corrige y ya.
 
 Lo que sustituye a la revisión:
 
+- **Un validador en código** que corre sobre cada ficha antes de guardarla. Es
+  el sustituto de verdad, y tiene sección propia más abajo.
 - **Radio de daño acotado**: una ficha mala afecta a sus páginas y a ninguna más.
 - **Despliegue por tandas**, mirando Search Console entre una y otra.
 - **Canal de corrección**: enlace visible en cada página, y arreglar debe ser
   editar la ficha y hacer push. Si la política es publicar y corregir, la mitad
   de corregir tiene que existir de verdad.
+
+El validador no reabre la puerta que se acaba de cerrar. Lo que se rechazó es
+leer 94 páginas; lo que esto pide es mirar la lista de las que no pasaron, que
+serán unas pocas. Un revisor que lee cuatro fichas marcadas sí lee.
+
+## El validador
+
+Un módulo sin LLM que recibe el markdown recién generado y devuelve una lista de
+hallazgos con severidad. Corre entre redactar y guardar, y su coste por página es
+cero: es código.
+
+### La regla dura: la prosa no habla de cifras
+
+La propiedad que sostiene todo el diseño — «el LLM no toca nunca los datos» — hoy
+descansa solo en que el editorial escribe en `src/content/` y el raíl automático
+en `plagas.json`. Ficheros distintos, sí, pero nada impide que la prosa diga
+«aplica 0,5 l/ha y respeta 14 días de plazo». El fichero es otro; el dato
+inventado llega igual a la página, y encima con la autoridad de ir en el texto.
+
+Separar ficheros no es la garantía. Esta sí:
+
+> **Bloqueante.** La prosa no puede contener una cifra con unidad de dosis, un
+> plazo en días, ni un nombre comercial de producto. Todo eso lo pinta Astro
+> desde la tabla.
+
+Es comprobable con un puñado de expresiones regulares y convierte una intención
+en una propiedad verificada. Si el modelo quiere decir que hay margen entre
+tratamiento y recolección, lo dice en palabras y enlaza a la tabla.
+
+### Qué comprueba el código y qué se le pide al prompt
+
+La distinción importa por una razón práctica: cambiar una regla de la primera
+columna exige tocar el repositorio, y cambiar una de la segunda es editar un
+texto. Conviene saber de antemano cuál es cuál.
+
+| Regla | Dónde vive | Severidad |
+|---|---|---|
+| Sin dosis, plazos ni nombres comerciales en la prosa | Código | Bloqueante |
+| Toda URL emitida está en la lista de enlazables | Código | Bloqueante |
+| La ficha de par enlaza a su ficha de plaga | Código | Bloqueante |
+| Las preguntas del `FAQPage` son las del texto visible | Código | Bloqueante |
+| Sin H4, jerarquía de encabezados sin saltos | Código | Bloqueante |
+| El primer párrafo de cada H2 tiene 40-55 palabras | Código | Aviso |
+| Ninguna frase pasa de 30 palabras | Código | Aviso |
+| La ficha de par no repite la sección de biología | Código | Aviso |
+| Apertura distinta de las prohibidas | Código | Aviso |
+| Longitud dentro del rango de su tipo de ficha | Código | Aviso |
+| Nombre científico en cursiva, común en redonda | Código | Aviso |
+| Familias por modo de acción, no por marca | Prompt | — |
+| Registro de asesor, no de folleto | Prompt | — |
+| Solo materias activas que estén en el briefing | Prompt | — |
+
+Ante la duda entre bloqueante y aviso, es aviso. Una rúbrica que bloquea por
+todo se ignora entera al tercer uso.
+
+### Qué pasa con un bloqueante
+
+Un reintento con los hallazgos añadidos al briefing. Si vuelve a fallar, la ficha
+**no se guarda** y va al informe del lote. No se reintenta en bucle: cada vuelta
+cuesta dinero y el tercer intento no suele arreglar lo que fallaron los dos
+primeros.
+
+### Auditoría de lote
+
+Al terminar las 94, el informe agregado de hallazgos. Lo valioso no son los
+fallos sueltos sino los repetidos: **lo que falla en más de un tercio de las
+fichas no es un error de redacción, es una regla que falta en el prompt**. Ese es
+el bucle para iterar el prompt sin leerse el corpus entero.
 
 ## El eje del contenido: familias y modos de acción
 
@@ -115,19 +186,84 @@ seguridad frente al momento de recolección.
 Las secciones 1-4 salen del conocimiento del modelo. Las 5 y 6 van ancladas al
 briefing, para que hablen de lo que de verdad hay en la tabla.
 
+## Enlazado: lista cerrada
+
+Las 95 URLs del corpus se conocen antes de generar nada, así que el briefing
+lleva la lista de destinos válidos y el validador comprueba que toda URL emitida
+esté en ella. Cero enlaces inventados, por construcción.
+
+La regla que hay detrás: **inventarse una URL que parece correcta es peor que no
+enlazar**, porque llega a producción con aspecto de estar bien y solo se descubre
+cuando alguien la pincha.
+
+Destinos, por prioridad:
+
+1. **La ficha de plaga**, desde cada uno de sus pares. Obligatorio: es lo que
+   sostiene la regla de no repetir la biología.
+2. **Los pares hermanos** — la misma plaga en otros cultivos, cuando la
+   comparación aporta.
+3. **Otras plagas del mismo cultivo**, que es como piensa quien tiene la finca
+   delante.
+
+Anclas de dos a cinco palabras que describen el destino, nunca «aquí» ni «más
+información». Y repartidas por el texto: cuatro enlaces en la entradilla y
+ninguno después no es enlazado interno, es una salida temprana.
+
+## Que te puedan citar
+
+Un buscador enseña un enlace; un modelo resume y cita. Lo segundo solo pasa si el
+texto tiene trozos autocontenidos, y este corpus es exactamente el tipo de
+contenido que se consulta preguntando.
+
+- **El primer párrafo de cada H2 responde a lo que pregunta ese H2**, en 40-55
+  palabras, sin pronombres que apunten fuera («esto», «como decíamos») y con
+  sujeto explícito. La prueba: copiar solo ese párrafo y leerlo en frío.
+- **Bloque de FAQ** al cierre, de tres a seis preguntas reales — las que alguien
+  escribiría en un buscador — con respuestas de dos a cuatro frases. No variantes
+  de la keyword para rellenar, y sin repetir literalmente un H2.
+- **`FAQPage` en JSON-LD** generado del mismo array que pinta el acordeón visible.
+  Si divergen, el marcado miente.
+
+Efecto lateral que interesa aquí más que el GEO: obligar a que cada H2 se sostenga
+solo es la mejor defensa contra las 68 fichas de par casi idénticas.
+
+`src/lib/schema.ts` ya tiene `faqSchema()` y la home lo usa con `src/lib/faqs.ts`.
+Reutilizarlo pide un cambio pequeño: **el `@id` está fijado a `${SITIO}/#faq`**,
+que en 68 páginas serían 68 nodos con el mismo identificador. Hay que
+parametrizarlo con la ruta de la página.
+
 ## El flujo
 
 ```
-plagas.json ──► briefing ──► claude -p ──► src/content/ ──► build
-   (ya está)     (código)      (LLM)         (markdown)      (Astro)
+plagas.json ──► briefing ──► esquema ──► prosa ──► validador ──► src/content/ ──► build
+   (ya está)     (código)    (sonnet)   (opus)      (código)      (markdown)     (Astro)
+                                 │                      │
+                            solapamiento           informe del lote
 ```
 
 1. **Extraer** — `DISTINCT` de materias activas, cuántos productos de cada una,
    cuáles son eco, rango de plazos de seguridad.
-2. **Briefing** — ese listado + nombre común y científico + cultivos con página.
-3. **Redactar** — una llamada por unidad.
-4. **Guardar** — `src/content/plagas/<slug>.md`.
-5. **Build** — Astro compone prosa + tabla.
+2. **Briefing** — ese listado + nombre común y científico + cultivos con página +
+   la lista cerrada de URLs enlazables.
+3. **Esquema** — solo los 68 pares. Devuelve H2 y ángulo, nada de prosa.
+4. **Redactar** — una llamada por unidad, con el esquema ya fijado.
+5. **Validar** — sin LLM. Bloqueante: un reintento y fuera. Aviso: se anota.
+6. **Guardar** — `src/content/plagas/<slug>.md`.
+7. **Build** — Astro compone prosa + tabla.
+
+### Por qué el esquema es un paso aparte
+
+Porque **un esquema malo cuesta dos minutos de corregir y una ficha de 900
+palabras mal enfocada hay que tirarla**. Los 68 esquemas salen baratos, caben
+todos juntos en una pantalla y ahí se ve de un vistazo qué hermanas se estaban
+solapando — antes de pagar la prosa, no después de leerla.
+
+Es además lo que resuelve el reparto de modelos: **sonnet para los esquemas, opus
+para la prosa**. La pregunta no era opus o sonnet, era en qué paso cada uno.
+
+Los pasos 3 y 5 son los dos añadidos. El 5 no cuesta llamadas y el 3 cuesta 68
+baratas; a cambio, entre los dos cubren los dos riesgos reales de generar 94
+fichas sin que nadie las lea: que digan algo falso y que digan todas lo mismo.
 
 ## Dónde vive: en la landing, en `scripts/`
 
@@ -140,7 +276,10 @@ Junto a `volcar-plagas.mjs`. Razones:
 3. Se ejecuta a demanda, no en horario. Sin scheduler ni Secret Manager.
 4. El prompt es contenido, y el contenido va con el sitio.
 
-**Repo nuevo, no**: son ~200 líneas cuyo único consumidor es la landing.
+**Repo nuevo, no**: son unos cientos de líneas cuyo único consumidor es la
+landing. El validador es la mitad de ellas, y va en `src/lib/` en vez de en
+`scripts/`, porque comprobar el markdown es algo que la propia página querrá
+hacer en el build.
 
 En `crisopa-functions` se queda solo lo que necesita calendario: refrescar
 `plagas.json` los domingos y avisar de qué plagas tienen materias activas nuevas.
@@ -151,8 +290,11 @@ interesa.
 
 ```bash
 claude -p --system-prompt "$ROL" --disallowedTools "Read Write Edit Bash" \
-        --model opus < briefing.md > src/content/plagas/repilo-del-olivo.md
+        --model opus < briefing.md > borrador.md
 ```
+
+La salida va a un temporal, no directamente a `src/content/`: quien decide si esa
+ficha se guarda es el validador.
 
 - `--system-prompt` (no `--append-`) sustituye el prompt de Claude Code entero:
   deja de comportarse como agente de código y actúa como redactor.
@@ -160,13 +302,25 @@ claude -p --system-prompt "$ROL" --disallowedTools "Read Write Edit Bash" \
 - **`--bare` no**, aunque lo parezca: fuerza `ANTHROPIC_API_KEY`, justo lo que se
   quiere evitar usando la suscripción.
 - Con 94 llamadas secuenciales tarda; lanzar 3 o 4 en paralelo.
+- La pasada de esquemas es la misma invocación con `--model sonnet` y otro rol.
 
 ## Abierto
 
-- ¿Opus para las 94 unidades, o sonnet y opus solo donde haya más volumen?
 - Los 17 pares con tablas idénticas siguen siendo duplicados: la ficha no lo
   arregla porque tendrán también composiciones idénticas. Fusión pendiente
   aparte, con coste de 17 redirecciones 301.
 - La función semanal (`feat/corpus-plagas-semanal` en `crisopa-functions`) sigue
   sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN`.
 - Dar de alta `https://crisopa.app/sitemap-index.xml` en Search Console.
+
+## Procedencia
+
+El validador, el reparto entre reglas de código y reglas de prompt, el enlazado
+con lista cerrada, el bloque de GEO/AEO, el esquema previo a la prosa y la
+auditoría de lote vienen de **Content Hub**, el hub editorial de Genially
+(`lab/content_hub`). Allí resuelven el mismo problema a otra escala: pipeline de
+agentes, RAG y seis idiomas, con revisión humana obligatoria.
+
+Lo que se ha traído es solo lo que funciona sin esa maquinaria. Nada de colas,
+base de conocimiento, roles ni puerta de aprobación: aquí son 95 páginas de un
+proyecto de una persona, y la decisión de publicar sin revisar sigue en pie.
