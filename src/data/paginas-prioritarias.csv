@@ -1,0 +1,71 @@
+plaga,cultivo,productos_autorizados,volumen_kw_mes,orden_en_plaga
+"Polilla del tomate, Tuta absoluta","Tomate",39,2190,1
+"Polilla del tomate, Tuta absoluta","Berenjena",29,2190,2
+"Polilla del tomate, Tuta absoluta","Pimiento",22,2190,3
+"Gusano cabezudo, Capnodis tenebrionis","Cerezo",5,1470,1
+"Prays, polilla del olivo, Prays oleae","Olivo de almazara",63,320,1
+"Prays, polilla del olivo, Prays oleae","Olivo de verdeo",63,320,2
+"Repilo del olivo, Venturia oleaginea","Olivo de verdeo",187,210,2
+"Repilo del olivo, Venturia oleaginea","Olivo de almazara",187,210,1
+"Araña roja común, Tetranychus spp.","Tomate",57,180,1
+"Araña roja común, Tetranychus spp.","Vid de vinificación",54,180,3
+"Araña roja común, Tetranychus spp.","Vid de mesa",54,180,2
+"Araña roja común, Tetranychus spp.","Sandía",43,180,4
+"Mosca del olivo, Bactrocera oleae","Olivo de verdeo",37,170,1
+"Mosca del olivo, Bactrocera oleae","Olivo de almazara",37,170,2
+"Mildiu de la vid, Plasmopara viticola","Vid de vinificación",149,140,1
+"Mildiu de la vid, Plasmopara viticola","Vid de mesa",126,140,2
+"Polilla del racimo, Lobesia botrana","Vid de vinificación",94,90,1
+"Polilla del racimo, Lobesia botrana","Vid de mesa",92,90,2
+"Mosca de la fruta, Ceratitis capitata","Naranjo",51,90,1
+"Mosca de la fruta, Ceratitis capitata","Limonero",46,90,2
+"Mosca de la fruta, Ceratitis capitata","Melocotonero",41,90,3
+"Mosca de la fruta, Ceratitis capitata","Albaricoquero",35,90,4
+"Piojo rojo de California, Aonidiella aurantii","Limonero",15,70,2
+"Piojo rojo de California, Aonidiella aurantii","Naranjo",15,70,1
+"Minador de las hojas de cítricos, Phyllocnistis citrella","Naranjo",19,60,1
+"Minador de las hojas de cítricos, Phyllocnistis citrella","Limonero",18,60,2
+"Oídio de la vid, Erysiphe necator","Vid de vinificación",175,50,1
+"Oídio de la vid, Erysiphe necator","Vid de mesa",170,50,2
+"Psila del peral, Cacopsylla pyri","Peral",49,50,1
+"Psila del peral, Cacopsylla pyri","Manzano",33,50,2
+"Psila del peral, Cacopsylla pyri","Membrillero",28,50,3
+"Psila del peral, Cacopsylla pyri","Níspero, níspero del Japón",27,50,4
+"Podredumbre gris, Botrytis cinerea","Tomate",27,50,1
+"Podredumbre gris, Botrytis cinerea","Fresal",27,50,2
+"Podredumbre gris, Botrytis cinerea","Berenjena",19,50,3
+"Podredumbre gris, Botrytis cinerea","Pimiento",15,50,4
+"Trips, Frankliniella occidentalis","Tomate",15,40,1
+"Mosca blanca, Bemisia tabaci","Tomate",14,40,1
+"Mosca blanca, Bemisia tabaci","Berenjena",13,40,2
+"Trips, Frankliniella occidentalis","Pimiento",12,40,2
+"Mosca blanca, Bemisia tabaci","Pepino",11,40,3
+"Mosca blanca, Bemisia tabaci","Calabacín",10,40,4
+"Barrenillo del olivo, Phloeotribus scarabeoides","Olivo de verdeo",9,40,1
+"Barrenillo del olivo, Phloeotribus scarabeoides","Olivo de almazara",8,40,2
+"Trips, Frankliniella occidentalis","Berenjena",8,40,3
+"Glifodes, Margaronia unionalis","Olivo de verdeo",22,30,1
+"Glifodes, Margaronia unionalis","Olivo de almazara",21,30,2
+"Mosca del vinagre de alas manchadas, Drosophila suzukii","Fresal",18,30,1
+"Mosca del vinagre de alas manchadas, Drosophila suzukii","Cerezo",16,30,2
+"Mosca del vinagre de alas manchadas, Drosophila suzukii","Ciruelo",14,30,3
+"Mosca del vinagre de alas manchadas, Drosophila suzukii","Albaricoquero",12,30,4
+"Pulgón verde, Myzus persicae","Melocotonero",6,30,1
+"Mildiu de la patata y el tomate, Phytophthora infestans","Tomate",217,20,1
+"Mildiu de la patata y el tomate, Phytophthora infestans","Berenjena",147,20,2
+"Tuberculosis del olivo, Pseudomonas savastanoi pv. savastanoi","Olivo de verdeo",105,20,2
+"Tuberculosis del olivo, Pseudomonas savastanoi pv. savastanoi","Olivo de almazara",105,20,1
+"Carpocapsa de manzanas y peras, Cydia pomonella","Manzano",87,20,1
+"Carpocapsa de manzanas y peras, Cydia pomonella","Peral",83,20,2
+"Carpocapsa de manzanas y peras, Cydia pomonella","Membrillero",73,20,3
+"Carpocapsa de manzanas y peras, Cydia pomonella","Níspero, níspero del Japón",67,20,4
+"Cochinillas harinosas, Pseudococcidae","Naranjo",44,20,1
+"Cochinillas harinosas, Pseudococcidae","Limonero",42,20,2
+"Cochinillas harinosas, Pseudococcidae","Albaricoquero",32,20,3
+"Cochinillas harinosas, Pseudococcidae","Melocotonero",32,20,4
+"Aceituna jabonosa, antracnosis, Glomerella cingulata","Olivo de verdeo",28,20,1
+"Aceituna jabonosa, antracnosis, Glomerella cingulata","Olivo de almazara",28,20,2
+"Mosca de la cereza, Rhagoletis cerasi","Cerezo",22,20,1
+"Algodón del olivo, tramilla, Euphyllura olivina","Olivo de almazara",12,20,2
+"Algodón del olivo, tramilla, Euphyllura olivina","Olivo de verdeo",12,20,1
+"Mildiu de la patata y el tomate, Phytophthora infestans","Pimiento",8,20,3

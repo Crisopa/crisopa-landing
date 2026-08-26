@@ -1,0 +1,48 @@
+---
+/**
+ * Acordeón de preguntas de una ficha del corpus de plagas.
+ *
+ * Es más sobrio que el `FAQ.astro` de la home —que es una sección de venta con
+ * su fondo y su animación— porque aquí va dentro de un artículo y compite con
+ * la tabla de productos, que es lo que la gente vino a leer.
+ *
+ * Sobre `<details>`: lo abre el navegador sin una línea de JavaScript y el
+ * buscador ve el contenido aunque esté plegado. El acordeón de la home lleva
+ * script porque anima la altura; esto no lo necesita.
+ */
+interface Props {
+  faqs: readonly { pregunta: string; respuesta: string }[]
+  titulo?: string
+}
+
+const { faqs, titulo = 'Preguntas frecuentes' } = Astro.props
+---
+
+<section class="mt-14">
+  <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+    {titulo}
+  </h2>
+
+  <div class="mt-6 space-y-3">
+    {faqs.map((faq) => (
+      <details class="group rounded-2xl border border-gray-200/80 bg-surface transition-colors hover:border-primary-300">
+        <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-base font-semibold text-foreground marker:content-none [&::-webkit-details-marker]:hidden">
+          {faq.pregunta}
+          <svg
+            class="size-5 shrink-0 text-foreground-muted transition-transform duration-200 group-open:rotate-180"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </summary>
+        <p class="px-5 pb-5 text-base leading-relaxed text-foreground-muted">{faq.respuesta}</p>
+      </details>
+    ))}
+  </div>
+</section>

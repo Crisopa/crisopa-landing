@@ -1,7 +1,22 @@
 # Pipeline editorial del corpus de plagas
 
-Plan acordado para convertir las 95 páginas de tabla en contenido con criterio
-agronómico. Estado: **decidido, sin implementar**.
+Plan para convertir las 95 páginas de tabla en contenido con criterio agronómico.
+Estado: **implementado y probado con dos fichas**; el lote de 94 sin lanzar.
+
+```bash
+npm test                                              # el validador
+node scripts/generar-fichas.mjs --briefing <slug>     # ver el briefing, sin gastar llamada
+node scripts/generar-fichas.mjs --plaga <slug>
+node scripts/generar-fichas.mjs --par <plaga>/<cultivo>
+node scripts/generar-fichas.mjs --todo [--limite N]
+```
+
+| Pieza | Dónde |
+|---|---|
+| Validador y sus tests | `src/lib/validador.ts`, `src/lib/validador.test.ts` |
+| Orquestador | `scripts/generar-fichas.mjs` |
+| Prompts | `scripts/roles/*.md` |
+| Fichas | `src/content/{plagas,pares}/`, declaradas en `src/content.config.ts` |
 
 ## Punto de partida
 
@@ -107,14 +122,24 @@ Dos colisiones bastan para ver el problema:
   bloqueante.
 
 Una regla que prohíbe escribir «cobre» en una comparativa de familias no protege
-nada: se desactiva a la tercera ficha. Así que:
+nada: se desactiva a la tercera ficha. Así que se busca la primera palabra del
+nombre comercial, a partir de seis letras, descontando tres conjuntos:
 
-- Se comprueban **nombres de dos o más palabras** («DECIS PROTECH»), que son
-  inequívocos, y los de una palabra a partir de siete letras.
-- Con **lista de excepciones** para las que son vocabulario agronómico.
-- Y como **aviso**, no bloqueante. Que la prosa nombre una marca es un problema
-  editorial —el plan quiere familias, no marcas—, no un riesgo de dato falso.
-  El riesgo de dato falso son las cifras, y esas ya están bloqueadas arriba.
+1. **Los preparados tradicionales**, por su término inicial: caldo, cobre,
+   azufre, aceite, sulfato, oxicloruro, hidróxido, jabón, bacillus.
+2. **Toda palabra de una materia activa del briefing.** Esto no se mantiene a
+   mano: la ficha existe para nombrar materias activas y el registro admite
+   cinco de ellas como nombre comercial, así que la exclusión se deriva de los
+   propios datos. Sin esto, el piloto marcaba «bordelés» —hay un producto
+   llamado `BORDELÉS LUQSA`— en una frase que decía «caldo bordelés».
+3. **Las palabras del nombre de la plaga**, por `CYDIA` y `TUTA`.
+
+Más una lista corta de marcas que son español corriente: `ATRAPA`, `PERFIL`,
+`FLECHA`, `CORAL`.
+
+Y es **aviso**, no bloqueante. Que la prosa nombre una marca es un problema
+editorial —el plan quiere familias, no marcas—, no un riesgo de dato falso. El
+riesgo de dato falso son las cifras, y esas ya están bloqueadas arriba.
 
 ### Qué comprueba el código y qué se le pide al prompt
 
@@ -133,6 +158,7 @@ texto. Conviene saber de antemano cuál es cuál.
 | El primer párrafo de cada H2 tiene 40-55 palabras | Código | Aviso |
 | Ninguna frase pasa de 30 palabras | Código | Aviso |
 | La ficha de par no repite la sección de biología | Código | Aviso |
+| El ciclo del CULTIVO no cuenta como biología | Código | — |
 | Apertura distinta de las prohibidas | Código | Aviso |
 | Longitud dentro del rango de su tipo de ficha | Código | Aviso |
 | Nombre científico en cursiva, común en redonda | Código | Aviso |
@@ -376,16 +402,39 @@ ficha se guarda es el validador.
 - Con 94 llamadas secuenciales tarda; lanzar 3 o 4 en paralelo.
 - La pasada de esquemas es la misma invocación con `--model sonnet` y otro rol.
 
+## Lo que enseñó el piloto
+
+Dos fichas generadas de punta a punta —`repilo-del-olivo` y su par de almazara—
+sin un solo bloqueante: ni una cifra inventada, ni una URL que no existiera, y
+el enlace obligatorio a la ficha de plaga puesto sin insistir.
+
+Los dos fallos que aparecieron eran **del validador, no del texto**, y los dos
+eran la misma clase de error: reglas escritas contra una intuición en vez de
+contra los datos.
+
+1. Marcaba «bordelés» en «caldo bordelés». Arreglado excluyendo las materias
+   activas, que se derivan del briefing.
+2. Marcaba «¿Cuándo se interviene en el ciclo del olivo?» como biología
+   duplicada. El ciclo del cultivo es justo lo que la ficha de par debe contar;
+   el que sobra es el del hongo.
+
+De ahí una lección para el lote: **cuando el informe señale un patrón, la
+primera hipótesis es que sobra la regla, no que falte prosa.**
+
+Los avisos de redacción fueron menores y de margen: 902 palabras contra un tope
+de 900, primeros párrafos de 56 contra un máximo de 55. Merece la pena mirar la
+primera tanda de verdad antes de tocar esos números.
+
 ## Abierto
 
 - Los 17 pares con tablas idénticas siguen siendo duplicados: la ficha no lo
   arregla porque tendrán también composiciones idénticas. Fusión pendiente
   aparte, con coste de 17 redirecciones 301.
-- `paginas-prioritarias.csv` sigue fuera de git y fuera del repo. Es una pérdida
-  irrecuperable esperando a pasar, y bloquea la función semanal.
 - La función semanal (`feat/corpus-plagas-semanal` en `crisopa-functions`) sigue
-  sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN` y, antes
-  que eso, que la lista de pares esté en un sitio que ella pueda leer.
+  sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN`. La lista
+  de pares ya no la bloquea: está en `src/data/paginas-prioritarias.csv`.
+- La copia original del CSV sigue en `~/dev/projects/Crisopa/seo/`. Borrarla
+  cuando se confirme que el volcado lee la del repo, para no dejar dos.
 - Dar de alta `https://crisopa.app/sitemap-index.xml` en Search Console.
 
 ## Procedencia

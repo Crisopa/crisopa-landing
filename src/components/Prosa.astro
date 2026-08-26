@@ -1,0 +1,79 @@
+---
+/**
+ * Envoltorio tipográfico de la prosa editorial renderizada desde markdown.
+ *
+ * El markdown llega sin clases, así que los estilos se aplican por selector de
+ * descendiente. Tailwind 4 no trae el plugin de tipografía en este proyecto y
+ * añadirlo por seis selectores no sale a cuenta.
+ */
+---
+
+<div class="prosa mt-10">
+  <slot />
+</div>
+
+<style>
+  .prosa :global(h2) {
+    margin-top: 3.5rem;
+    font-family: var(--font-display, inherit);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
+  }
+
+  @media (min-width: 640px) {
+    .prosa :global(h2) {
+      font-size: 1.875rem;
+    }
+  }
+
+  .prosa :global(h3) {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+  }
+
+  .prosa :global(p) {
+    margin-top: 1.25rem;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-foreground);
+  }
+
+  .prosa :global(ul),
+  .prosa :global(ol) {
+    margin-top: 1.25rem;
+    padding-left: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-foreground);
+  }
+
+  .prosa :global(ul) {
+    list-style: disc;
+  }
+
+  .prosa :global(ol) {
+    list-style: decimal;
+  }
+
+  .prosa :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .prosa :global(a) {
+    color: var(--color-primary-700);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prosa :global(a:hover) {
+    color: var(--color-primary-800);
+  }
+
+  .prosa :global(strong) {
+    font-weight: 600;
+  }
+</style>

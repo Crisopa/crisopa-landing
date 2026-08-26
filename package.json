@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "node --test src/lib/*.test.ts",
+    "fichas": "node scripts/generar-fichas.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.0",

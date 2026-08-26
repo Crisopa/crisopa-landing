@@ -7,8 +7,12 @@
  * que un deploy dependa de producción es pedir que un día no despliegue.
  * El JSON generado se commitea.
  *
- * La lista de pares sale de `~/dev/projects/Crisopa/seo/paginas-prioritarias.csv`,
- * que a su vez cruza demanda de búsqueda medida contra el registro del MAPA.
+ * La lista de pares sale de `src/data/paginas-prioritarias.csv`, que cruza
+ * demanda de búsqueda medida contra el registro del MAPA. Vivía fuera de todo
+ * repositorio y se trajo aquí: era el único sitio donde constaba qué páginas
+ * existen y por qué esas, así que perder esa carpeta era perder el corpus
+ * aunque la base de datos siguiera intacta. Además, la función semanal que ha
+ * de refrescar este JSON no puede leer un fichero de un portátil.
  */
 
 import { createRequire } from 'node:module'
@@ -23,7 +27,7 @@ const { PrismaClient } = require(`${APP}/node_modules/@prisma/client`)
 require(`${APP}/node_modules/dotenv`).config({ path: `${APP}/.env` })
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const CSV = '/home/pablo/dev/projects/Crisopa/seo/paginas-prioritarias.csv'
+const CSV = resolve(RAIZ, 'src/data/paginas-prioritarias.csv')
 
 const prisma = new PrismaClient()
 
