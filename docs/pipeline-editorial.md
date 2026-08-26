@@ -11,6 +11,24 @@ nada más, sin prosa, con hermanas que se solapan hasta el 100%.
 
 Lo que falta es la capa editorial. Lo que **no** falta es nada de datos.
 
+### De dónde sale `plagas.json`
+
+`scripts/volcar-plagas.mjs`, a mano y nunca en el build: la landing se despliega
+en Vercel sin credenciales de base de datos, y hacer que un deploy dependa de
+producción es pedir que un día no despliegue. El JSON se commitea. Cruza dos
+fuentes:
+
+- **La base de datos de `crisopa-app`** (Prisma). De ahí salen productos, dosis y
+  plazos, filtrando por registro vigente y no caducado.
+- **`~/dev/projects/Crisopa/seo/paginas-prioritarias.csv`**, que decide qué 68
+  pares tienen página y con qué volumen de búsqueda.
+
+**Ese CSV no está en ningún repositorio.** Es el único sitio donde vive qué
+páginas existen y por qué esas: con la base de datos intacta y el fichero
+perdido, el corpus no se puede regenerar. Y bloquea el plan de la función
+semanal, porque un script en la nube no puede leer un fichero del portátil.
+Mudarlo a `src/data/` es de las primeras cosas que hacer.
+
 ## Arquitectura: tres capas por ciclo de vida
 
 | Capa | Qué es | Ritmo | Quién |
@@ -66,13 +84,37 @@ inventado llega igual a la página, y encima con la autoridad de ir en el texto.
 
 Separar ficheros no es la garantía. Esta sí:
 
-> **Bloqueante.** La prosa no puede contener una cifra con unidad de dosis, un
-> plazo en días, ni un nombre comercial de producto. Todo eso lo pinta Astro
-> desde la tabla.
+> **Bloqueante.** La prosa no puede contener una cifra con unidad de dosis
+> (`l/ha`, `kg/ha`, `cc/hl`…) ni un plazo en días. Eso lo pinta Astro desde la
+> tabla.
 
-Es comprobable con un puñado de expresiones regulares y convierte una intención
-en una propiedad verificada. Si el modelo quiere decir que hay margen entre
-tratamiento y recolección, lo dice en palabras y enlaza a la tabla.
+Es un regex corto, no admite discusión y convierte una intención en una
+propiedad verificada. Si el modelo quiere decir que hay margen entre tratamiento
+y recolección, lo dice en palabras y enlaza a la tabla.
+
+### Los nombres comerciales son aviso, no bloqueante
+
+Esto se midió antes de escribirlo, y por poco sale mal. El corpus tiene **743
+nombres comerciales, 256 de ellos de una sola palabra**, y entre las marcas
+registradas están `COBRE`, `CALDO BORDELES`, `CORAL`, `CORE`, `AZAR`, `BIO`,
+`ULTRA` y `FLECHA`.
+
+Dos colisiones bastan para ver el problema:
+
+- **`COBRE`** es una marca y es una de las familias que el plan pide comparar.
+- **`CYDIA` y `TUTA`** son marcas y son los géneros de *Cydia pomonella* y
+  *Tuta absoluta*. Una ficha que escriba bien el nombre científico daría
+  bloqueante.
+
+Una regla que prohíbe escribir «cobre» en una comparativa de familias no protege
+nada: se desactiva a la tercera ficha. Así que:
+
+- Se comprueban **nombres de dos o más palabras** («DECIS PROTECH»), que son
+  inequívocos, y los de una palabra a partir de siete letras.
+- Con **lista de excepciones** para las que son vocabulario agronómico.
+- Y como **aviso**, no bloqueante. Que la prosa nombre una marca es un problema
+  editorial —el plan quiere familias, no marcas—, no un riesgo de dato falso.
+  El riesgo de dato falso son las cifras, y esas ya están bloqueadas arriba.
 
 ### Qué comprueba el código y qué se le pide al prompt
 
@@ -82,11 +124,12 @@ texto. Conviene saber de antemano cuál es cuál.
 
 | Regla | Dónde vive | Severidad |
 |---|---|---|
-| Sin dosis, plazos ni nombres comerciales en la prosa | Código | Bloqueante |
+| Sin cifras de dosis ni plazos en días en la prosa | Código | Bloqueante |
 | Toda URL emitida está en la lista de enlazables | Código | Bloqueante |
 | La ficha de par enlaza a su ficha de plaga | Código | Bloqueante |
 | Las preguntas del `FAQPage` son las del texto visible | Código | Bloqueante |
 | Sin H4, jerarquía de encabezados sin saltos | Código | Bloqueante |
+| Sin nombres comerciales, salvo excepciones | Código | Aviso |
 | El primer párrafo de cada H2 tiene 40-55 palabras | Código | Aviso |
 | Ninguna frase pasa de 30 palabras | Código | Aviso |
 | La ficha de par no repite la sección de biología | Código | Aviso |
@@ -265,6 +308,35 @@ Los pasos 3 y 5 son los dos añadidos. El 5 no cuesta llamadas y el 3 cuesta 68
 baratas; a cambio, entre los dos cubren los dos riesgos reales de generar 94
 fichas sin que nadie las lea: que digan algo falso y que digan todas lo mismo.
 
+## El contrato con Astro
+
+Cuatro cosas que el plan daba por supuestas y la implementación necesita fijadas.
+Ninguna es una decisión abierta: se resuelven solas en cuanto se miran.
+
+**La colección no existe todavía.** No hay `src/content/` ni content config; hay
+que crearlos. Dos colecciones, `plagas` y `pares`, con el slug como identidad.
+
+**Las FAQ van en el frontmatter, no en el cuerpo.** Estructuradas, como array de
+`{ pregunta, respuesta }`. Es la misma razón por la que la home tiene
+`src/lib/faqs.ts` en vez de las preguntas escritas en el componente: el acordeón
+visible y el `FAQPage` salen del mismo array, y así no pueden desincronizarse.
+Si las FAQ fueran markdown suelto habría que parsearlas para emitir el JSON-LD, y
+un parser es justo el sitio donde se desincronizan.
+
+**Sin ficha, la página se renderiza igual.** La prosa es opcional en la
+plantilla: si no hay entrada en la colección, sale la página que ya está en
+producción hoy. Sin esto no hay despliegue por tandas, que es una de las tres
+cosas que sustituyen a la revisión.
+
+**Los números que faltaban**, ajustables cuando se vea la primera tanda:
+
+| Qué | Valor de partida |
+|---|---|
+| Ficha de plaga | 600-900 palabras |
+| Ficha de par | 350-600 palabras |
+| FAQ por ficha | 3-6 preguntas |
+| Aperturas prohibidas | «En el mundo de», «A la hora de», «Es importante destacar», «Cuando se trata de», y empezar repitiendo el H1 |
+
 ## Dónde vive: en la landing, en `scripts/`
 
 Junto a `volcar-plagas.mjs`. Razones:
@@ -309,8 +381,11 @@ ficha se guarda es el validador.
 - Los 17 pares con tablas idénticas siguen siendo duplicados: la ficha no lo
   arregla porque tendrán también composiciones idénticas. Fusión pendiente
   aparte, con coste de 17 redirecciones 301.
+- `paginas-prioritarias.csv` sigue fuera de git y fuera del repo. Es una pérdida
+  irrecuperable esperando a pasar, y bloquea la función semanal.
 - La función semanal (`feat/corpus-plagas-semanal` en `crisopa-functions`) sigue
-  sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN`.
+  sin mergear ni desplegar; le falta el secreto `LANDING_GITHUB_TOKEN` y, antes
+  que eso, que la lista de pares esté en un sitio que ella pueda leer.
 - Dar de alta `https://crisopa.app/sitemap-index.xml` en Search Console.
 
 ## Procedencia
