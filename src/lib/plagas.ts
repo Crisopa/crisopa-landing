@@ -37,6 +37,8 @@ export interface Par {
 export const ACTUALIZADO_MAPA: string = datos.actualizado
 export const PARES = datos.pares as Par[]
 
+export { nombrePlaga, conSinonimos, type NombrePlaga } from './nombres'
+
 /** La fecha del volcado en castellano; el ISO no se lee bien en el cuerpo. */
 export const ACTUALIZADO_TEXTO: string = new Date(`${datos.actualizado}T00:00:00Z`).toLocaleDateString(
   'es-ES',

@@ -14,7 +14,7 @@ import CTAPlaga from '../../../components/CTAPlaga.astro'
 import Migas from '../../../components/Migas.astro'
 import FaqFicha from '../../../components/FaqFicha.astro'
 import Prosa from '../../../components/Prosa.astro'
-import { PARES, ACTUALIZADO_TEXTO, plagaPorSlug, type Par } from '../../../lib/plagas'
+import { PARES, ACTUALIZADO_TEXTO, plagaPorSlug, nombrePlaga, type Par } from '../../../lib/plagas'
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema'
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 
@@ -50,13 +50,17 @@ const plazoMin = conPlazo.length ? Math.min(...conPlazo.map((p) => p.plazo!)) : 
 // alternar modos de acción y no generar resistencias.
 const sustancias = [...new Set(par.productos.flatMap((p) => (p.sustancias ?? '').split(' + ')).filter(Boolean))]
 
-const titulo = `${total} productos autorizados para ${par.plaga.toLowerCase()} en ${par.cultivo.toLowerCase()} | Crisopa`
-const descripcion = `Listado completo y actualizado de los ${total} fitosanitarios autorizados por el MAPA contra ${par.plaga.toLowerCase()} en ${par.cultivo.toLowerCase()}, con dosis, plazo de seguridad y sustancia activa. Datos a ${ACTUALIZADO_TEXTO}.`
+// El registro acumula sinónimos en el mismo campo («Algodón del olivo,
+// tramilla»), y encadenarlos da títulos que no dice nadie. Ver `lib/nombres.ts`.
+const nombre = nombrePlaga(par.plaga, par.cientifico)
+
+const titulo = `${total} productos autorizados para ${nombre.principal.toLowerCase()} en ${par.cultivo.toLowerCase()} | Crisopa`
+const descripcion = `Listado completo y actualizado de los ${total} fitosanitarios autorizados por el MAPA contra ${nombre.principal.toLowerCase()} en ${par.cultivo.toLowerCase()}, con dosis, plazo de seguridad y sustancia activa. Datos a ${ACTUALIZADO_TEXTO}.`
 
 const ruta = `/plagas/${par.plagaSlug}/${par.cultivoSlug}`
 const migas = [
   { nombre: 'Plagas', ruta: '/plagas' },
-  { nombre: par.plaga, ruta: `/plagas/${par.plagaSlug}` },
+  { nombre: nombre.principal, ruta: `/plagas/${par.plagaSlug}` },
   { nombre: par.cultivo, ruta },
 ]
 
@@ -86,11 +90,15 @@ if (ficha) {
 
       <header class="mt-6">
         <h1 class="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl [text-wrap:balance]">
-          Productos autorizados para {par.plaga.toLowerCase()} en {par.cultivo.toLowerCase()}
+          Productos autorizados para {nombre.principal.toLowerCase()} en {par.cultivo.toLowerCase()}
         </h1>
 
-        {par.cientifico && (
-          <p class="mt-3 text-lg italic text-foreground-muted">{par.cientifico}</p>
+        {(nombre.cientifico || nombre.sinonimos.length > 0) && (
+          <p class="mt-3 text-lg text-foreground-muted">
+            {nombre.cientifico && <span class="italic">{nombre.cientifico}</span>}
+            {nombre.cientifico && nombre.sinonimos.length > 0 && ' · '}
+            {nombre.sinonimos.length > 0 && `también ${nombre.sinonimos.join(', ').toLowerCase()}`}
+          </p>
         )}
 
         {ficha && (
@@ -99,7 +107,7 @@ if (ficha) {
 
         <p class="mt-6 text-lg leading-relaxed text-foreground">
           El registro del Ministerio de Agricultura recoge <strong>{total} productos
-          fitosanitarios</strong> con autorización vigente contra {par.plaga.toLowerCase()} en
+          fitosanitarios</strong> con autorización vigente contra {nombre.principal.toLowerCase()} en
           {' '}{par.cultivo.toLowerCase()}, repartidos en <strong>{sustancias.length} sustancias
           activas</strong> distintas. Abajo tienes todos, con su dosis registrada, el plazo de
           seguridad y el número máximo de aplicaciones.
@@ -166,14 +174,14 @@ if (ficha) {
 
       {ficha && <FaqFicha faqs={ficha.data.faqs} />}
 
-      <CTAPlaga plaga={par.plaga} cultivo={par.cultivo} total={total} />
+      <CTAPlaga plaga={nombre.principal} cultivo={par.cultivo} total={total} />
 
       <!-- Enlaces internos: reparten autoridad y dan al rastreador camino entre
            las páginas del corpus, que si no quedarían aisladas. -->
       {otrosCultivos.length > 0 && (
         <section class="mt-14">
           <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            {par.plaga} en otros cultivos
+            {nombre.principal} en otros cultivos
           </h2>
           <ul class="mt-6 grid gap-3 sm:grid-cols-2">
             {otrosCultivos.map((otro) => (
