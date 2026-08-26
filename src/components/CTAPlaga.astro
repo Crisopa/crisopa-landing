@@ -1,0 +1,54 @@
+---
+/**
+ * Puente entre el contenido y el producto.
+ *
+ * Va después de la tabla a propósito: quien llega aquí buscaba el listado, y
+ * ofrecerle una demo antes de dárselo es lo que hace que la gente se vaya. El
+ * enganche es el paso siguiente real —elegido el producto, hay que anotar el
+ * tratamiento— y no un reclamo genérico.
+ */
+interface Props {
+  plaga: string
+  cultivo: string
+  total: number
+}
+
+const { plaga, cultivo, total } = Astro.props
+const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
+---
+
+<section class="card-glow relative mt-16 overflow-hidden rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-surface to-accent-50/40 px-6 py-10 sm:px-10 sm:py-12">
+  <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl [text-wrap:balance]">
+    Elegido el producto, queda el papeleo
+  </h2>
+
+  <p class="mt-4 max-w-2xl text-lg leading-relaxed text-foreground">
+    De estos {total} productos elegirás uno. Después toca lo de siempre: apuntar el tratamiento
+    en el cuaderno con su dosis, su plazo de seguridad y la parcela, y que cuadre el día de la
+    inspección. Con Crisopa eso es una frase dicha a ChatGPT o Claude desde el campo —«he tratado
+    {' '}{cultivo.toLowerCase()} contra {plaga.toLowerCase()}»— y el cuaderno se rellena solo,
+    con las dosis del registro ya puestas.
+  </p>
+
+  <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+    <a
+      href={calendlyUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-press
+      class="group inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary-600/25 transition-[background-color,box-shadow] duration-300 hover:bg-primary-700 hover:shadow-xl"
+    >
+      Reservar demo
+      <svg class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
+    <a
+      href="/"
+      data-press
+      class="inline-flex items-center justify-center gap-2 rounded-2xl border border-primary-200 bg-surface px-7 py-3.5 text-base font-semibold text-primary-800 transition-colors duration-300 hover:border-primary-300 hover:bg-primary-50"
+    >
+      Ver qué es Crisopa
+    </a>
+  </div>
+</section>

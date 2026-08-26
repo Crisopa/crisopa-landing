@@ -1,0 +1,75 @@
+---
+/**
+ * Hub del corpus de plagas. Su trabajo es doble: dar al rastreador un punto de
+ * entrada del que cuelguen las 68 páginas, y capturar la búsqueda genérica de
+ * quien todavía no ha concretado cultivo.
+ */
+import Layout from '../../layouts/Layout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import Migas from '../../components/Migas.astro'
+import { plagas, PARES, ACTUALIZADO_TEXTO, millar } from '../../lib/plagas'
+import { breadcrumbSchema } from '../../lib/schema'
+
+const grupos = plagas()
+const totalProductos = PARES.reduce((n, p) => n + p.productos.length, 0)
+
+const migas = [{ nombre: 'Plagas', ruta: '/plagas' }]
+
+const titulo = 'Productos fitosanitarios autorizados por plaga y cultivo | Crisopa'
+const descripcion = `Consulta qué productos autoriza el MAPA contra cada plaga en cada cultivo, con dosis, plazo de seguridad y sustancia activa. ${grupos.length} plagas y ${PARES.length} combinaciones, actualizado a ${ACTUALIZADO_TEXTO}.`
+---
+
+<Layout title={titulo} description={descripcion} schema={[breadcrumbSchema(migas)]}>
+  <Header />
+
+  <main>
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-28 pb-16 sm:pt-36">
+      <Migas items={migas} />
+
+      <header class="mt-6">
+        <h1 class="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl [text-wrap:balance]">
+          Productos autorizados, plaga por plaga
+        </h1>
+        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-foreground">
+          El registro del Ministerio de Agricultura dice exactamente qué se puede aplicar contra
+          cada plaga en cada cultivo, y a qué dosis. Aquí lo tienes ordenado: <strong>{grupos.length}
+          plagas</strong>, <strong>{PARES.length} combinaciones con su cultivo</strong> y
+          {' '}<strong>{millar(totalProductos)} usos autorizados</strong> con dosis
+          y plazo de seguridad. Sin registro, sin publicidad y sin vender producto.
+        </p>
+        <p class="mt-4 text-sm text-foreground-muted">
+          Datos del Registro de Productos Fitosanitarios del MAPA, actualizados a {ACTUALIZADO_TEXTO}.
+        </p>
+      </header>
+
+      <ul class="mt-12 space-y-4">
+        {grupos.map((grupo) => (
+          <li class="rounded-2xl border border-gray-200/80 bg-surface p-6 transition-colors hover:border-primary-200">
+            <h2 class="font-display text-xl font-bold text-foreground">
+              <a href={`/plagas/${grupo.slug}`} class="animated-underline">{grupo.plaga}</a>
+            </h2>
+            {grupo.cientifico && (
+              <p class="mt-1 text-sm italic text-foreground-muted">{grupo.cientifico}</p>
+            )}
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {grupo.pares.map((par) => (
+                <li>
+                  <a
+                    href={`/plagas/${par.plagaSlug}/${par.cultivoSlug}`}
+                    class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-background px-3.5 py-1.5 text-sm transition-colors hover:border-primary-300 hover:bg-primary-50"
+                  >
+                    <span class="text-foreground">{par.cultivo}</span>
+                    <span class="font-data text-xs text-foreground-muted">{par.productos.length}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

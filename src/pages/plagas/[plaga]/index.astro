@@ -1,0 +1,109 @@
+---
+/**
+ * Página de una plaga: reparte hacia sus cultivos.
+ *
+ * Existe porque mucha gente busca la plaga sin nombrar el cultivo («repilo del
+ * olivo tratamiento»). Sirve además de nodo intermedio: sin ella, las páginas de
+ * par colgarían todas del hub y quedarían a la misma distancia de la home.
+ */
+import Layout from '../../../layouts/Layout.astro'
+import Header from '../../../components/Header.astro'
+import Footer from '../../../components/Footer.astro'
+import Migas from '../../../components/Migas.astro'
+import { plagas, ACTUALIZADO_TEXTO } from '../../../lib/plagas'
+import { breadcrumbSchema } from '../../../lib/schema'
+
+export function getStaticPaths() {
+  return plagas().map((grupo) => ({
+    params: { plaga: grupo.slug },
+    props: { grupo },
+  }))
+}
+
+type Grupo = ReturnType<typeof plagas>[number]
+
+interface Props {
+  grupo: Grupo
+}
+
+const { grupo } = Astro.props
+
+const totalProductos = grupo.pares.reduce((n, p) => n + p.productos.length, 0)
+const sustancias = [
+  ...new Set(
+    grupo.pares.flatMap((p) => p.productos.flatMap((q) => (q.sustancias ?? '').split(' + '))).filter(Boolean)
+  ),
+]
+
+const migas = [
+  { nombre: 'Plagas', ruta: '/plagas' },
+  { nombre: grupo.plaga, ruta: `/plagas/${grupo.slug}` },
+]
+
+const titulo = `${grupo.plaga}: productos autorizados por cultivo | Crisopa`
+const descripcion = `Qué autoriza el MAPA contra ${grupo.plaga.toLowerCase()} en ${grupo.pares.length} cultivos, con dosis, plazo de seguridad y sustancia activa. ${totalProductos} usos autorizados, a ${ACTUALIZADO_TEXTO}.`
+---
+
+<Layout title={titulo} description={descripcion} schema={[breadcrumbSchema(migas)]}>
+  <Header />
+
+  <main>
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-28 pb-16 sm:pt-36">
+      <Migas items={migas} />
+
+      <header class="mt-6">
+        <h1 class="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl [text-wrap:balance]">
+          {grupo.plaga}: qué está autorizado en cada cultivo
+        </h1>
+        {grupo.cientifico && (
+          <p class="mt-3 text-lg italic text-foreground-muted">{grupo.cientifico}</p>
+        )}
+        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-foreground">
+          Lo que puedes aplicar contra {grupo.plaga.toLowerCase()} depende del cultivo: la misma
+          sustancia puede estar autorizada en uno y no en otro, y con plazos de seguridad
+          distintos. Elige el tuyo y verás el listado completo con dosis y plazos.
+        </p>
+      </header>
+
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2">
+        {grupo.pares.map((par) => (
+          <li>
+            <a
+              href={`/plagas/${par.plagaSlug}/${par.cultivoSlug}`}
+              class="group flex h-full flex-col justify-between rounded-2xl border border-gray-200/80 bg-surface p-6 transition-colors hover:border-primary-300 hover:bg-primary-50/40"
+            >
+              <span class="font-display text-lg font-bold text-foreground">{par.cultivo}</span>
+              <span class="mt-3 font-data text-sm text-foreground-muted">
+                {par.productos.length} productos autorizados
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <section class="mt-14">
+        <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Sustancias activas registradas contra {grupo.plaga.toLowerCase()}
+        </h2>
+        <p class="mt-4 max-w-3xl text-lg leading-relaxed text-foreground">
+          Sumando todos los cultivos, el registro recoge {sustancias.length} sustancias activas.
+          No todas están autorizadas en todos ellos: comprueba el cultivo concreto.
+        </p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {sustancias.sort().map((s) => (
+            <li class="rounded-full border border-primary-200/70 bg-primary-50 px-3.5 py-1.5 text-sm font-medium text-primary-800">
+              {s.toLowerCase()}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <p class="mt-12 text-sm text-foreground-muted">
+        Datos del Registro de Productos Fitosanitarios del MAPA, actualizados a {ACTUALIZADO_TEXTO}.
+        Antes de aplicar, comprueba la etiqueta del envase y la ficha vigente en el registro oficial.
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
