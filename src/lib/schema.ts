@@ -108,10 +108,13 @@ export function breadcrumbSchema(items: { nombre: string; ruta: string }[]) {
  * Construye un `FAQPage` a partir del mismo array que pinta el acordeón, para
  * que el marcado y lo que se ve no puedan desincronizarse.
  */
-export function faqSchema(faqs: readonly { question: string; answer: string }[]) {
+export function faqSchema(faqs: readonly { question: string; answer: string }[], ruta = '/') {
   return {
     '@type': 'FAQPage',
-    '@id': `${SITIO}/#faq`,
+    // El `@id` cuelga de la ruta porque el corpus de plagas emite un FAQPage por
+    // página: con el identificador fijo, las 68 fichas declararían ser el mismo
+    // nodo del grafo y solo una contaría.
+    '@id': `${SITIO}${ruta === '/' ? '' : ruta.replace(/\/$/, '')}/#faq`,
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,

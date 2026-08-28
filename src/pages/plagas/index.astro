@@ -8,7 +8,7 @@ import Layout from '../../layouts/Layout.astro'
 import Header from '../../components/Header.astro'
 import Footer from '../../components/Footer.astro'
 import Migas from '../../components/Migas.astro'
-import { plagas, PARES, ACTUALIZADO_TEXTO, millar } from '../../lib/plagas'
+import { plagas, PARES, ACTUALIZADO_TEXTO, millar, nombrePlaga } from '../../lib/plagas'
 import { breadcrumbSchema } from '../../lib/schema'
 
 const grupos = plagas()
@@ -47,10 +47,14 @@ const descripcion = `Consulta qué productos autoriza el MAPA contra cada plaga 
         {grupos.map((grupo) => (
           <li class="rounded-2xl border border-gray-200/80 bg-surface p-6 transition-colors hover:border-primary-200">
             <h2 class="font-display text-xl font-bold text-foreground">
-              <a href={`/plagas/${grupo.slug}`} class="animated-underline">{grupo.plaga}</a>
+              <a href={`/plagas/${grupo.slug}`} class="animated-underline">
+                {nombrePlaga(grupo.plaga, grupo.cientifico).principal}
+              </a>
             </h2>
-            {grupo.cientifico && (
-              <p class="mt-1 text-sm italic text-foreground-muted">{grupo.cientifico}</p>
+            {nombrePlaga(grupo.plaga, grupo.cientifico).cientifico && (
+              <p class="mt-1 text-sm italic text-foreground-muted">
+                {nombrePlaga(grupo.plaga, grupo.cientifico).cientifico}
+              </p>
             )}
             <ul class="mt-4 flex flex-wrap gap-2">
               {grupo.pares.map((par) => (
