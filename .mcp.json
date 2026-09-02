@@ -11,7 +11,7 @@
         "--context",
         "claude-code",
         "--project",
-        "/home/pablo/dev/projects/Cuaderno/cuaderno-landing"
+        "/home/pablo/dev/projects/Crisopa/crisopa-landing"
       ],
       "env": {}
     },

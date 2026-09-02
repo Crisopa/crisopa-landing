@@ -1,0 +1,109 @@
+---
+/**
+ * Página pública de eliminación de cuenta.
+ *
+ * Es un requisito de Google Play (formulario de Seguridad de los datos): el
+ * enlace que se declara ahí debe ser accesible SIN iniciar sesión, nombrar la
+ * app, detallar los pasos y decir qué se borra, qué se conserva y por cuánto
+ * tiempo. Por eso vive aquí y no dentro del panel: la acción sí exige estar
+ * autenticado, pero las instrucciones tienen que poder leerse sin cuenta.
+ */
+import Legal from '../layouts/Legal.astro'
+import { IDENTIDAD, EMAIL_PRIVACIDAD, ACTUALIZADO } from '../lib/identidad'
+---
+
+<Legal
+  title="Eliminar tu cuenta — Crisopa"
+  description="Cómo eliminar tu cuenta de Crisopa desde la app o el panel web, qué datos se borran, cuáles se conservan y durante cuánto tiempo."
+  encabezado="Eliminar tu cuenta"
+  actualizado={ACTUALIZADO}
+>
+  <p class="lead">
+    Puedes eliminar tu cuenta de Crisopa cuando quieras, tú mismo y sin pedírnoslo. Aquí tienes los
+    pasos, qué se borra, qué debemos conservar y durante cuánto tiempo.
+  </p>
+
+  <h2>Desde la aplicación móvil</h2>
+  <ol>
+    <li>Abre Crisopa e inicia sesión.</li>
+    <li>Toca tu avatar, arriba a la derecha, para entrar en <strong>Perfil</strong>.</li>
+    <li>Baja hasta el final y toca <strong>Eliminar cuenta</strong>.</li>
+    <li>
+      Confirma que eres tú: si entras con correo y contraseña, te pedimos la contraseña; si entras
+      con Google o con Apple, te pedimos que escribas la dirección de correo de tu cuenta.
+    </li>
+  </ol>
+  <p>
+    No hay paso de vuelta atrás ni periodo de gracia: al confirmar, la cuenta se elimina y se cierra
+    la sesión en el dispositivo.
+  </p>
+
+  <h2>Desde el panel web</h2>
+  <p>
+    Entra en <a href="https://panel.crisopa.app" rel="noopener noreferrer">panel.crisopa.app</a> y ve
+    a <strong>Configuración &rarr; Cuenta &rarr; Seguridad</strong>. Encontrarás ahí la misma opción,
+    con la misma confirmación.
+  </p>
+
+  <h2>Si ya no puedes acceder a tu cuenta</h2>
+  <p>
+    Escríbenos a <a href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a> desde la dirección
+    asociada a la cuenta y lo hacemos nosotros. Podemos pedirte que acredites tu identidad antes.
+    Respondemos dentro del plazo de un mes que marca el RGPD, aunque lo normal es que sean unos días.
+  </p>
+
+  <h2>Qué se elimina</h2>
+  <ul>
+    <li>
+      Los datos de tu cuenta: nombre, correo electrónico, teléfono, cargo, DNI, avatar y número de
+      registro de asesor (ROPO).
+    </li>
+    <li>
+      El contenido de tu cuaderno: explotaciones, parcelas, visitas, tratamientos, fertilizaciones,
+      planes de abonado, tareas, fotos y facturas escaneadas.
+    </li>
+    <li>Las grabaciones de voz que hayas dictado y el registro de tus accesos.</li>
+  </ul>
+  <p>
+    El borrado se completa en nuestros sistemas y copias de seguridad en un plazo máximo de treinta
+    días desde que cierras la cuenta.
+  </p>
+
+  <h2>Qué conservamos y cuánto tiempo</h2>
+  <ul>
+    <li>
+      <strong>Lo que exige la ley.</strong> El cuaderno de explotación agrícola debe conservarse un mínimo
+      de tres años desde cada anotación. Cuando esa obligación recaiga sobre registros de tu cuenta, quedan
+      bloqueados —guardados, sin que los usemos para nada— hasta que venza el plazo.
+    </li>
+    <li>
+      <strong>La facturación.</strong> Las facturas y los identificadores de cliente y suscripción se conservan
+      bloqueados hasta que prescriban las obligaciones fiscales.
+    </li>
+  </ul>
+  <p>Nada de lo que conservamos se utiliza para ninguna otra finalidad.</p>
+
+  <h2>Borrar solo una parte</h2>
+  <p>
+    No hace falta cerrar la cuenta para borrar contenido: puedes eliminar explotaciones y sus
+    registros desde la propia aplicación en cualquier momento, y el borrado es definitivo. Si quieres
+    ejercer la supresión de un dato concreto, escríbenos a <a
+      href={`mailto:${EMAIL_PRIVACIDAD}`}>{EMAIL_PRIVACIDAD}</a
+    >.
+  </p>
+
+  <h2>Si trabajas dentro de la organización de otra persona</h2>
+  <p>
+    Cuando usas Crisopa como parte de la organización de un asesor o de un cliente, el cuaderno es de
+    esa organización, no tuyo: podemos eliminar tu cuenta de usuario, pero los registros que
+    introdujiste siguen bajo su responsabilidad. Para pedir que se supriman, dirígete a esa persona u
+    organización; si nos escribes a nosotros, trasladaremos la solicitud.
+  </p>
+
+  <h2>Quién trata estos datos</h2>
+  <p>
+    Crisopa es un servicio de {IDENTIDAD.responsable}, con NIF {IDENTIDAD.nif} y domicilio en {
+      IDENTIDAD.domicilio
+    }. Tienes el detalle completo en la <a href="/privacidad">política de privacidad</a>.
+  </p>
+</Legal>

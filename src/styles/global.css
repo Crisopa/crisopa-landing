@@ -7,7 +7,7 @@
 
 :root {
   /* ESCALA VERDE — Esmeralda con voltaje (estética tool: Supabase-like),
-     idéntica a la app (cuaderno-campo). Croma elevado en tonos medios (300-600)
+     idéntica a la app (crisopa-app). Croma elevado en tonos medios (300-600)
      donde viven marca y acentos; hue ~170 esmeralda ligeramente enfriado. */
   --green-50:  oklch(0.975 0.018 172);
   --green-100: oklch(0.935 0.042 172);
