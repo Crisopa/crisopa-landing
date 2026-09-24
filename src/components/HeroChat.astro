@@ -9,10 +9,19 @@
  *   mensaje se escribe con caret, entra la llamada a Crisopa y luego la
  *   respuesta (opacidad + desenfoque 6px→0 + 8px, ease-brand). El botón de
  *   la esquina la relanza.
+ * - `stacked`: la ventana sube apilada sobre el hero (ver Hero.astro). Si el
+ *   apilado está activo, la demo no arranca al verse el 25%, sino cuando la
+ *   ventana queda centrada en la pantalla, que es donde termina de subir.
  * - Los productos son filas reales del registro del MAPA (tomate × mosca
  *   blanca). No se cambian sin comprobarlos contra la ficha oficial.
  */
 import { REGISTRO_MAPA_SINCRONIZADO, FUENTE_MAPA } from '../lib/mapa'
+
+interface Props {
+  stacked?: boolean
+}
+
+const { stacked = false } = Astro.props
 
 const pregunta = '¿Qué puedo usar contra mosca blanca en el tomate de la finca Los Llanos?'
 
@@ -23,7 +32,7 @@ const productos = [
 ]
 ---
 
-<figure class="hero-chat" data-hero-chat>
+<figure class="hero-chat" data-hero-chat data-stacked={stacked ? '' : undefined}>
   <div class="window">
     <div class="win-bar">
       <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -34,7 +43,10 @@ const productos = [
     <div class="win-body">
       <p class="msg-user step">
         <span class="sr-only">{pregunta}</span>
-        <span aria-hidden="true" data-typed data-text={pregunta}>{pregunta}</span>
+        <span class="typed-box" aria-hidden="true">
+          <span class="typed-ghost">{pregunta}</span>
+          <span data-typed data-text={pregunta}>{pregunta}</span>
+        </span>
       </p>
 
       <p class="tool step">
@@ -184,6 +196,21 @@ const productos = [
     border: 1px solid var(--line);
     border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
     color: var(--foreground);
+  }
+
+  /* El texto completo, invisible, fija el tamaño final del bocadillo; el
+     que se escribe va encima en la misma celda. Así la ventana no salta al
+     pasar la pregunta a dos líneas. */
+  .typed-box {
+    display: grid;
+  }
+
+  .typed-box > * {
+    grid-area: 1 / 1;
+  }
+
+  .typed-ghost {
+    visibility: hidden;
   }
 
   .tool {
@@ -361,6 +388,9 @@ const productos = [
 <script>
   type Demo = HTMLElement & { _stop?: () => void }
 
+  // La misma condición que activa el apilado en Hero.astro
+  const STACK_QUERY = '(min-width: 861px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)'
+
   function setup(root: Demo) {
     if (root.dataset.ready) return
     root.dataset.ready = '1'
@@ -388,12 +418,17 @@ const productos = [
       root.classList.remove('playing')
     }
 
-    const play = () => {
-      clear()
-      if (reduce.matches) return finish()
+    // Ventana en blanco, lista para escribir
+    const reset = () => {
       root.classList.add('playing')
       steps.forEach((s) => s.classList.remove('in'))
       typed.textContent = ''
+    }
+
+    const play = () => {
+      clear()
+      if (reduce.matches) return finish()
+      reset()
       user.classList.add('in', 'typing')
       let i = 0
       const type = () => {
@@ -412,14 +447,23 @@ const productos = [
 
     replay?.addEventListener('click', play)
 
-    // Arranca una sola vez, cuando la ventana se ve
+    // Arranca una sola vez: cuando se ve el 25% de la ventana o, si sube
+    // apilada sobre el hero, cuando su borde superior cruza la mitad de la
+    // pantalla (casi asentada: esperar al centro exacto se hace largo).
+    const stacked =
+      root.dataset.stacked !== undefined &&
+      CSS.supports('animation-timeline: view()') &&
+      window.matchMedia(STACK_QUERY).matches
+    // Apilada, se ve entera mientras sube: sube ya en blanco para no
+    // enseñar la respuesta y vaciarla justo al empezar a escribir.
+    if (stacked) reset()
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return
         io.disconnect()
-        timers.push(window.setTimeout(play, 400))
+        timers.push(window.setTimeout(play, stacked ? 150 : 400))
       },
-      { threshold: 0.25 },
+      stacked ? { rootMargin: '0px 0px -50% 0px', threshold: 0 } : { threshold: 0.25 },
     )
     io.observe(root)
 

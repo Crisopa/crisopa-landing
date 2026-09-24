@@ -148,6 +148,13 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 <script>
   const w = window as any
   let lastScroll = 0
+  // Punto donde cambió el sentido del scroll: la barra solo cambia de estado
+  // tras recorrer un tramo seguido en el nuevo sentido. Así un rebote del
+  // trackpad no la hace bajar, y para verla hay que subir con intención.
+  let turnAt = 0
+  let goingDown = true
+  const SHOW_AFTER = 48
+  const HIDE_AFTER = 16
 
   // La isla flotante se vuelve sólida y pasa a sombra de nivel 2 al bajar
   const setSolid = (solid: boolean) => {
@@ -167,9 +174,16 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 
     if (!isMenuOpen) setSolid(y > 10)
 
-    // Ocultar al bajar / mostrar al subir (solo con el menú cerrado)
+    // Ocultar al bajar / mostrar al subir (solo con el menú cerrado), con
+    // margen en cada sentido
+    if (y !== lastScroll) {
+      const down = y > lastScroll
+      if (down !== goingDown) turnAt = lastScroll
+      goingDown = down
+    }
     if (!isMenuOpen && y > 60) {
-      header.classList.toggle('-translate-y-full', y > lastScroll)
+      if (goingDown && y - turnAt > HIDE_AFTER) header.classList.add('-translate-y-full')
+      if (!goingDown && turnAt - y > SHOW_AFTER) header.classList.remove('-translate-y-full')
     } else {
       header.classList.remove('-translate-y-full')
     }

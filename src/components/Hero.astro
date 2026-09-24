@@ -1,8 +1,19 @@
 ---
 /**
- * Portada (brand-visual.md › El producto como imagen). Alineada a la
- * izquierda y dimensionada por su contenido: etiqueta, H1 en un tono,
- * entradilla, acciones y, debajo, la ventana de producto (HeroChat).
+ * Portada (brand-visual.md › El producto como imagen). Dos tiempos:
+ *
+ * 1. Al cargar, solo la presentación: etiqueta, H1 en un tono, entradilla y
+ *    acciones, alineadas a la izquierda y centradas en vertical en la
+ *    pantalla. La ventana de producto queda por debajo del pliegue.
+ * 2. Al hacer scroll, la ventana de producto (HeroChat) sube por encima: la
+ *    presentación se queda fija detrás y se desvanece, y la ventana pasa de
+ *    escala 0,94 a 1 hasta quedar centrada. Va ligado al scroll (avanza y
+ *    retrocede con él), no lo secuestra. La demo arranca cuando se asienta.
+ *
+ * El apilado solo se activa con animaciones por scroll en CSS, pantallas de
+ * escritorio con altura suficiente y sin movimiento reducido. Si no, flujo
+ * normal y la ventana entra con el gesto de entrada de sección. La condición
+ * se repite en el script de HeroChat (STACK_QUERY): si cambia aquí, allí.
  *
  * Sin pastillas-anuncio sobre el titular: «El único conectado a ChatGPT y
  * Claude» vive como H2 de la sección de conectores (AsistenteIA).
@@ -14,51 +25,132 @@ const appUrl = 'https://panel.crisopa.app'
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 ---
 
-<section class="sec pt-32 sm:pt-40">
-  <div class="animate-enter" style="animation-delay: 100ms;">
-    <Eyebrow>Para asesores agronómicos</Eyebrow>
-  </div>
-
-  <h1 class="display mt-7 max-w-[14ch] text-foreground animate-enter" style="animation-delay: 150ms;">
-    Tu copiloto agronómico
-  </h1>
-
-  <p class="lead mt-6 animate-enter" style="animation-delay: 200ms;">
-    El motor agronómico completo —tratamientos, abonado, riego, labores— que controlas con ChatGPT o Claude.
-    <span class="font-medium text-foreground">Todas tus fincas bajo control, en la oficina o en el campo.</span>
-  </p>
-
-  <div class="animate-enter" style="animation-delay: 250ms;">
-    <div class="mt-9 flex flex-wrap items-center gap-3">
-      <a
-        href={calendlyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-press
-        class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-6 py-3.5 text-base font-medium text-white hover:bg-primary-700"
-      >
-        Reservar demo
-        <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      </a>
-      <a
-        href="#demo"
-        data-press
-        class="inline-flex items-center justify-center rounded-md border border-line-strong bg-surface px-6 py-3.5 text-base font-medium text-foreground hover:bg-surface-secondary"
-      >
-        Ver cómo funciona
-      </a>
+<section class="sec hero">
+  <div class="hero-intro">
+    <div class="animate-enter" style="animation-delay: 100ms;">
+      <Eyebrow>Para asesores agronómicos</Eyebrow>
     </div>
 
-    <!-- Enlace discreto a prueba self-serve -->
-    <p class="mt-4 text-sm text-foreground-muted">
-      ¿Prefieres probarlo por tu cuenta?
-      <a href={`${appUrl}/register`} class="font-medium text-primary-700 underline decoration-1 underline-offset-[3px] hover:text-primary-800 transition-colors duration-150 ease-out">Empieza gratis</a>
+    <h1 class="display mt-7 max-w-[14ch] text-foreground animate-enter" style="animation-delay: 150ms;">
+      Tu copiloto agronómico
+    </h1>
+
+    <p class="lead mt-6 animate-enter" style="animation-delay: 200ms;">
+      El motor agronómico completo —tratamientos, abonado, riego, labores— que controlas con ChatGPT o Claude.
+      <span class="font-medium text-foreground">Todas tus fincas bajo control, en la oficina o en el campo.</span>
     </p>
+
+    <div class="animate-enter" style="animation-delay: 250ms;">
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <a
+          href={calendlyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-press
+          class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-6 py-3.5 text-base font-medium text-white hover:bg-primary-700"
+        >
+          Reservar demo
+          <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+        <a
+          href="#demo"
+          data-press
+          class="inline-flex items-center justify-center rounded-md border border-line-strong bg-surface px-6 py-3.5 text-base font-medium text-foreground hover:bg-surface-secondary"
+        >
+          Ver cómo funciona
+        </a>
+      </div>
+
+      <!-- Enlace discreto a prueba self-serve -->
+      <p class="mt-4 text-sm text-foreground-muted">
+        ¿Prefieres probarlo por tu cuenta?
+        <a href={`${appUrl}/register`} class="font-medium text-primary-700 underline decoration-1 underline-offset-[3px] hover:text-primary-800 transition-colors duration-150 ease-out">Empieza gratis</a>
+      </p>
+    </div>
   </div>
 
-  <div class="mt-14 sm:mt-16 animate-enter" style="animation-delay: 300ms;">
-    <HeroChat />
+  <div class="hero-stage" data-animate>
+    <div class="hero-window">
+      <HeroChat stacked />
+    </div>
   </div>
 </section>
+
+<style>
+  .hero {
+    padding-top: 0;
+  }
+
+  /* Presentación a pantalla completa, centrada en vertical. Arriba deja el
+     sitio del header fijo; la diferencia de rellenos sube el bloque un poco
+     sobre el centro geométrico, que es donde el ojo lo ve centrado. */
+  .hero-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100svh;
+    padding-block: 112px 64px;
+  }
+
+  /* Apilado ligado al scroll. La línea de tiempo es la de la ventana
+     (`--hero-stage`): de que asoma por abajo a que queda centrada
+     (`cover 0%` → `cover 50%`). */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 861px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+      .hero {
+        timeline-scope: --hero-stage;
+      }
+
+      .hero-intro {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        animation: hero-intro-out linear both;
+        animation-timeline: --hero-stage;
+        animation-range: cover 0% cover 50%;
+      }
+
+      .hero-stage {
+        position: relative;
+        z-index: 1;
+        view-timeline-name: --hero-stage;
+      }
+
+      /* La entrada de sección no aplica: la hace el scroll */
+      :global(.js) .hero-stage[data-animate] {
+        opacity: 1;
+        filter: none;
+        transform: none;
+        transition: none;
+      }
+
+      .hero-window {
+        transform-origin: 50% 0;
+        animation: hero-window-in linear both;
+        animation-timeline: --hero-stage;
+        animation-range: cover 0% cover 50%;
+      }
+    }
+  }
+
+  /* Se desvanece del todo y se oculta: sigue fija detrás mientras la
+     ventana sube, y no debe asomar ni recibir clics. */
+  @keyframes hero-intro-out {
+    to {
+      opacity: 0;
+      transform: scale(0.97);
+      visibility: hidden;
+    }
+  }
+
+  @keyframes hero-window-in {
+    from {
+      transform: scale(0.94);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+</style>

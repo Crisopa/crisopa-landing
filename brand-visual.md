@@ -435,13 +435,18 @@ curva:  cubic-bezier(0.22, 1, 0.36, 1)   (ease-brand)
 
 Nunca `scale(0)`, nunca rebotes, nunca desplazamientos largos (máximo 8px).
 
+La única excepción es **el apilado del hero** (ver catálogo): la ventana de
+producto sube sobre la presentación ligada al scroll. No se copia en otras
+secciones.
+
 ### Catálogo
 
 | Animación | Qué hace | Cuándo arranca | Tiempos |
 |-----------|----------|----------------|---------|
 | **Entrada del hero** | Etiqueta, titular y entradilla entran con el gesto de entrada, escalonados | Al cargar la página | 450ms cada uno; retrasos 100 / 150 / 200ms |
 | **Entrada de sección** | El bloque entra con el gesto de entrada | Al entrar en pantalla (10% visible, 100px antes del borde inferior); una sola vez | 450ms |
-| **Demo del hero** | El mensaje del asesor se escribe carácter a carácter con caret; entra la llamada a Crisopa; entra la respuesta con la tabla | Cuando se ve el 25% de la ventana; una sola vez | 22ms por carácter; llamada +350ms; respuesta +1.100ms; pasos de 400ms |
+| **Apilado del hero** | Al cargar, solo la presentación, a pantalla completa y centrada en vertical. Al bajar, la presentación se queda fija y se desvanece (a opacidad 0, escala 0,97) mientras la ventana de producto sube por encima de escala 0,94 a 1 hasta quedar centrada. Ligado al scroll: avanza y retrocede con él, no lo secuestra | Al hacer scroll, desde que la ventana asoma hasta que queda centrada | Sin duración: la marca el scroll. Solo en escritorio (≥ 861px de ancho y ≥ 640px de alto), con animaciones por scroll en CSS y sin movimiento reducido; si no, flujo normal y entrada de sección |
+| **Demo del hero** | El mensaje del asesor se escribe carácter a carácter con caret; entra la llamada a Crisopa; entra la respuesta con la tabla. El bocadillo reserva desde el principio el tamaño del texto completo: la ventana no cambia de alto al escribir | Cuando se ve el 25% de la ventana; con el apilado, la ventana sube en blanco y la demo arranca cuando su borde superior cruza la mitad de la pantalla. Una sola vez | 22ms por carácter; llamada +350ms; respuesta +1.100ms; pasos de 400ms |
 | **Demo oscura** | Mensaje, las dos llamadas, la respuesta; luego los campos de la orden uno a uno y, al final, «Verificado contra el MAPA» | Cuando se ve el 30% de la demo; una sola vez | Chat a 0 / 1.100 / 1.800 / 2.700ms; campos desde 3.900ms cada 260ms; verificación 500ms después; pasos de 450ms. Unos 6,5s en total |
 | **Repetir** | Relanza la demo desde el principio | Botón de icono en la esquina | Igual que la demo |
 | **Caret** | Parpadeo seco (encendido/apagado, sin fundido) | Siempre | Ciclo de 1,15s |
@@ -449,7 +454,7 @@ Nunca `scale(0)`, nunca rebotes, nunca desplazamientos largos (máximo 8px).
 | **Pulsación** | El botón se reduce a 0,97 | Al pulsar | 150ms `ease-out` |
 | **Botón de repetir** | Aparece con un fundido | Al pasar el ratón por la ventana | 200ms `ease-brand` |
 | **Indicador de navegación** | Fondo `green-50` que se desliza bajo el enlace del menú | Al pasar el ratón por el menú | 250ms `ease-brand` |
-| **Header** | Al dejar arriba la página, pasa de translúcido con sombra 1 a sólido con sombra 2; se oculta al bajar y reaparece al subir | Al hacer scroll | 200ms (fondo) y 300ms (ocultar) `ease-brand` |
+| **Header** | Al dejar arriba la página, pasa de translúcido con sombra 1 a sólido con sombra 2; se oculta al bajar y reaparece al subir, con margen: se oculta tras 16px seguidos hacia abajo y reaparece tras 48px seguidos hacia arriba (un rebote del trackpad no la hace bajar) | Al hacer scroll | 200ms (fondo) y 300ms (ocultar) `ease-brand` |
 
 ### Reglas
 
@@ -587,6 +592,7 @@ cambia también su sitio en el código, y al revés.
 |-----|------------|
 | Etiqueta con caret | `src/components/Eyebrow.astro` (`n`, `caret`, `dark`, `as`) |
 | Ventana de producto del hero | `src/components/HeroChat.astro` |
+| Apilado del hero | `src/components/Hero.astro`: `position: sticky` y `animation-timeline` con la línea de tiempo `--hero-stage` (rango `cover 0%` → `cover 50%`). La condición de activación se repite en `STACK_QUERY` de `HeroChat.astro` |
 | Demo oscura | `src/components/Showcase.astro` (`#demo`) |
 | Sello de fuente del MAPA | `src/components/SelloMAPA.astro` |
 | Conectores en celdas | `src/components/Conectores.astro` |
