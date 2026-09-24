@@ -275,15 +275,27 @@
   }
 
   /* En escritorio: la etiqueta ocupa su propia fila y el titular y la
-     entradilla comparten la siguiente, alineados por la línea base de su
-     primera línea (no por abajo: si la entradilla es más alta que el
-     titular, su primera línea quedaría descolgada). */
+     entradilla comparten la siguiente, alineados por arriba: el borde
+     superior de las mayúsculas del titular coincide con el de la entradilla.
+     `text-box` recorta el interlineado sobrante encima de las mayúsculas
+     (sin soporte, cae a alinear las cajas por arriba). */
   @media (min-width: 861px) {
     .sec-head {
       grid-template-columns: 1fr 1fr;
       /* La separación etiqueta–titular la pone el mt-5 del h2 */
       row-gap: 0;
-      align-items: baseline;
+      align-items: start;
+    }
+
+    .sec-head > div:first-child > :last-child,
+    .sec-head > :last-child:not(:first-child) {
+      text-box: trim-start cap alphabetic;
+    }
+
+    /* La entradilla baja lo mismo que el titular (su mt-5) para empezar a
+       su altura */
+    .sec-head:has(> div:first-child) > :last-child:not(:first-child) {
+      margin-top: 1.25rem;
     }
 
     .sec-head > div:first-child {
