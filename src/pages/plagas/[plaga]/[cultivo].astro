@@ -12,7 +12,8 @@ import Footer from '../../../components/Footer.astro'
 import TablaProductos from '../../../components/TablaProductos.astro'
 import CTAPlaga from '../../../components/CTAPlaga.astro'
 import Migas from '../../../components/Migas.astro'
-import { PARES, ACTUALIZADO_TEXTO, plagaPorSlug, type Par } from '../../../lib/plagas'
+import SelloMAPA from '../../../components/SelloMAPA.astro'
+import { PARES, ACTUALIZADO_MAPA, ACTUALIZADO_TEXTO, plagaPorSlug, type Par } from '../../../lib/plagas'
 import { breadcrumbSchema } from '../../../lib/schema'
 
 export function getStaticPaths() {
@@ -104,6 +105,8 @@ const migas = [
       </h2>
 
       <TablaProductos productos={par.productos} />
+
+      <SelloMAPA fecha={ACTUALIZADO_MAPA} class="mt-2" />
 
       <!-- Sustancias activas: contenido propio que ningún competidor da, y que
            responde a la pregunta real del técnico (con qué alternar). -->

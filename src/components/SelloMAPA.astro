@@ -1,0 +1,37 @@
+---
+/**
+ * Sello de fuente junto a los datos de producto (brand-visual.md › El dato
+ * vivo del MAPA): «Fuente: Registro Oficial de Productos Fitosanitarios ·
+ * MAPA · sincronizado AAAA-MM-DD», en Geist Mono y cifras tabulares.
+ *
+ * La fecha la pasa quien lo usa desde su única fuente: la demo, desde
+ * `REGISTRO_MAPA_SINCRONIZADO` (lib/mapa.ts); el corpus de /plagas, desde la
+ * fecha de su volcado (`ACTUALIZADO_MAPA`, lib/plagas.ts).
+ */
+import { FUENTE_MAPA } from '../lib/mapa'
+
+interface Props {
+  /** Fecha ISO (YYYY-MM-DD) de los datos que acompaña. */
+  fecha: string
+  /** Variante para secciones oscuras. */
+  dark?: boolean
+  class?: string
+}
+
+const { fecha, dark = false, class: className } = Astro.props
+---
+
+<p class:list={['sello', dark ? 'text-dark-foreground-muted' : 'text-foreground-muted', className]}>
+  {FUENTE_MAPA} · sincronizado <time datetime={fecha}>{fecha}</time>
+</p>
+
+<style>
+  .sello {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+</style>

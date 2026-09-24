@@ -8,7 +8,8 @@ import Layout from '../../layouts/Layout.astro'
 import Header from '../../components/Header.astro'
 import Footer from '../../components/Footer.astro'
 import Migas from '../../components/Migas.astro'
-import { plagas, PARES, ACTUALIZADO_TEXTO, millar } from '../../lib/plagas'
+import SelloMAPA from '../../components/SelloMAPA.astro'
+import { plagas, PARES, ACTUALIZADO_MAPA, ACTUALIZADO_TEXTO, millar } from '../../lib/plagas'
 import { breadcrumbSchema } from '../../lib/schema'
 
 const grupos = plagas()
@@ -38,9 +39,7 @@ const descripcion = `Consulta qué productos autoriza el MAPA contra cada plaga 
           {' '}<strong>{millar(totalProductos)} usos autorizados</strong> con dosis
           y plazo de seguridad. Sin registro, sin publicidad y sin vender producto.
         </p>
-        <p class="mt-4 text-sm text-foreground-muted">
-          Datos del Registro de Productos Fitosanitarios del MAPA, actualizados a {ACTUALIZADO_TEXTO}.
-        </p>
+        <SelloMAPA fecha={ACTUALIZADO_MAPA} class="mt-4" />
       </header>
 
       <ul class="mt-12 space-y-4">

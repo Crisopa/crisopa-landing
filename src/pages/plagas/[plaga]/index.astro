@@ -10,7 +10,8 @@ import Layout from '../../../layouts/Layout.astro'
 import Header from '../../../components/Header.astro'
 import Footer from '../../../components/Footer.astro'
 import Migas from '../../../components/Migas.astro'
-import { plagas, ACTUALIZADO_TEXTO } from '../../../lib/plagas'
+import SelloMAPA from '../../../components/SelloMAPA.astro'
+import { plagas, ACTUALIZADO_MAPA, ACTUALIZADO_TEXTO } from '../../../lib/plagas'
 import { breadcrumbSchema } from '../../../lib/schema'
 
 export function getStaticPaths() {
@@ -80,6 +81,8 @@ const descripcion = `Qué autoriza el MAPA contra ${grupo.plaga.toLowerCase()} e
           </li>
         ))}
       </ul>
+
+      <SelloMAPA fecha={ACTUALIZADO_MAPA} class="mt-4" />
 
       <section class="mt-14">
         <h2 class="font-display text-2xl text-foreground sm:text-3xl">
