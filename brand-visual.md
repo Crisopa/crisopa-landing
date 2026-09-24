@@ -164,7 +164,6 @@ Siempre y solo lo técnico:
 - Etiquetas de sección (eyebrows) y numeración `01`, `02`, `03`.
 - Referencias SIGPAC, nº de registro del MAPA, dosis, UF de NPK, plazos.
 - Fechas en formato ISO (`2026-09-22`) y horas.
-- Microcopia técnica bajo un CTA (`Conector MCP · ChatGPT y Claude`).
 
 Nunca en mono: titulares, párrafos, botones.
 
@@ -338,8 +337,8 @@ adjetivo.
 - Sin brillos que recorren el botón ni sombras verdes.
 - Opcional, para reforzar la sensación de herramienta: atajo de teclado en
   `kbd` junto a la acción (`Reservar demo  D`).
-- Microcopia técnica en mono bajo el CTA principal cuando aporte
-  (`Conector MCP · ChatGPT y Claude`).
+- Nada de microcopia bajo los botones que repita lo que ya dicen el
+  subtítulo o el producto. Si no añade un dato nuevo, sobra.
 
 ---
 
