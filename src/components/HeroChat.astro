@@ -308,6 +308,23 @@ const productos = [
     height: 14px;
   }
 
+  /* Con ratón, solo aparece al pasar por la ventana (o al llegar con
+     teclado). En táctil no hay hover: se queda visible. */
+  @media (hover: hover) {
+    .replay {
+      opacity: 0;
+      transition:
+        opacity 200ms var(--ease-brand),
+        color 150ms ease-out,
+        border-color 150ms ease-out;
+    }
+
+    .window:hover .replay,
+    .replay:focus-visible {
+      opacity: 1;
+    }
+  }
+
   /* Pasos de la demo: solo se ocultan mientras se reproduce */
   .step {
     transition:

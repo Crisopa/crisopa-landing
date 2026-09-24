@@ -290,7 +290,8 @@ conversación que termina en un dato estructurado.
   los datos son de ejemplo, basta una nota breve (`Finca y SIGPAC de ejemplo.`).
 - **Repetir la animación:** botón de icono discreto (28px, borde de 1px, icono
   de flecha circular) en una esquina de la ventana o de la demo, con
-  `aria-label`. Nunca un enlace de texto en un pie.
+  `aria-label`. Con ratón aparece solo al pasar por encima (y al llegar con
+  teclado); en táctil queda visible. Nunca un enlace de texto en un pie.
 
 ---
 
