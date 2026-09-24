@@ -60,7 +60,7 @@ Esmeralda, tono 170 en OKLCH. Es el único color con personalidad del sistema.
 | `green-50` | `oklch(0.975 0.018 172)` | Fondo de estado activo, resaltado de dato |
 | `green-100` | `oklch(0.935 0.042 172)` | Fondo de pastillas y badges |
 | `green-200` | `oklch(0.875 0.072 171)` | Bordes de elementos activos |
-| `green-300` | `oklch(0.785 0.110 171)` | — (reservado) |
+| `green-300` | `oklch(0.785 0.110 171)` | Hover de la acción **sobre fondo oscuro** |
 | `green-400` | `oklch(0.700 0.142 170)` | Acción y acento **sobre fondo oscuro** |
 | `green-500` | `oklch(0.610 0.158 170)` | Caret, indicadores, iconos activos |
 | `green-600` | `oklch(0.530 0.152 170)` | **Acción principal** (botón, enlace) |
@@ -217,6 +217,58 @@ La página se ordena con líneas de 1px, como un plano, no con bloques de color.
   un recurso de plantilla.
 - Las líneas son siempre del neutro teñido, nunca gris puro ni verde.
 
+### Medidas
+
+| Medida | Escritorio | Tablet (≤ 860px) | Móvil (≤ 560px) |
+|--------|-----------|------------------|-----------------|
+| Ancho máximo de la columna | 1200px | 1200px | Toda la pantalla |
+| Margen lateral dentro de los raíles | 56px | 24px | 16px |
+| Relleno vertical de sección | 88px | 64px | 56px |
+| Raíles | Sí | Sí | No |
+
+---
+
+## Composición
+
+### Cabecera de sección
+
+La cabecera por defecto de una sección es **partida**: etiqueta y titular a la
+izquierda, entradilla a la derecha, todo alineado a la izquierda. Nada de
+cabeceras centradas.
+
+```
+01 · CÓMO FUNCIONA_
+Empieza en minutos        Conéctala una vez y, a partir de ahí,
+                          trabajas conversando: por voz o por escrito.
+```
+
+- **La etiqueta va sola en su fila**, encima del titular.
+- **Titular y entradilla alineados por arriba:** el borde superior de las
+  mayúsculas del titular coincide con el de la primera línea de la entradilla.
+  No se alinean por abajo ni por la línea base: si la entradilla es más alta
+  que el titular, quedaría descolgada.
+- Dos columnas iguales, separadas 56px. En tablet y móvil, una columna: etiqueta,
+  titular y entradilla apilados.
+- Si la sección no tiene entradilla, etiqueta y titular solos, sin columna
+  derecha vacía.
+
+### Titulares
+
+- **Hero:** una frase rotunda, un solo tono, sin punto final
+  («Tu copiloto agronómico»).
+- **H2 de dos partes:** dos tonos (ver Tipografía), con punto en cada parte.
+- **H2 de una parte:** un solo tono, sin punto final
+  («El único conectado a ChatGPT y Claude»).
+
+### Numeración de secciones
+
+- En la home, las secciones se numeran `01`, `02`… en el orden real en que
+  aparecen. Si se añade, quita o reordena una sección, se renumera.
+- El hero y los cierres (CTA) no llevan número.
+- Una sección que continúa a la anterior no lleva etiqueta ni número propios.
+- En páginas que no son una secuencia (legales, corpus de plagas), etiquetas
+  sin número.
+
 ---
 
 ## Superficies
@@ -303,6 +355,10 @@ adjetivo.
   herramienta real: `● Registro MAPA · sincronizado 2026-09-22`.
 - **Sello de fuente** junto a los datos de producto en demos y páginas del
   corpus: `Fuente: Registro Oficial de Productos Fitosanitarios · MAPA`.
+- **Cada dato con su fecha.** La demo usa la fecha de sincronización de la web;
+  el corpus de `/plagas`, la fecha real del volcado del que salen sus tablas.
+  Si no coinciden, cada una dice la suya: nunca se pone a un dato una fecha
+  que no es la suya.
 - Todo en Geist Mono, cifras tabulares.
 - **Sin pastillas-anuncio sobre el titular.** Son el recurso más repetido de
   las landings hechas con plantilla. El dato vive dentro del producto, donde
@@ -332,8 +388,12 @@ adjetivo.
 | **Principal** | Fondo `green-600`, texto blanco, `radius-md`, sin sombra de color. Hover: `green-700`. Uno por vista. |
 | **Secundario** | Fondo `surface`, borde 1px `line-strong`, texto `foreground`. Hover: fondo `surface-secondary`. |
 | **Enlace** | Texto `green-700`, subrayado fino con separación. Hover: `green-800`. |
+| **Principal sobre oscuro** | Fondo `green-400`, texto `dark-background`. Hover: `green-300` (sube el contraste; `green-500` no llega a AA). |
+| **Secundario sobre oscuro** | Fondo `dark-surface`, borde 1px `dark-line`, texto `dark-foreground`. Hover: fondo `dark-line`. |
 
 - Al pulsar, `scale(0.97)`.
+- La flecha del botón principal («Reservar demo →») se desplaza 2px a la
+  derecha al pasar el ratón. Es el único adorno de un botón.
 - Sin brillos que recorren el botón ni sombras verdes.
 - Opcional, para reforzar la sensación de herramienta: atajo de teclado en
   `kbd` junto a la acción (`Reservar demo  D`).
@@ -350,32 +410,71 @@ Se anima lo que explica el producto. Todo lo demás, quieto o casi.
 
 - **La demo:** el chat se escribe, Crisopa consulta, el dato aparece y se
   verifica. Es la animación principal y la que más cuidado merece.
-- **Demo guiada por scroll:** la ventana de producto queda fija mientras el
-  texto avanza, y cada bloque de texto dispara un estado.
-- **Entrada de secciones:** mínima. Opacidad + desenfoque (6px → 0) +
-  desplazamiento corto (8px). Una vez, sin repetir.
-- **Microinteracciones:** hover, pulsación, cambio de pestaña.
+- **Entrada de secciones:** mínima. Una vez, sin repetir.
+- **Microinteracciones:** hover, pulsación, indicador de navegación.
 - **El caret** de las etiquetas.
 
 ### Qué no se anima
 
-- Nada flota, oscila, brilla, pulsa ni gira por decorar.
+- Nada flota, oscila, brilla, pulsa, rebota ni gira por decorar (tampoco
+  diagramas de órbitas ni logos en carrusel).
 - Nada de brillos que recorren textos o botones.
 - Nada de fondos animados (auroras, mallas, partículas).
+- Nada de efectos que siguen al cursor (resplandores, chispas al hacer clic,
+  tarjetas que se inclinan).
+
+### El gesto de entrada
+
+Todo lo que aparece usa el mismo gesto, con pequeñas variaciones de duración:
+
+```
+desde:  opacity 0 · filter: blur(6px) · translateY(8px)
+hasta:  opacity 1 · filter: blur(0)   · translateY(0)
+curva:  cubic-bezier(0.22, 1, 0.36, 1)   (ease-brand)
+```
+
+Nunca `scale(0)`, nunca rebotes, nunca desplazamientos largos (máximo 8px).
+
+### Catálogo
+
+| Animación | Qué hace | Cuándo arranca | Tiempos |
+|-----------|----------|----------------|---------|
+| **Entrada del hero** | Etiqueta, titular y entradilla entran con el gesto de entrada, escalonados | Al cargar la página | 450ms cada uno; retrasos 100 / 150 / 200ms |
+| **Entrada de sección** | El bloque entra con el gesto de entrada | Al entrar en pantalla (10% visible, 100px antes del borde inferior); una sola vez | 450ms |
+| **Demo del hero** | El mensaje del asesor se escribe carácter a carácter con caret; entra la llamada a Crisopa; entra la respuesta con la tabla | Cuando se ve el 25% de la ventana; una sola vez | 22ms por carácter; llamada +350ms; respuesta +1.100ms; pasos de 400ms |
+| **Demo oscura** | Mensaje, las dos llamadas, la respuesta; luego los campos de la orden uno a uno y, al final, «Verificado contra el MAPA» | Cuando se ve el 30% de la demo; una sola vez | Chat a 0 / 1.100 / 1.800 / 2.700ms; campos desde 3.900ms cada 260ms; verificación 500ms después; pasos de 450ms. Unos 6,5s en total |
+| **Repetir** | Relanza la demo desde el principio | Botón de icono en la esquina | Igual que la demo |
+| **Caret** | Parpadeo seco (encendido/apagado, sin fundido) | Siempre | Ciclo de 1,15s |
+| **Hover de botón y enlace** | Cambio de color de fondo o de texto; la flecha avanza 2px | Al pasar el ratón | 150ms `ease-out` |
+| **Pulsación** | El botón se reduce a 0,97 | Al pulsar | 150ms `ease-out` |
+| **Botón de repetir** | Aparece con un fundido | Al pasar el ratón por la ventana | 200ms `ease-brand` |
+| **Indicador de navegación** | Fondo `green-50` que se desliza bajo el enlace del menú | Al pasar el ratón por el menú | 250ms `ease-brand` |
+| **Header** | Al dejar arriba la página, pasa de translúcido con sombra 1 a sólido con sombra 2; se oculta al bajar y reaparece al subir | Al hacer scroll | 200ms (fondo) y 300ms (ocultar) `ease-brand` |
+
+### Reglas
+
+- **Una sola vez.** Las entradas y las demos no se repiten al volver a pasar
+  por ellas. Solo el botón de repetir las relanza.
+- **El HTML trae el estado final.** La demo se escribe en el HTML completa y
+  el script la reinicia para animarla. Sin JavaScript o con movimiento
+  reducido, se ve entera y quieta.
+- **Al ritmo de lectura.** Cada paso de una demo dura lo que se tarda en leer
+  el anterior. Si hay que esperar para entender algo, va demasiado lento; si
+  no da tiempo a leerlo, demasiado rápido.
+- **Interrumpible.** Nada bloquea el scroll ni la interacción; al salir de la
+  página, las demos cortan sus temporizadores.
+- **`prefers-reduced-motion`:** sin desplazamientos ni desenfoques; las
+  entradas se muestran directamente; las demos, en su estado final; el caret
+  queda fijo.
 
 ### Parámetros
 
 | Uso | Duración | Curva |
 |-----|----------|-------|
 | Hover, pulsación | 150ms | `ease-out` |
-| Microinteracciones de UI | 200–250ms | `cubic-bezier(0.22, 1, 0.36, 1)` |
-| Entradas de sección | 400–500ms | `cubic-bezier(0.22, 1, 0.36, 1)` |
-| Pasos de la demo | Al ritmo de lectura | `cubic-bezier(0.22, 1, 0.36, 1)` |
-
-- Nunca se anima desde `scale(0)`: como mínimo desde 0,95.
-- Las animaciones pueden interrumpirse; nada bloquea el scroll.
-- **`prefers-reduced-motion`:** sin desplazamientos ni desenfoques; la demo
-  muestra su estado final; el caret queda fijo.
+| Microinteracciones de UI | 200–250ms | `ease-brand` |
+| Entradas de sección y pasos de demo | 400–450ms | `ease-brand` |
+| Ritmo entre pasos de demo | 250–1.200ms según lo que haya que leer | — |
 
 ---
 
@@ -449,6 +548,72 @@ El logo tiene varias lecturas, todas intencionadas:
 - [ ] ¿Lo que se mueve explica algo? ¿Respeta `prefers-reduced-motion`?
 - [ ] ¿Los datos de producto de las demos son reales y comprobados?
 - [ ] ¿Se ve bien en móvil, sin raíles y sin scroll horizontal?
+
+---
+
+## Implementación
+
+Dónde vive cada regla en el código de la web. Si cambias una regla aquí,
+cambia también su sitio en el código, y al revés.
+
+### Tokens y estilos base — `src/styles/global.css`
+
+| Qué | Dónde |
+|-----|-------|
+| Verde de marca, neutros teñidos, oscuros y colores de estado | Variables en `:root` y expuestas en `@theme` como utilidades (`bg-line`, `text-foreground-muted`, `bg-dark-background`, `text-state-warning`…) |
+| Radios, sombras y curva | `@theme static`: `rounded-sm/md/lg/xl`, `shadow-1/2/3`, `ease-brand` |
+| Titulares (h1, h2, h3) | Estilos base en `@layer base`; la escala de H2 vive ahí, no en cada componente |
+| Display del hero | Clase `.display` |
+| Entradilla | Clase `.lead` |
+| Dato técnico en mono | Clase `.font-data` (mono + cifras tabulares) |
+| Foco visible | `*:focus-visible` (green-600) y `.sec-dark` / `.on-dark` (green-400) |
+
+### Estructura — `src/layouts/Layout.astro` y `global.css`
+
+| Qué | Dónde |
+|-----|-------|
+| Raíles | `Layout.astro` envuelve cada página en `.page > .frame` |
+| Margen lateral | Variable `--gutter`; clases `.sec` y `.gutter` |
+| Header alineado con la columna | Clase `.frame-align` |
+| Sección y separador | Clase `.sec` (el separador lo pone `.sec ~ .sec`) |
+| Continuación de sección | `.sec.sec-cont` (sin separador ni etiqueta) |
+| Sección oscura | `.sec.sec-dark` (fondo, retícula de puntos, sin separador) |
+| Cabecera partida | `.sec-head`: un `<div>` con etiqueta + `h2`, seguido de la entradilla |
+| Celdas | `.cells` + `grid-cols-*`; las filas deben quedar completas |
+
+### Componentes
+
+| Qué | Componente |
+|-----|------------|
+| Etiqueta con caret | `src/components/Eyebrow.astro` (`n`, `caret`, `dark`, `as`) |
+| Ventana de producto del hero | `src/components/HeroChat.astro` |
+| Demo oscura | `src/components/Showcase.astro` (`#demo`) |
+| Sello de fuente del MAPA | `src/components/SelloMAPA.astro` |
+| Conectores en celdas | `src/components/Conectores.astro` |
+| Lista comparada (sin / con Crisopa) | `src/components/ListaComparada.astro` |
+| Tabla de productos del corpus | `src/components/TablaProductos.astro` |
+
+### Datos
+
+| Qué | Dónde |
+|-----|-------|
+| Fecha de sincronización del MAPA de la web | `REGISTRO_MAPA_SINCRONIZADO` en `src/lib/mapa.ts` |
+| Fecha de la orden de la demo («mañana») | `FECHA_ORDEN_DEMO`, derivada de la anterior |
+| Texto del sello de fuente | `FUENTE_MAPA` en `src/lib/mapa.ts` |
+| Fecha de los datos del corpus `/plagas` | `ACTUALIZADO_MAPA` en `src/lib/plagas.ts` |
+| Productos de la demo del hero | Array `productos` en `HeroChat.astro` (filas reales del registro; no se cambian sin comprobarlas) |
+
+### Movimiento
+
+| Qué | Dónde |
+|-----|-------|
+| Gesto de entrada | `@keyframes enter` y `[data-animate]` en `global.css` |
+| Entrada al cargar | Clase `.animate-enter` + `animation-delay` en línea |
+| Entrada al hacer scroll | Atributo `data-animate`; el `IntersectionObserver` de `Layout.astro` añade `.animated` y deja de observar |
+| Pulsación de botones | Atributo `data-press` (escala 0,97 y transición de color de 150ms) |
+| Caret | `.eyebrow-caret` y `@keyframes caret-blink` |
+| Demos | Script propio en `HeroChat.astro` y `Showcase.astro`: clases `.playing` en el contenedor e `.in` en cada `.step` |
+| Movimiento reducido | Bloque `@media (prefers-reduced-motion: reduce)` al final de `global.css`, y comprobación en el script de cada demo |
 
 ---
 
