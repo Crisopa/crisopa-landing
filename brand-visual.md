@@ -609,7 +609,7 @@ cambia también su sitio en el código, y al revés.
 |-----|-------|
 | Gesto de entrada | `@keyframes enter` y `[data-animate]` en `global.css` |
 | Entrada al cargar | Clase `.animate-enter` + `animation-delay` en línea |
-| Entrada al hacer scroll | Atributo `data-animate`; el `IntersectionObserver` de `Layout.astro` añade `.animated` y deja de observar |
+| Entrada al hacer scroll | Atributo `data-animate`; el `IntersectionObserver` de `Layout.astro` añade `.animated` y deja de observar. Solo se oculta si `<html>` tiene la clase `js` (la pone un script en línea de `Layout.astro`): sin JS, se ve directamente |
 | Pulsación de botones | Atributo `data-press` (escala 0,97 y transición de color de 150ms) |
 | Caret | `.eyebrow-caret` y `@keyframes caret-blink` |
 | Demos | Script propio en `HeroChat.astro` y `Showcase.astro`: clases `.playing` en el contenedor e `.in` en cada `.step` |

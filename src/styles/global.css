@@ -417,7 +417,9 @@
   animation: enter 450ms var(--ease-brand) both;
 }
 
-[data-animate] {
+/* Solo se ocultan si hay JS (clase `js` en <html>, la pone Layout.astro):
+   sin JS, el observer no existe y el contenido se quedaría invisible. */
+.js [data-animate] {
   opacity: 0;
   filter: blur(6px);
   transform: translateY(8px);
@@ -426,7 +428,7 @@
               transform 450ms var(--ease-brand);
 }
 
-[data-animate].animated {
+.js [data-animate].animated {
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
@@ -651,7 +653,7 @@ p, li {
     animation: none;
   }
 
-  [data-animate] {
+  .js [data-animate] {
     opacity: 1;
     transform: none;
     filter: none;

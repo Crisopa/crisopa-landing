@@ -66,6 +66,17 @@ const jsonLd = {
 
     <!-- Datos estructurados: un solo grafo por página (ver lib/schema.ts). -->
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Marca que hay JS antes de pintar: solo entonces se ocultan los
+         bloques con data-animate para animar su entrada. Sin JS, la página se
+         ve completa. El ClientRouter reemplaza los atributos de <html> al
+         navegar, así que la clase se repone tras cada cambio de página. -->
+    <script is:inline>
+      document.documentElement.classList.add('js')
+      document.addEventListener('astro:after-swap', () => {
+        document.documentElement.classList.add('js')
+      })
+    </script>
     <ClientRouter />
 
     <!-- Google tag (gtag.js) + Consent Mode v2 -->
