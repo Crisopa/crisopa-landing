@@ -97,7 +97,13 @@ const jsonLd = {
     <slot name="head" />
   </head>
   <body class="font-sans antialiased text-foreground bg-background overflow-x-hidden">
-    <slot />
+    <!-- Raíles: la columna de contenido (1200px) enmarcada de arriba abajo
+         (brand-visual.md › Estructura). En móvil desaparecen. -->
+    <div class="page">
+      <div class="frame">
+        <slot />
+      </div>
+    </div>
     <CookieBanner />
     <Analytics />
 

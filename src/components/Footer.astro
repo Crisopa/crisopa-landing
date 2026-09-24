@@ -1,4 +1,6 @@
 ---
+import Eyebrow from './Eyebrow.astro'
+
 const currentYear = new Date().getFullYear()
 
 const footerLinks = {
@@ -25,7 +27,7 @@ const footerLinks = {
 
 <footer class="relative bg-dark-background text-dark-foreground-muted border-t border-dark-line overflow-hidden">
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
+  <div class="relative gutter py-10 sm:py-16 lg:py-20">
     <div class="grid gap-8 sm:gap-12 lg:grid-cols-6">
       <!-- Brand -->
       <div class="lg:col-span-2">
@@ -60,7 +62,7 @@ const footerLinks = {
 
         <!-- Social hint (placeholder) -->
         <div class="mt-6 flex items-center gap-3">
-          <span class="text-xs text-dark-foreground-muted uppercase tracking-wider font-medium">Síguenos</span>
+          <Eyebrow dark caret={false} class="text-dark-foreground-muted">Síguenos</Eyebrow>
           <div class="flex-1 h-px bg-dark-line"></div>
         </div>
       </div>
@@ -69,10 +71,7 @@ const footerLinks = {
       <div class="lg:col-span-4 grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3">
         <!-- Producto -->
         <div>
-          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-primary-400"></span>
-            Producto
-          </h3>
+          <Eyebrow as="h3" dark caret={false}>Producto</Eyebrow>
           <ul class="mt-5 space-y-3">
             {footerLinks.producto.map(link => (
               <li>
@@ -90,10 +89,7 @@ const footerLinks = {
 
         <!-- Legal -->
         <div>
-          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-dark-foreground-muted"></span>
-            Legal
-          </h3>
+          <Eyebrow as="h3" dark caret={false}>Legal</Eyebrow>
           <ul class="mt-5 space-y-3">
             {footerLinks.legal.map(link => (
               <li>
@@ -111,10 +107,7 @@ const footerLinks = {
 
         <!-- Contacto -->
         <div>
-          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-dark-foreground-muted"></span>
-            Contacto
-          </h3>
+          <Eyebrow as="h3" dark caret={false}>Contacto</Eyebrow>
           <ul class="mt-5 space-y-3">
             {footerLinks.contacto.map(link => (
               <li>

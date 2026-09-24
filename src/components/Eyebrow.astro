@@ -1,0 +1,25 @@
+---
+/**
+ * Etiqueta con caret (brand-visual.md › La etiqueta con caret): Geist Mono
+ * 12px 500, mayúsculas, +0,12em, en green-700 (green-400 sobre oscuro).
+ *
+ * - `n`: numeración de la sección («01»). La pone la página, no el componente
+ *   de sección, para que siga el orden real en que se montan las secciones.
+ *   Si una página numera sus secciones, las numera todas.
+ * - `caret`: una etiqueta por sección lleva caret; los rótulos de columna
+ *   (p. ej. en el footer) usan el mismo estilo sin él.
+ * - `dark`: variante para secciones oscuras.
+ */
+interface Props {
+  n?: string
+  caret?: boolean
+  dark?: boolean
+  as?: 'span' | 'p' | 'h2' | 'h3' | 'div'
+  class?: string
+  [key: string]: unknown
+}
+
+const { n, caret = true, dark = false, as: Tag = 'span', class: className, ...rest } = Astro.props
+---
+
+<Tag class:list={['eyebrow', dark && 'eyebrow-dark', className]} {...rest}>{n && <span class="eyebrow-n">{n} ·</span>}<slot />{caret && <span class="eyebrow-caret" aria-hidden="true"></span>}</Tag>

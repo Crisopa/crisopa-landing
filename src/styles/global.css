@@ -127,10 +127,25 @@
     --tw-leading: 1.02;
   }
 
+  /* H2: la escala de la guía (32 → 40 → 48px) vive aquí, no en cada
+     componente. Un H2 que necesite otro tamaño lo pide con su utilidad. */
   h2 {
+    font-size: 2rem;
     letter-spacing: -0.03em;
     line-height: 1.08;
     --tw-leading: 1.08;
+  }
+
+  @media (width >= 40rem) {
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (width >= 64rem) {
+    h2 {
+      font-size: 3rem;
+    }
   }
 
   h3 {
@@ -142,6 +157,177 @@
   /* Tablas y cifras que se comparan: siempre tabulares */
   table {
     font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ========================================
+   ESTRUCTURA (brand-visual.md › Estructura: raíles y separadores)
+   La página se ordena con líneas de 1px, como un plano:
+   - `.frame` (en Layout): la columna de 1200px con los dos raíles.
+   - `.gutter` / `.sec`: el padding lateral común dentro de los raíles.
+   - `.sec ~ .sec`: separador de raíl a raíl entre secciones claras.
+   - `.sec-dark`: sección oscura a sangre dentro del marco.
+   - `.cells`: celdas con bordes de 1px compartidos.
+   En móvil (≤ 560px) los raíles desaparecen.
+   ======================================== */
+
+:root {
+  --gutter: 56px;    /* padding lateral del contenido dentro de los raíles */
+  --page-pad: 16px;  /* aire entre el borde de la ventana y los raíles */
+}
+
+@media (max-width: 860px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --gutter: 16px;
+    --page-pad: 0px;
+  }
+}
+
+@layer components {
+  .page {
+    padding-inline: var(--page-pad);
+  }
+
+  .frame {
+    max-width: 1200px;
+    min-height: 100vh;
+    margin-inline: auto;
+    border-inline: 1px solid var(--line);
+  }
+
+  /* Alinea un elemento fijo (el header) con la columna de contenido */
+  .frame-align {
+    max-width: calc(1200px + 2 * var(--page-pad));
+    margin-inline: auto;
+    padding-inline: calc(var(--page-pad) + var(--gutter));
+  }
+
+  .gutter {
+    padding-inline: var(--gutter);
+  }
+
+  .sec {
+    padding: 88px var(--gutter);
+  }
+
+  /* `~` y no `+`: Astro 5 deja los <script> de un componente en su sitio,
+     entre sección y sección. Toda sección salvo la primera lleva separador. */
+  .sec ~ .sec {
+    border-top: 1px solid var(--line);
+  }
+
+  /* Continuación de la sección anterior: sin separador ni número propio */
+  .sec.sec-cont {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  /* Sección oscura: a sangre dentro del marco, con retícula de puntos */
+  .sec-dark {
+    background-color: var(--dark-background);
+    background-image: radial-gradient(circle at 1px 1px, var(--dark-line) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  .sec.sec-dark,
+  .sec-dark + .sec {
+    border-top: 0;
+  }
+
+  @media (max-width: 860px) {
+    .sec {
+      padding-block: 64px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .frame {
+      border-inline: 0;
+    }
+
+    .sec {
+      padding-block: 56px;
+    }
+  }
+
+  /* Cabecera partida: etiqueta + H2 a la izquierda, entradilla a la derecha */
+  .sec-head {
+    display: grid;
+    gap: 24px 56px;
+    align-items: end;
+  }
+
+  @media (min-width: 861px) {
+    .sec-head {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Entradilla (escala: 18 → 20px, 1,55) */
+  .lead {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--foreground-muted);
+    max-width: 56ch;
+  }
+
+  @media (width >= 64rem) {
+    .lead {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* Celdas con bordes de 1px compartidos. El número de columnas lo pone cada
+     uso con grid-cols-*; el hueco de 1px deja ver la línea del fondo. Las
+     filas deben quedar completas (si no, el hueco se ve como bloque). */
+  .cells {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .cells > * {
+    background: var(--surface);
+  }
+
+  /* Etiqueta con caret (brand-visual.md › La etiqueta con caret).
+     Componente: Eyebrow.astro. */
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--green-700);
+  }
+
+  .eyebrow-n {
+    margin-right: 0.6em;
+    color: var(--foreground-muted);
+  }
+
+  .eyebrow-dark {
+    color: var(--green-400);
+  }
+
+  .eyebrow-dark .eyebrow-n {
+    color: var(--dark-foreground-muted);
+  }
+
+  .eyebrow-dark .eyebrow-caret {
+    background-color: var(--green-400);
   }
 }
 
@@ -432,15 +618,18 @@ p, li {
   }
 }
 
-/* Eyebrow: cursor de terminal que parpadea tras el rótulo */
-.eyebrow-caret {
-  display: inline-block;
-  width: 0.62em;
-  height: 2px;
-  margin-left: 0.4em;
-  vertical-align: baseline;
-  background-color: var(--color-primary-600);
-  animation: caret-blink 1.15s linear infinite;
+/* Eyebrow: cursor de terminal que parpadea tras el rótulo. En la capa de
+   componentes para que `.eyebrow-dark` pueda cambiarle el color. */
+@layer components {
+  .eyebrow-caret {
+    display: inline-block;
+    width: 0.62em;
+    height: 2px;
+    margin-left: 0.4em;
+    vertical-align: baseline;
+    background-color: var(--color-primary-600);
+    animation: caret-blink 1.15s linear infinite;
+  }
 }
 
 @keyframes caret-blink {
@@ -452,18 +641,4 @@ p, li {
   100% {
     opacity: 0;
   }
-}
-
-/* Orbiting Circles (sección Asistente IA): diagrama estático. Cada nodo se
-   coloca en su ángulo del anillo; no gira (la guía prohíbe lo que gira por
-   decorar). */
-.orbit-stage {
-  container-type: inline-size;
-}
-
-.orbit-node {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: rotate(var(--angle)) translateY(var(--radius)) rotate(calc(-1 * var(--angle)));
 }

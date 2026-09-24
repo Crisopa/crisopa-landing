@@ -1,4 +1,13 @@
 ---
+import Eyebrow from './Eyebrow.astro'
+
+interface Props {
+  /** Numeración de la sección en la página («04»). */
+  n?: string
+}
+
+const { n } = Astro.props
+
 const casos = [
   {
     quote: 'Acabo de aplicar azufre en la parcela 3 contra el oídio.',
@@ -34,26 +43,26 @@ const iconPaths: Record<string, string> = {
 }
 ---
 
-<section id="casos" class="relative py-16 sm:py-24 lg:py-32 bg-background overflow-hidden">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+<section id="casos" class="sec relative overflow-hidden">
+  <div>
     <!-- Header -->
-    <div class="text-center max-w-3xl mx-auto" data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Casos de uso<span class="eyebrow-caret"></span>
-      </span>
-      <h2 class="mt-6 font-display text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
-        Lo dices.
-        <span class="text-primary-700">Está hecho.</span>
-      </h2>
-      <p class="mt-6 text-lg text-foreground-muted leading-relaxed">
+    <div class="sec-head" data-animate>
+      <div>
+        <Eyebrow n={n}>Casos de uso</Eyebrow>
+        <h2 class="mt-5 text-foreground">
+          Lo dices.
+          <span class="text-foreground-muted">Está hecho.</span>
+        </h2>
+      </div>
+      <p class="lead">
         Le hablas como le hablarías a un compañero. El copiloto consulta, decide contigo y deja tu cuaderno cuadrado.
       </p>
     </div>
 
-    <!-- Grid -->
-    <div class="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2" data-animate="stagger">
+    <!-- Celdas 2 × 2 -->
+    <div class="cells mt-12 sm:mt-16 md:grid-cols-2" data-animate>
       {casos.map((caso) => (
-        <div class="h-full flex flex-col rounded-lg bg-surface p-6 sm:p-7 border border-line-strong shadow-1">
+        <div class="h-full flex flex-col p-6 sm:p-7">
           <!-- Quote (lo que dice el asesor) -->
           <div class="flex items-start gap-3">
             <div class="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700">

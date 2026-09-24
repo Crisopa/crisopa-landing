@@ -1,4 +1,13 @@
 ---
+import Eyebrow from './Eyebrow.astro'
+
+interface Props {
+  /** Numeración de la sección en la página («05»). */
+  n?: string
+}
+
+const { n } = Astro.props
+
 const steps = [
   {
     number: '01',
@@ -27,62 +36,47 @@ const iconPaths: Record<string, string> = {
 }
 ---
 
-<section id="como-funciona" class="relative py-16 sm:py-24 lg:py-32 bg-surface-secondary overflow-hidden">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="text-center max-w-3xl mx-auto" data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Cómo funciona<span class="eyebrow-caret"></span>
-      </span>
-      <h2 class="mt-6 font-display text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
+<section id="como-funciona" class="sec relative overflow-hidden">
+  <!-- Header -->
+  <div class="sec-head" data-animate>
+    <div>
+      <Eyebrow n={n}>Cómo funciona</Eyebrow>
+      <h2 class="mt-5 text-foreground">
         Empieza en minutos
       </h2>
-      <p class="mt-6 text-lg text-foreground-muted leading-relaxed">
-        Conéctala una vez y, a partir de ahí, trabajas conversando: por voz o por escrito.
-      </p>
     </div>
-
-    <!-- Steps -->
-    <div class="mt-12 sm:mt-16">
-      <div class="grid gap-6 lg:grid-cols-3 lg:gap-8 items-stretch">
-        {steps.map((step, index) => (
-          <div
-            class="relative h-full"
-            data-animate
-            style={`transition-delay: ${index * 60}ms;`}
-          >
-            <!-- Card -->
-            <div class="relative h-full bg-surface rounded-lg p-7 sm:p-8 shadow-1 border border-line-strong">
-              <!-- Icono + índice de paso -->
-              <div class="flex items-center justify-between">
-                <div class="inline-flex h-14 w-14 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700">
-                  <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[step.icon]} />
-                  </svg>
-                </div>
-                <span class="font-data text-3xl font-medium leading-none text-foreground-muted">
-                  {step.number}
-                </span>
-              </div>
-
-              <!-- Text -->
-              <h3 class="mt-6 font-display text-xl text-foreground">
-                {step.title}
-              </h3>
-              <p class="mt-3 text-foreground-muted leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Bottom CTA hint -->
-    <div class="mt-16 text-center" data-animate>
-      <p class="text-foreground-muted text-sm">
-        Se conecta en menos de lo que tarda un café.
-      </p>
-    </div>
+    <p class="lead">
+      Conéctala una vez y, a partir de ahí, trabajas conversando: por voz o por escrito.
+    </p>
   </div>
+
+  <!-- Pasos en celdas (boceto › .cells) -->
+  <div class="cells mt-12 sm:mt-16 lg:grid-cols-3" data-animate>
+    {steps.map((step) => (
+      <div class="p-7 sm:p-8">
+        <!-- Icono + índice de paso -->
+        <div class="flex items-center justify-between">
+          <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[step.icon]} />
+          </svg>
+          <span class="font-data text-xs text-foreground-muted">
+            {step.number}
+          </span>
+        </div>
+
+        <!-- Text -->
+        <h3 class="mt-10 text-xl text-foreground">
+          {step.title}
+        </h3>
+        <p class="mt-3 text-[15px] text-foreground-muted leading-relaxed">
+          {step.description}
+        </p>
+      </div>
+    ))}
+  </div>
+
+  <!-- Bottom CTA hint -->
+  <p class="mt-6 text-sm text-foreground-muted" data-animate>
+    Se conecta en menos de lo que tarda un café.
+  </p>
 </section>

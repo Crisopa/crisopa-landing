@@ -1,6 +1,13 @@
 ---
-import OrbitingConnectors from './react/OrbitingConnectors.tsx'
+import Eyebrow from './Eyebrow.astro'
+import Conectores from './Conectores.astro'
 
+interface Props {
+  /** Numeración de la sección en la página («02»). */
+  n?: string
+}
+
+const { n } = Astro.props
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 
 const benefits = [
@@ -28,46 +35,42 @@ const iconPaths: Record<string, string> = {
 }
 ---
 
-<section id="asistente-ia" class="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-background">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+<section id="asistente-ia" class="sec relative overflow-hidden">
+  <div>
     <!-- Header -->
-    <div class="text-center max-w-3xl mx-auto" data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Lo que nadie más tiene<span class="eyebrow-caret"></span>
-      </span>
-      <h2 class="mt-6 text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
-        Antes era una tarde de oficina,
-        <span class="block text-primary-700">ahora es una conversación.</span>
-      </h2>
-      <p class="mt-6 text-lg text-foreground-muted leading-relaxed">
-        Crisopa se conecta a <strong class="font-semibold text-foreground">ChatGPT</strong> o <strong class="font-semibold text-foreground">Claude</strong>. Le dices lo que has hecho o lo que quieres planificar, y él lee, escribe y conecta tu cuaderno con el resto de tus herramientas. Sin aprender ninguna nueva.
+    <div class="sec-head" data-animate>
+      <div>
+        <Eyebrow n={n}>Lo que nadie más tiene</Eyebrow>
+        <h2 class="mt-5 text-foreground">
+          Antes era una tarde de oficina,
+          <span class="text-foreground-muted">ahora es una conversación.</span>
+        </h2>
+      </div>
+      <p class="lead">
+        Crisopa se conecta a <strong class="font-medium text-foreground">ChatGPT</strong> o <strong class="font-medium text-foreground">Claude</strong>. Le dices lo que has hecho o lo que quieres planificar, y él lee, escribe y conecta tu cuaderno con el resto de tus herramientas. Sin aprender ninguna nueva.
       </p>
     </div>
 
-    <!-- Connection visual: ecosistema alrededor de Crisopa -->
+    <!-- Conectores: ecosistema alrededor de Crisopa, en celdas -->
     <div class="mt-12 sm:mt-16" data-animate>
-      <div class="relative mx-auto max-w-3xl rounded-lg border border-line-strong bg-surface shadow-2 px-4 py-10 sm:px-10 sm:py-12">
-        <OrbitingConnectors />
-      </div>
+      <Conectores />
     </div>
 
     <!-- Benefits -->
-    <div class="mt-10 sm:mt-14 grid gap-6 sm:grid-cols-3" data-animate="stagger">
+    <div class="cells mt-6 sm:grid-cols-3" data-animate>
       {benefits.map((benefit) => (
-        <div class="relative p-6 rounded-lg bg-surface border border-line-strong shadow-1">
-          <div class="inline-flex h-11 w-11 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700 mb-4">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[benefit.icon]} />
-            </svg>
-          </div>
-          <h3 class="text-base text-foreground">{benefit.title}</h3>
-          <p class="mt-2 text-sm text-foreground-muted leading-relaxed">{benefit.description}</p>
+        <div class="p-6 sm:p-7">
+          <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[benefit.icon]} />
+          </svg>
+          <h3 class="mt-8 text-lg text-foreground">{benefit.title}</h3>
+          <p class="mt-2 text-[15px] text-foreground-muted leading-relaxed">{benefit.description}</p>
         </div>
       ))}
     </div>
 
     <!-- CTA -->
-    <div class="mt-10 sm:mt-14 text-center" data-animate>
+    <div class="mt-10 sm:mt-14" data-animate>
       <a
         href={calendlyUrl}
         target="_blank"

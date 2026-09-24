@@ -1,36 +1,47 @@
 ---
+import Eyebrow from './Eyebrow.astro'
+
+interface Props {
+  /** Numeración. Por defecto sin número: como en el boceto, el cierre de
+   *  página (igual que el hero) queda fuera de la secuencia 01, 02… */
+  n?: string
+}
+
+const { n } = Astro.props
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 ---
 
-<section id="reservar-demo" class="relative py-16 sm:py-24 overflow-hidden bg-background">
-  <div class="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center" data-animate>
-    <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-      Sin compromiso<span class="eyebrow-caret"></span>
-    </span>
+<section id="reservar-demo" class="sec relative overflow-hidden">
+  <div class="sec-head" data-animate>
+    <div>
+      <Eyebrow n={n}>Sin compromiso</Eyebrow>
 
-    <h2 class="mt-6 font-display text-[2rem] sm:text-[2.5rem] lg:text-5xl text-foreground">
-      Reserva una demo <span class="text-primary-700">personalizada</span>
-    </h2>
-
-    <p class="mt-4 text-lg text-foreground-muted leading-relaxed">
-      Te enseñamos cómo Crisopa encaja en tu día a día en menos de 30 minutos.
-    </p>
-
-    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a
-        href={calendlyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-press
-        class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-8 py-4 text-base font-medium text-white hover:bg-primary-700"
-      >
-        Reservar demo
-        <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      </a>
+      <h2 class="mt-5 text-foreground">
+        Reserva una demo <span class="text-foreground-muted">personalizada</span>
+      </h2>
     </div>
 
-    <p class="mt-6 text-sm text-foreground-muted">Menos de 30 min &middot; Sin compromiso &middot; Online</p>
+    <div>
+      <p class="lead">
+        Te enseñamos cómo Crisopa encaja en tu día a día en menos de 30 minutos.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+        <a
+          href={calendlyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-press
+          class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-8 py-4 text-base font-medium text-white hover:bg-primary-700"
+        >
+          Reservar demo
+          <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+      </div>
+
+      <p class="mt-4 font-data text-xs text-foreground-muted">Menos de 30 min &middot; Sin compromiso &middot; Online</p>
+    </div>
   </div>
 </section>

@@ -21,7 +21,7 @@ const { title, description, encabezado, actualizado } = Astro.props
   <slot name="head" slot="head" />
 
   <header class="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-line">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="gutter">
       <div class="flex h-16 items-center justify-between">
         <a href="/" class="flex items-center gap-2.5">
           <svg
@@ -49,8 +49,9 @@ const { title, description, encabezado, actualizado } = Astro.props
     </div>
   </header>
 
-  <main class="py-16 lg:py-24">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+  <main class="sec">
+    <!-- Columna de lectura (≈ 70 caracteres) alineada a la izquierda dentro de los raíles -->
+    <div class="max-w-3xl">
       <div class="mb-12">
         <h1 class="font-display text-4xl text-foreground sm:text-5xl">
           {encabezado}

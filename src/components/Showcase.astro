@@ -1,5 +1,6 @@
 ---
 import HeroMockup from './HeroMockup.astro'
+import Eyebrow from './Eyebrow.astro'
 
 // Sección "Míralo en acción": muestra el producto en un marco de navegador.
 //
@@ -8,19 +9,26 @@ import HeroMockup from './HeroMockup.astro'
 //      y un fotograma de portada a public/demo-poster.jpg.
 //   2. Pon hasVideo = true. El <video> sustituye al mockup automáticamente.
 const hasVideo = false
+
+interface Props {
+  /** Numeración de la sección en la página («01»). */
+  n?: string
+}
+
+const { n } = Astro.props
 ---
 
-<section id="demo" class="relative overflow-hidden py-20 sm:py-28 bg-background">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+<section id="demo" class="sec relative overflow-hidden">
+  <div>
     <!-- Encabezado -->
-    <div class="mx-auto max-w-2xl text-center" data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Míralo en acción<span class="eyebrow-caret"></span>
-      </span>
-      <h2 class="mt-5 font-display text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
-        Así de rápido se cuadra el cuaderno
-      </h2>
-      <p class="mt-4 text-base sm:text-lg text-foreground-muted">
+    <div class="sec-head" data-animate>
+      <div>
+        <Eyebrow n={n}>Míralo en acción</Eyebrow>
+        <h2 class="mt-5 text-foreground">
+          Así de rápido se cuadra el cuaderno
+        </h2>
+      </div>
+      <p class="lead">
         Le hablas a ChatGPT o Claude y queda registrado y cuadrado al momento.
         Sin formularios interminables ni tardes de oficina.
       </p>

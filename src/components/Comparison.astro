@@ -1,4 +1,14 @@
 ---
+import Eyebrow from './Eyebrow.astro'
+import ListaComparada from './ListaComparada.astro'
+
+interface Props {
+  /** Numeración de la sección en la página («06»). */
+  n?: string
+}
+
+const { n } = Astro.props
+
 const without = [
   'Tardes de oficina cuadrando el papeleo, finca por finca',
   'Software de hace 20 años, lento y lleno de formularios',
@@ -16,125 +26,20 @@ const withCrisopa = [
 ];
 ---
 
-<section id='comparativa' class='relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-background'>
-  <div class='mx-auto max-w-5xl px-4 sm:px-6 lg:px-8'>
-    <!-- Header -->
-    <div class='text-center max-w-2xl mx-auto mb-10 sm:mb-16' data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Comparativa<span class="eyebrow-caret"></span>
-      </span>
-      <h2
-        class='mt-6 font-display text-[2rem] sm:text-[2.5rem] lg:text-5xl text-foreground'
-      >
-        Deja atrás el papeleo
-      </h2>
-    </div>
-
-    <!-- Comparison -->
-    <div class='grid md:grid-cols-2 gap-8 md:gap-6 lg:gap-8 mt-6 md:mt-0'>
-      <!-- Without -->
-      <div
-        class='relative p-6 sm:p-8 rounded-lg bg-surface-secondary border border-line'
-        data-animate
-        style="transition-delay: 60ms;"
-      >
-        <div class='absolute -top-4 left-8'>
-          <span
-            class='inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong bg-surface text-foreground-muted text-sm font-medium'
-          >
-            <svg
-              class='w-4 h-4'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-              stroke-width='2'
-            >
-              <path
-                stroke-linecap='round'
-                stroke-linejoin='round'
-                d='M6 18L18 6M6 6l12 12'></path>
-            </svg>
-            Sin Crisopa
-          </span>
-        </div>
-
-        <ul class='mt-4 space-y-4'>
-          {
-            without.map((item) => (
-              <li class='flex items-start gap-3'>
-                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-line flex items-center justify-center mt-0.5'>
-                  <svg
-                    class='w-3.5 h-3.5 text-foreground-muted'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    stroke-width='2'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      d='M6 18L18 6M6 6l12 12'
-                    />
-                  </svg>
-                </span>
-                <span class='text-foreground-muted'>{item}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- With Crisopa -->
-      <div
-        class='relative p-6 sm:p-8 rounded-lg bg-surface border border-primary-200 shadow-1'
-        data-animate
-        style="transition-delay: 120ms;"
-      >
-        <div class='absolute -top-4 left-8'>
-          <span
-            class='inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary-200 bg-primary-50 text-primary-800 text-sm font-medium'
-          >
-            <svg
-              class='w-4 h-4'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-              stroke-width='2.5'
-            >
-              <path
-                stroke-linecap='round'
-                stroke-linejoin='round'
-                d='M5 13l4 4L19 7'></path>
-            </svg>
-            Con Crisopa
-          </span>
-        </div>
-
-        <ul class='mt-4 space-y-4'>
-          {
-            withCrisopa.map((item) => (
-              <li class='flex items-start gap-3'>
-                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center mt-0.5'>
-                  <svg
-                    class='w-3.5 h-3.5 text-primary-700'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    stroke-width='2.5'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      d='M5 13l4 4L19 7'
-                    />
-                  </svg>
-                </span>
-                <span class='text-foreground'>{item}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
+<section id='comparativa' class='sec relative overflow-hidden'>
+  <!-- Header -->
+  <div class='mb-12 sm:mb-16' data-animate>
+    <Eyebrow n={n}>Comparativa</Eyebrow>
+    <h2 class='mt-5 text-foreground'>
+      Deja atrás el papeleo
+    </h2>
   </div>
+
+  <!-- Comparison -->
+  <ListaComparada
+    etiquetaSin='Sin Crisopa'
+    etiquetaCon='Con Crisopa'
+    sin={without}
+    con={withCrisopa}
+  />
 </section>

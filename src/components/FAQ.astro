@@ -1,28 +1,37 @@
 ---
 import { faqs } from '../lib/faqs'
+import Eyebrow from './Eyebrow.astro'
+
+interface Props {
+  /** Numeración de la sección en la página («07»). */
+  n?: string
+}
+
+const { n } = Astro.props
 ---
 
-<section id="faq" class="relative py-16 sm:py-24 lg:py-32 bg-surface-secondary overflow-hidden">
-  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+<section id="faq" class="sec relative">
+  <!-- Cabecera a la izquierda (fija al hacer scroll en escritorio), preguntas a la derecha -->
+  <div class="grid gap-10 sm:gap-12 lg:grid-cols-[1fr_2fr] lg:gap-14">
     <!-- Header -->
-    <div class="text-center" data-animate>
-      <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
-        Dudas<span class="eyebrow-caret"></span>
-      </span>
-      <h2 class="mt-6 text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
-        Preguntas frecuentes
-      </h2>
+    <div data-animate>
+      <div class="lg:sticky lg:top-28">
+        <Eyebrow n={n}>Dudas</Eyebrow>
+        <h2 class="mt-5 text-foreground">
+          Preguntas frecuentes
+        </h2>
+      </div>
     </div>
 
-    <!-- FAQ Accordion -->
-    <div class="mt-10 sm:mt-16 space-y-3 sm:space-y-4">
+    <!-- FAQ Accordion: una sola caja, preguntas separadas por líneas de 1px -->
+    <div class="rounded-lg border border-line bg-surface divide-y divide-line overflow-hidden">
       {faqs.map((faq, index) => (
         <div
           class="faq-item group"
           data-animate
           style={`transition-delay: ${index * 40}ms;`}
         >
-          <div class="relative rounded-lg bg-surface border border-line-strong shadow-1 overflow-hidden">
+          <div class="relative">
             <button
               type="button"
               class="faq-button flex w-full items-center justify-between px-4 py-4 sm:px-6 sm:py-5 text-left transition-colors duration-150 ease-out hover:bg-surface-secondary"
@@ -60,7 +69,6 @@ import { faqs } from '../lib/faqs'
         </div>
       ))}
     </div>
-
   </div>
 </section>
 
