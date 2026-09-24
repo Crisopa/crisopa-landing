@@ -1,14 +1,23 @@
 ---
-import HeroMockup from './HeroMockup.astro'
+/**
+ * Demo oscura (brand-visual.md › Secciones oscuras · El producto como imagen):
+ * la conversación con el asesor a la izquierda y, a la derecha, la orden de
+ * tratamiento que sale de ella, lista para que él la revise y la firme.
+ *
+ * - Es una de las dos secciones oscuras de la home (la otra, el CTA final).
+ * - El HTML trae el estado final completo: sin JS o con
+ *   `prefers-reduced-motion`, la demo se ve entera y quieta.
+ * - Con movimiento (mismo patrón que HeroChat): los pasos se ocultan al
+ *   cargar y, cuando la demo se ve (una sola vez), entran en orden: mensaje
+ *   del asesor, las dos llamadas a Crisopa, la respuesta, los campos de la
+ *   orden uno a uno y, al final, «Verificado contra el MAPA». Opacidad +
+ *   desenfoque 6px→0 + 8px, ease-brand. «Repetir» la relanza.
+ * - Abanto es real (Registro MAPA nº 24643: 0,75 l/ha, plazo de seguridad
+ *   1 día, máx. 2 aplicaciones, autorizado en tomate de invernadero con
+ *   carretilla). No se cambia sin comprobarlo contra la ficha oficial. La
+ *   finca y el SIGPAC son de ejemplo, y así lo dice el pie de figura.
+ */
 import Eyebrow from './Eyebrow.astro'
-
-// Sección "Míralo en acción": muestra el producto en un marco de navegador.
-//
-// CÓMO AÑADIR EL VÍDEO DE SCREEN STUDIO:
-//   1. Exporta el vídeo (mp4, ~1280px de ancho, sin audio) a public/demo.mp4
-//      y un fotograma de portada a public/demo-poster.jpg.
-//   2. Pon hasVideo = true. El <video> sustituye al mockup automáticamente.
-const hasVideo = false
 
 interface Props {
   /** Numeración de la sección en la página («01»). */
@@ -16,78 +25,358 @@ interface Props {
 }
 
 const { n } = Astro.props
+
+const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
+  { k: 'Finca', v: 'Los Llanos · parcela 12' },
+  { k: 'SIGPAC', v: '04:079:0:0:12:45:1', mono: true },
+  { k: 'Cultivo', v: 'Tomate · invernadero' },
+  { k: 'Producto', v: 'Abanto', registro: 'Nº 24643' },
+  { k: 'Dosis', v: '0,75 l/ha · caldo 1.000 l/ha', mono: true },
+  { k: 'Fecha', v: '2026-09-25', mono: true },
+  { k: 'Plazo seg.', v: '1 día', mono: true },
+]
 ---
 
-<section id="demo" class="sec relative overflow-hidden">
-  <div>
-    <!-- Encabezado -->
-    <div class="sec-head" data-animate>
-      <div>
-        <Eyebrow n={n}>Míralo en acción</Eyebrow>
-        <h2 class="mt-5 text-foreground">
-          Así de rápido se cuadra el cuaderno
-        </h2>
-      </div>
-      <p class="lead">
-        Le hablas a ChatGPT o Claude y queda registrado y cuadrado al momento.
-        Sin formularios interminables ni tardes de oficina.
-      </p>
+<section id="demo" class="sec sec-dark relative overflow-hidden">
+  <div class="sec-head" data-animate>
+    <div>
+      <Eyebrow dark n={n}>Demo</Eyebrow>
+      <h2 class="mt-5 text-dark-foreground">
+        Del chat a la orden de tratamiento.
+        <span class="text-dark-foreground-muted">Tú decides y firmas.</span>
+      </h2>
     </div>
-
-    <!-- Visual del producto -->
-    <div class="relative mt-12 sm:mt-16" data-animate>
-      <div class="relative mx-auto max-w-4xl">
-        {hasVideo ? (
-          <div class="relative rounded-lg bg-surface shadow-2 overflow-hidden border border-line-strong">
-            <!-- Barra de navegador -->
-            <div class="h-10 bg-surface-secondary border-b border-line flex items-center px-4">
-              <div class="flex gap-[6px]">
-                <span class="w-[10px] h-[10px] rounded-full bg-line-strong"></span>
-                <span class="w-[10px] h-[10px] rounded-full bg-line-strong"></span>
-                <span class="w-[10px] h-[10px] rounded-full bg-line-strong"></span>
-              </div>
-              <div class="flex-1 mx-4">
-                <div class="max-w-[200px] mx-auto h-5 bg-surface rounded-sm border border-line flex items-center justify-center">
-                  <span class="font-data text-[10px] text-foreground-muted">panel.crisopa.app</span>
-                </div>
-              </div>
-            </div>
-            <video
-              class="w-full block"
-              autoplay
-              muted
-              loop
-              playsinline
-              poster="/demo-poster.jpg"
-            >
-              <source src="/demo.mp4" type="video/mp4" />
-            </video>
-          </div>
-        ) : (
-          <HeroMockup />
-        )}
-
-        <!-- Sello: verificado -->
-        <div class="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 z-20">
-          <div class="w-14 h-14 sm:w-20 sm:h-20 rounded-lg bg-primary-600 shadow-2 flex items-center justify-center">
-            <svg class="h-7 w-7 sm:h-10 sm:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- Sello: normativa -->
-        <div class="absolute -top-3 -right-2 sm:-top-5 sm:-right-5 z-20">
-          <div class="flex items-center gap-2 rounded-md bg-surface shadow-2 border border-line-strong px-3 py-1.5 sm:px-4 sm:py-2">
-            <span class="flex h-8 w-8 items-center justify-center rounded-sm border border-line bg-surface-secondary">
-              <svg class="w-4 h-4 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </span>
-            <span class="font-data text-xs sm:text-sm font-medium text-foreground">RD 1311/2012</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p class="lead text-dark-foreground-muted">
+      Antes era una tarde de oficina, ahora es una conversación.
+    </p>
   </div>
+
+  <figure class="demo" data-demo>
+    <div class="split">
+      <div class="d-card">
+        <p class="d-label"><span>Conversación</span><time>09:42</time></p>
+        <div class="d-chat">
+          <p class="u step">
+            Prepárame la orden con Abanto para mañana en la parcela 12 de Los
+            Llanos. Carretilla, 1.000 litros de caldo.
+          </p>
+          <p class="t step"><span class="ok" aria-hidden="true">✓</span> Crisopa · leer_ficha_registro · 24643</p>
+          <p class="t step"><span class="ok" aria-hidden="true">✓</span> Crisopa · validar_tratamiento · parcela 12</p>
+          <p class="step">
+            Hecho. Dosis dentro del registro y es la primera aplicación de la
+            campaña (máximo 2). Tienes la orden lista para revisar.
+          </p>
+        </div>
+      </div>
+
+      <div class="d-card">
+        <p class="d-label"><span>Orden de tratamiento</span><span>Borrador</span></p>
+        <dl class="order">
+          {orden.map((f) => (
+            <div class="row step">
+              <dt>{f.k}</dt>
+              <dd class:list={[f.mono && 'mono']}>
+                {f.v}
+                {f.registro && <> · <span class="mono">{f.registro}</span></>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <div class="status step">
+          <span class="ok">✓ Verificado contra el MAPA</span>
+          <span class="sign">Pendiente de tu firma</span>
+        </div>
+      </div>
+    </div>
+
+    <figcaption class="fig">
+      FIG. 02 — La conversación se convierte en un registro estructurado · finca y SIGPAC de ejemplo · <button type="button" class="replay" data-replay>Repetir</button>
+    </figcaption>
+  </figure>
 </section>
+
+<style>
+  .demo {
+    margin: 56px 0 0;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .demo {
+      margin-top: 40px;
+    }
+
+    .split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .d-card {
+    min-width: 0;
+    padding: 24px;
+    background: var(--dark-surface);
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-lg);
+    color: var(--dark-foreground);
+  }
+
+  @media (max-width: 560px) {
+    .d-card {
+      padding: 20px 16px;
+    }
+  }
+
+  .d-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--dark-foreground-muted);
+  }
+
+  .d-chat {
+    display: grid;
+    gap: 14px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .d-chat p {
+    margin: 0;
+  }
+
+  .d-chat .u {
+    justify-self: end;
+    max-width: 90%;
+    padding: 10px 14px;
+    background: oklch(1 0 0 / 0.06);
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-md);
+  }
+
+  .d-chat .t {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--dark-foreground-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .ok {
+    color: var(--green-400);
+  }
+
+  /* Lista clave-valor: cada fila es un paso de la animación, con subgrid
+     para que las claves compartan columna */
+  .order {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    border-bottom: 1px solid var(--dark-line);
+  }
+
+  .row dt,
+  .row dd {
+    margin: 0;
+    padding: 11px 0;
+  }
+
+  .row dt {
+    padding-right: 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--dark-foreground-muted);
+  }
+
+  .row dd {
+    min-width: 0;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row dd.mono {
+    font-size: 14px;
+  }
+
+  @media (max-width: 560px) {
+    .row dt {
+      padding-right: 16px;
+    }
+  }
+
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.3;
+  }
+
+  .sign {
+    padding: 6px 12px;
+    border: 1px solid var(--dark-line);
+    border-radius: 9999px;
+    color: var(--dark-foreground);
+  }
+
+  .fig {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    color: var(--dark-foreground-muted);
+  }
+
+  .replay {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    color: var(--green-400);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color 150ms ease-out;
+  }
+
+  .replay:hover {
+    color: var(--dark-foreground);
+  }
+
+  /* Pasos de la demo: solo se ocultan mientras se reproduce */
+  .step {
+    transition:
+      opacity 450ms var(--ease-brand),
+      filter 450ms var(--ease-brand),
+      transform 450ms var(--ease-brand);
+  }
+
+  .playing .step:not(.in) {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .playing .step:not(.in) {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  type Demo = HTMLElement & { _stop?: () => void }
+
+  // Momento (ms) en que entra cada paso, al ritmo de lectura: mensaje,
+  // llamadas, respuesta, campos de la orden y, al final, la verificación.
+  function schedule(count: number): number[] {
+    const chat = [0, 1100, 1800, 2700]
+    const fields = count - chat.length - 1
+    const start = 3900
+    const gap = 260
+    const rows = Array.from({ length: fields }, (_, i) => start + i * gap)
+    const verified = start + fields * gap + 500
+    return [...chat, ...rows, verified]
+  }
+
+  function setup(root: Demo) {
+    if (root.dataset.ready) return
+    root.dataset.ready = '1'
+
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('.step'))
+    const replay = root.querySelector<HTMLButtonElement>('[data-replay]')
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (!steps.length || reduce.matches) return
+
+    const times = schedule(steps.length)
+    let timers: number[] = []
+
+    const clear = () => {
+      timers.forEach(clearTimeout)
+      timers = []
+    }
+
+    // Estado final completo (el mismo que trae el HTML)
+    const finish = () => {
+      clear()
+      root.classList.remove('playing')
+    }
+
+    const play = () => {
+      clear()
+      if (reduce.matches) return finish()
+      root.classList.add('playing')
+      steps.forEach((s) => s.classList.remove('in'))
+      steps.forEach((s, i) => {
+        timers.push(window.setTimeout(() => s.classList.add('in'), times[i]))
+      })
+      const end = times[times.length - 1] + 500
+      timers.push(window.setTimeout(() => root.classList.remove('playing'), end))
+    }
+
+    replay?.addEventListener('click', play)
+
+    // Oculta los pasos ya, para que la demo no se vea completa y luego se
+    // vacíe al llegar a ella; arranca una sola vez, cuando se ve.
+    root.classList.add('playing')
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        io.disconnect()
+        timers.push(window.setTimeout(play, 300))
+      },
+      { threshold: 0.3 },
+    )
+    io.observe(root)
+
+    root._stop = () => {
+      io.disconnect()
+      finish()
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<Demo>('[data-demo]').forEach(setup)
+  })
+
+  // Al salir de la página (View Transitions), se cortan los temporizadores
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<Demo>('[data-demo]').forEach((el) => el._stop?.())
+  })
+</script>
