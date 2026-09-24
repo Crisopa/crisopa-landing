@@ -164,7 +164,6 @@ Siempre y solo lo técnico:
 - Etiquetas de sección (eyebrows) y numeración `01`, `02`, `03`.
 - Referencias SIGPAC, nº de registro del MAPA, dosis, UF de NPK, plazos.
 - Fechas en formato ISO (`2026-09-22`) y horas.
-- Pies de figura (`FIG. 01 — Orden de tratamiento`).
 - Microcopia técnica bajo un CTA (`Conector MCP · ChatGPT y Claude`).
 
 Nunca en mono: titulares, párrafos, botones.
@@ -286,8 +285,12 @@ conversación que termina en un dato estructurado.
   de nivel 2.
 - **Vídeo o animación, no captura estática**, cuando se trata del flujo
   principal. Las capturas estáticas valen para detalles.
-- Pie de figura en mono debajo cuando ayuda (`FIG. 01 — Del chat a la orden
-  de tratamiento`).
+- **Sin pies de figura** tipo `FIG. 01`: debajo de una ventana de producto
+  parecen un artículo científico y no aportan. La ventana se explica sola. Si
+  los datos son de ejemplo, basta una nota breve (`Finca y SIGPAC de ejemplo.`).
+- **Repetir la animación:** botón de icono discreto (28px, borde de 1px, icono
+  de flecha circular) en una esquina de la ventana o de la demo, con
+  `aria-label`. Nunca un enlace de texto en un pie.
 
 ---
 
@@ -456,7 +459,7 @@ recursos concretos, no la estética completa.
 
 | Web | Qué tomamos |
 |-----|-------------|
-| [Linear](https://linear.app) | Conversación → dato estructurado lado a lado, pies de figura en mono, separadores de 1px, entrada con desenfoque |
+| [Linear](https://linear.app) | Conversación → dato estructurado lado a lado, separadores de 1px, entrada con desenfoque |
 | [Attio](https://attio.com) | Producto con agente en un SaaS claro, índice lateral fijo en la sección de flujo |
 | [Rillet](https://rillet.com) | Etiquetas numeradas en mono, paso a oscuro en la sección de IA con retícula de puntos |
 | [Mintlify](https://www.mintlify.com) | Un solo verde con neutros teñidos, pastilla con dato real en mono sobre el H1 |

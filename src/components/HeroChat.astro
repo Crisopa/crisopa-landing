@@ -7,8 +7,8 @@
  *   `prefers-reduced-motion`, la ventana se ve entera y quieta.
  * - Con movimiento, al entrar en pantalla (una sola vez) se reinicia: el
  *   mensaje se escribe con caret, entra la llamada a Crisopa y luego la
- *   respuesta (opacidad + desenfoque 6px→0 + 8px, ease-brand). «Repetir» la
- *   relanza.
+ *   respuesta (opacidad + desenfoque 6px→0 + 8px, ease-brand). El botón de
+ *   la esquina la relanza.
  * - Los productos son filas reales del registro del MAPA (tomate × mosca
  *   blanca). No se cambian sin comprobarlos contra la ficha oficial.
  */
@@ -74,11 +74,14 @@ const productos = [
         </div>
       </div>
     </div>
-  </div>
 
-  <figcaption class="fig">
-    FIG. 01 — De la pregunta al producto autorizado · <button type="button" class="replay" data-replay>Repetir</button>
-  </figcaption>
+    <button type="button" class="replay" data-replay aria-label="Repetir la animación" title="Repetir">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+        <path d="M3 3v5h5" />
+      </svg>
+    </button>
+  </div>
 </figure>
 
 <style>
@@ -87,6 +90,7 @@ const productos = [
   }
 
   .window {
+    position: relative;
     background: var(--surface);
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-lg);
@@ -159,13 +163,14 @@ const productos = [
     display: grid;
     gap: 18px;
     align-content: start;
-    padding: 28px;
+    /* Abajo deja sitio al botón de repetir */
+    padding: 28px 28px 48px;
     min-height: 380px;
   }
 
   @media (max-width: 560px) {
     .win-body {
-      padding: 20px 16px;
+      padding: 20px 16px 48px;
       min-height: 0;
     }
   }
@@ -273,31 +278,34 @@ const productos = [
     color: var(--green-700);
   }
 
-  .fig {
-    margin-top: 14px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0.04em;
-    color: var(--foreground-muted);
-  }
-
+  /* Repetir: control discreto en la esquina inferior de la ventana */
   .replay {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
     padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    letter-spacing: inherit;
-    color: var(--green-700);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--foreground-muted);
     cursor: pointer;
-    transition: color 150ms ease-out;
+    transition:
+      color 150ms ease-out,
+      border-color 150ms ease-out;
   }
 
   .replay:hover {
-    color: var(--green-800);
+    color: var(--foreground);
+    border-color: var(--line-strong);
+  }
+
+  .replay svg {
+    width: 14px;
+    height: 14px;
   }
 
   /* Pasos de la demo: solo se ocultan mientras se reproduce */

@@ -11,11 +11,11 @@
  *   cargar y, cuando la demo se ve (una sola vez), entran en orden: mensaje
  *   del asesor, las dos llamadas a Crisopa, la respuesta, los campos de la
  *   orden uno a uno y, al final, «Verificado contra el MAPA». Opacidad +
- *   desenfoque 6px→0 + 8px, ease-brand. «Repetir» la relanza.
+ *   desenfoque 6px→0 + 8px, ease-brand. El botón de la esquina la relanza.
  * - Abanto es real (Registro MAPA nº 24643: 0,75 l/ha, plazo de seguridad
  *   1 día, máx. 2 aplicaciones, autorizado en tomate de invernadero con
  *   carretilla). No se cambia sin comprobarlo contra la ficha oficial. La
- *   finca y el SIGPAC son de ejemplo, y así lo dice el pie de figura.
+ *   finca y el SIGPAC son de ejemplo, y así lo dice la nota al pie.
  */
 import Eyebrow from './Eyebrow.astro'
 import SelloMAPA from './SelloMAPA.astro'
@@ -96,7 +96,13 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     </div>
 
     <figcaption class="fig">
-      FIG. 02 — La conversación se convierte en un registro estructurado · finca y SIGPAC de ejemplo · <button type="button" class="replay" data-replay>Repetir</button>
+      <span>Finca y SIGPAC de ejemplo.</span>
+      <button type="button" class="replay" data-replay aria-label="Repetir la animación" title="Repetir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+      </button>
     </figcaption>
   </figure>
 </section>
@@ -258,31 +264,44 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     color: var(--dark-foreground);
   }
 
+  /* Nota de datos de ejemplo a la izquierda, repetir en la esquina derecha */
   .fig {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin-top: 14px;
     font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.5;
-    letter-spacing: 0.04em;
     color: var(--dark-foreground-muted);
   }
 
   .replay {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
     padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    letter-spacing: inherit;
-    color: var(--green-400);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-sm);
+    background: var(--dark-surface);
+    color: var(--dark-foreground-muted);
     cursor: pointer;
-    transition: color 150ms ease-out;
+    transition:
+      color 150ms ease-out,
+      border-color 150ms ease-out;
   }
 
   .replay:hover {
     color: var(--dark-foreground);
+    border-color: var(--dark-foreground-muted);
+  }
+
+  .replay svg {
+    width: 14px;
+    height: 14px;
   }
 
   /* Pasos de la demo: solo se ocultan mientras se reproduce */
