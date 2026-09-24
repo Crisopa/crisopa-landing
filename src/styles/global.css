@@ -274,9 +274,35 @@
     align-items: end;
   }
 
+  /* En escritorio: la etiqueta ocupa su propia fila y el titular y la
+     entradilla comparten la siguiente, alineados por la línea base de su
+     primera línea (no por abajo: si la entradilla es más alta que el
+     titular, su primera línea quedaría descolgada). */
   @media (min-width: 861px) {
     .sec-head {
       grid-template-columns: 1fr 1fr;
+      /* La separación etiqueta–titular la pone el mt-5 del h2 */
+      row-gap: 0;
+      align-items: baseline;
+    }
+
+    .sec-head > div:first-child {
+      display: contents;
+    }
+
+    .sec-head > div:first-child > :first-child:not(:last-child) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .sec-head > div:first-child > :last-child {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .sec-head:has(> div:first-child) > :last-child:not(:first-child) {
+      grid-column: 2;
+      grid-row: 2;
     }
   }
 
