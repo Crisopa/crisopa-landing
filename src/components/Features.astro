@@ -42,24 +42,18 @@ const iconPaths: Record<string, string> = {
 }
 ---
 
-<section id="caracteristicas" class="relative py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
-  <!-- Background decoration -->
-  <div class="absolute inset-0 -z-10">
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary-100/30 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-surface-secondary/30 rounded-full blur-3xl"></div>
-  </div>
-
+<section id="caracteristicas" class="relative py-16 sm:py-24 lg:py-32 bg-surface overflow-hidden">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto" data-animate>
       <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
         Qué incluye<span class="eyebrow-caret"></span>
       </span>
-      <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+      <h2 class="mt-6 text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
         Mucho más que un cuaderno.
         <span class="block text-primary-700">La herramienta del asesor.</span>
       </h2>
-      <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+      <p class="mt-6 text-lg text-foreground-muted leading-relaxed">
         Todo lo que un asesor necesita para llevar muchas fincas a la vez: guarda, estructura y cuadra cada parcela. Un solo sitio para gestionarlas todas y rendir cuentas, con todo en orden.
       </p>
     </div>
@@ -68,14 +62,14 @@ const iconPaths: Record<string, string> = {
     <div class="mt-12 sm:mt-20 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {features.map((feature, index) => (
         <div
-          class="relative group h-full"
+          class="relative h-full"
           data-animate
-          style={`transition-delay: ${index * 100}ms;`}
+          style={`transition-delay: ${index * 60}ms;`}
         >
-          <div class="card-glow relative h-full rounded-2xl bg-white p-5 sm:p-7 border border-gray-100 shadow-lg shadow-gray-900/5">
+          <div class="relative h-full rounded-lg bg-surface p-5 sm:p-7 border border-line-strong shadow-1">
             <!-- Icon -->
             <div class="relative mb-5">
-              <div class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-700 transition-all duration-500 group-hover:bg-primary-600 group-hover:text-white group-hover:scale-110">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[feature.icon]} />
                 </svg>
@@ -83,10 +77,10 @@ const iconPaths: Record<string, string> = {
             </div>
 
             <!-- Text -->
-            <h3 class="relative text-lg font-semibold text-gray-900 group-hover:text-primary-800 transition-colors duration-300">
+            <h3 class="relative text-lg text-foreground">
               {feature.title}
             </h3>
-            <p class="relative mt-3 text-sm text-gray-600 leading-relaxed">
+            <p class="relative mt-3 text-sm text-foreground-muted leading-relaxed">
               {feature.description}
             </p>
           </div>

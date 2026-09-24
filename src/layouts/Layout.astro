@@ -3,7 +3,6 @@ import '../styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import Analytics from '@vercel/analytics/astro'
 import CookieBanner from '../components/CookieBanner.astro'
-import ClickSpark from '../components/react/ClickSpark.tsx'
 
 import { organizationSchema, websiteSchema } from '../lib/schema'
 
@@ -99,7 +98,6 @@ const jsonLd = {
   </head>
   <body class="font-sans antialiased text-foreground bg-background overflow-x-hidden">
     <slot />
-    <ClickSpark client:idle sparkColor="#0fa877" sparkRadius={18} sparkCount={8} />
     <CookieBanner />
     <Analytics />
 
@@ -125,23 +123,7 @@ const jsonLd = {
       })
     </script>
 
-    <!-- Card glow: rastrea el cursor sobre las .card-glow (delegado en document,
-         sobrevive a las View Transitions). Actualiza --mx/--my por card. -->
-    <script>
-      document.addEventListener(
-        'pointermove',
-        (e) => {
-          const card = (e.target as Element)?.closest?.('.card-glow') as HTMLElement | null
-          if (!card) return
-          const r = card.getBoundingClientRect()
-          card.style.setProperty('--mx', `${e.clientX - r.left}px`)
-          card.style.setProperty('--my', `${e.clientY - r.top}px`)
-        },
-        { passive: true }
-      )
-    </script>
-
-    <!-- Intersection Observer for scroll animations -->
+    <!-- Entrada de secciones: una sola vez por elemento (ver brand-visual.md › Movimiento) -->
     <script>
       const observerOptions = {
         root: null,
@@ -153,8 +135,7 @@ const jsonLd = {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('animated')
-            // Optionally stop observing after animation
-            // observer.unobserve(entry.target)
+            observer.unobserve(entry.target)
           }
         })
       }, observerOptions)

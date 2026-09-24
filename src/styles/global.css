@@ -105,198 +105,59 @@
   --color-primary-800: var(--green-800);
   --color-primary-900: var(--green-900);
   --color-primary-950: var(--green-950);
-
-  /* Animaciones personalizadas */
-  --animate-fade-in: fade-in 0.6s ease-out forwards;
-  --animate-fade-in-up: fade-in-up 0.6s ease-out forwards;
-  --animate-fade-in-down: fade-in-down 0.5s ease-out forwards;
-  --animate-slide-in-left: slide-in-left 0.6s ease-out forwards;
-  --animate-slide-in-right: slide-in-right 0.6s ease-out forwards;
-  --animate-scale-in: scale-in 0.5s ease-out forwards;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-float-slow: float 8s ease-in-out infinite;
-  --animate-float-delayed: float 6s ease-in-out 2s infinite;
-  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
-  --animate-shimmer: shimmer 2s linear infinite;
-  --animate-gradient: gradient-shift 8s ease infinite;
-  --animate-glow: glow 2s ease-in-out infinite alternate;
-  --animate-bounce-soft: bounce-soft 2s ease-in-out infinite;
 }
 
 /* ========================================
-   ANIMACIONES KEYFRAMES
+   TIPOGRAFÍA DE TITULARES (brand-visual.md › Tipografía › Escala)
+   Sora 600, tracking negativo que crece con el tamaño.
+   Van en @layer base para que las utilidades de tamaño (text-4xl…) sigan
+   mandando en el tamaño. `--tw-leading` hace que las utilidades text-*
+   respeten el interlineado de la guía en vez del suyo por defecto.
    ======================================== */
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  h1 {
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    --tw-leading: 1.02;
   }
-}
 
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
+  h2 {
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    --tw-leading: 1.08;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  h3 {
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    --tw-leading: 1.25;
   }
-}
 
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
+  /* Tablas y cifras que se comparan: siempre tabulares */
+  table {
+    font-variant-numeric: tabular-nums;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-@keyframes pulse-soft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 20px oklch(0.610 0.158 170 / 0.35); }
-  to { box-shadow: 0 0 40px oklch(0.610 0.158 170 / 0.65); }
-}
-
-@keyframes bounce-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes blob {
-  0%, 100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    transform: rotate(0deg);
-  }
-  50% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-    transform: rotate(180deg);
-  }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 /* ========================================
-   UTILIDADES DE ANIMACIÓN
+   ENTRADAS (brand-visual.md › Movimiento)
+   Opacidad + desenfoque 6px→0 + 8px de desplazamiento, 450 ms, ease-brand,
+   una sola vez. `animate-enter` para lo que entra al cargar (con
+   animation-delay en línea si hace falta escalonar); `data-animate` para lo
+   que entra al hacer scroll (el observer de Layout añade `.animated`).
    ======================================== */
 
-.animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
-.animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
-.animate-fade-in-down { animation: fade-in-down 0.5s ease-out forwards; }
-.animate-slide-in-left { animation: slide-in-left 0.6s ease-out forwards; }
-.animate-slide-in-right { animation: slide-in-right 0.6s ease-out forwards; }
-.animate-scale-in { animation: scale-in 0.5s ease-out forwards; }
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-float-slow { animation: float 8s ease-in-out infinite; }
-.animate-float-delayed { animation: float 6s ease-in-out 2s infinite; }
-.animate-pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
-.animate-blob { animation: blob 8s ease-in-out infinite; }
-.animate-spin-slow { animation: spin-slow 20s linear infinite; }
-
-/* Delays de animación */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
-.delay-800 { animation-delay: 800ms; }
-
-/* Estado inicial para animaciones */
-.animate-on-scroll {
-  opacity: 0;
-}
-
-.animate-on-scroll.is-visible {
-  opacity: 1;
-}
-
-/* ========================================
-   GRAIN / NOISE TEXTURE OVERLAY
-   ======================================== */
-
-.grain-overlay {
-  position: relative;
-}
-
-.grain-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  pointer-events: none;
-  z-index: 1;
-  border-radius: inherit;
-}
-
-/* ========================================
-   BLUR-REVEAL TEXT ANIMATION
-   ======================================== */
-
-@keyframes blur-reveal {
+@keyframes enter {
   from {
     opacity: 0;
-    filter: blur(12px);
-    transform: translateY(16px);
+    filter: blur(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -305,401 +166,43 @@
   }
 }
 
-.animate-blur-reveal {
-  animation: blur-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-enter {
+  animation: enter 450ms var(--ease-brand) both;
 }
 
-/* ========================================
-   GLOW PULSE FOR CTAs
-   ======================================== */
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px oklch(0.530 0.152 170 / 0.30), 0 0 60px oklch(0.530 0.152 170 / 0.12);
-  }
-  50% {
-    box-shadow: 0 0 30px oklch(0.530 0.152 170 / 0.45), 0 0 80px oklch(0.530 0.152 170 / 0.18);
-  }
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-/* ========================================
-   ROTATING GRADIENT BORDER (conic)
-   ======================================== */
-
-@keyframes spin-gradient {
-  from { --gradient-angle: 0deg; }
-  to { --gradient-angle: 360deg; }
-}
-
-@property --gradient-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-.gradient-border-animated {
-  position: relative;
-  border-radius: 1.5rem;
-  background: white;
-}
-
-.gradient-border-animated::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: calc(1.5rem + 2px);
-  background: conic-gradient(
-    from var(--gradient-angle),
-    var(--green-400),
-    var(--green-200),
-    var(--green-600),
-    var(--green-400)
-  );
-  z-index: -1;
-  animation: spin-gradient 4s linear infinite;
-}
-
-/* ========================================
-   ANIMATED UNDERLINE HIGHLIGHT
-   ======================================== */
-
-.animated-underline {
-  position: relative;
-  display: inline;
-}
-
-.animated-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--green-500), var(--green-300), var(--green-500));
-  background-size: 200% 100%;
-  animation: gradient-shift 3s ease infinite;
-}
-
-/* ========================================
-   STAGGER WITH BLUR (for data-animate="stagger")
-   ======================================== */
-
+[data-animate],
 [data-animate="stagger"] > * {
   opacity: 0;
-  transform: translateY(24px);
   filter: blur(6px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(8px);
+  transition: opacity 450ms var(--ease-brand),
+              filter 450ms var(--ease-brand),
+              transform 450ms var(--ease-brand);
 }
 
+/* El contenedor de un stagger no se anima: lo hacen sus hijos */
+[data-animate="stagger"] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+[data-animate].animated,
 [data-animate="stagger"].animated > * {
   opacity: 1;
-  transform: translateY(0);
   filter: blur(0);
-}
-
-[data-animate="stagger"] > *:nth-child(1) { transition-delay: 0ms; }
-[data-animate="stagger"] > *:nth-child(2) { transition-delay: 80ms; }
-[data-animate="stagger"] > *:nth-child(3) { transition-delay: 160ms; }
-[data-animate="stagger"] > *:nth-child(4) { transition-delay: 240ms; }
-[data-animate="stagger"] > *:nth-child(5) { transition-delay: 320ms; }
-[data-animate="stagger"] > *:nth-child(6) { transition-delay: 400ms; }
-
-/* ========================================
-   LINE GROW ANIMATION
-   ======================================== */
-
-@keyframes line-grow {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-[data-animate="line-grow"] {
-  opacity: 1;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-animate="line-grow"].animated {
-  transform: scaleX(1);
-}
-
-/* ========================================
-   WAVE SECTION DIVIDER
-   ======================================== */
-
-.wave-divider {
-  position: absolute;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.wave-divider svg {
-  display: block;
-  width: calc(100% + 2px);
-  position: relative;
-  left: -1px;
-}
-
-.wave-divider-top {
-  top: -1px;
-}
-
-.wave-divider-bottom {
-  bottom: -1px;
-}
-
-/* ========================================
-   CARD TILT ON HOVER (CSS only)
-   ======================================== */
-
-.card-hover-tilt {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-}
-
-.card-hover-tilt:hover {
-  transform: perspective(800px) rotateX(2deg) rotateY(-1deg) translateY(-8px) scale(1.01);
-  box-shadow:
-    0 30px 60px -15px rgba(0, 0, 0, 0.12),
-    0 0 0 1px oklch(0.610 0.158 170 / 0.10);
-}
-
-/* ========================================
-   CARD GLOW — hover unificado (estilo Linear / Vercel)
-   Borde que se ilumina siguiendo el cursor + halo interior suave +
-   elevación + sombra con tinte de marca. Una sola clase para todas las
-   tarjetas de la landing, así el efecto es idéntico en cada sección.
-   El cursor se rastrea con --mx / --my (script delegado en Layout).
-   ======================================== */
-
-.card-glow {
-  position: relative;
-  isolation: isolate;
-  transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Halo interior difuso que sigue al cursor (detrás del contenido) */
-.card-glow::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    340px circle at var(--mx, 50%) var(--my, 50%),
-    oklch(0.700 0.142 170 / 0.10),
-    transparent 65%
-  );
-  opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-/* Borde luminoso que sigue al cursor (mask: solo se ve el contorno) */
-.card-glow::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
-    240px circle at var(--mx, 50%) var(--my, 50%),
-    oklch(0.610 0.158 170 / 0.70),
-    transparent 60%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-/* Contenido por encima del halo interior sin tocar el markup de cada card */
-.card-glow > * {
-  position: relative;
-  z-index: 1;
-}
-
-@media (hover: hover) {
-  .card-glow:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      0 18px 40px -12px oklch(0.452 0.136 170 / 0.20),
-      0 8px 18px -10px oklch(0.205 0.01 160 / 0.12);
-  }
-
-  .card-glow:hover::after,
-  .card-glow:hover::before {
-    opacity: 1;
-  }
-}
-
-/* ========================================
-   NUMBER COUNTER (JS driven)
-   ======================================== */
-
-.counter-number {
-  font-variant-numeric: tabular-nums;
-  display: inline-block;
-  min-width: 2ch;
-}
-
-/* ========================================
-   EFECTOS GLASSMORPHISM
-   ======================================== */
-
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.glass-dark {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-primary {
-  background: rgba(var(--green-100), 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(var(--green-200), 0.5);
-}
-
-/* ========================================
-   EFECTOS DE GRADIENTE
-   ======================================== */
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--green-700), var(--green-500), var(--green-400));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 5s ease infinite;
-}
-
-.gradient-border {
-  position: relative;
-  background: white;
-  border-radius: 1rem;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: calc(1rem + 2px);
-  background: linear-gradient(135deg, var(--green-400), var(--green-200), var(--green-600));
-  z-index: -1;
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
-}
-
-/* ========================================
-   EFECTOS HOVER PREMIUM
-   ======================================== */
-
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-.hover-glow {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 30px rgba(80, 120, 80, 0.3);
-}
-
-.hover-scale {
-  transition: transform 0.3s ease;
-}
-
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-/* Card 3D effect */
-.card-3d {
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  transform-style: preserve-3d;
-}
-
-.card-3d:hover {
-  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-8px);
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(var(--green-500), 0.1);
-}
-
-/* ========================================
-   BOTONES PREMIUM
-   ======================================== */
-
-.btn-primary {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.btn-primary:hover::before {
-  left: 100%;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px oklch(0.372 0.110 171 / 0.35);
-}
-
-.btn-primary:active {
   transform: translateY(0);
-  transition-duration: 0.1s;
 }
+
+[data-animate="fade"] {
+  transform: none;
+}
+
+[data-animate="stagger"] > *:nth-child(2) { transition-delay: 60ms; }
+[data-animate="stagger"] > *:nth-child(3) { transition-delay: 120ms; }
+[data-animate="stagger"] > *:nth-child(4) { transition-delay: 180ms; }
+[data-animate="stagger"] > *:nth-child(5) { transition-delay: 240ms; }
+[data-animate="stagger"] > *:nth-child(6) { transition-delay: 300ms; }
 
 /* ========================================
    SCROLL & COMPORTAMIENTO
@@ -716,22 +219,22 @@ html {
   scroll-padding-top: 5rem; /* compensa el header fijo al saltar a una ancla */
 }
 
-/* Scrollbar personalizada */
+/* Scrollbar personalizada: neutros teñidos */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--surface-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--green-400);
+  background: var(--line-strong);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--green-600);
+  background: var(--foreground-muted);
 }
 
 /* Focus visible para accesibilidad */
@@ -740,92 +243,12 @@ html {
   outline-offset: 2px;
 }
 
-/* Headings usan Sora */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
-}
-
-/* ========================================
-   INTERSECTION OBSERVER ANIMATIONS
-   ======================================== */
-
-[data-animate] {
-  opacity: 0;
-  transform: translateY(20px);
-  filter: blur(4px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@media (min-width: 640px) {
-  [data-animate] {
-    transform: translateY(30px);
-  }
-}
-
-[data-animate].animated {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-[data-animate="fade"] {
-  transform: none;
-}
-
-[data-animate="slide-left"] {
-  transform: translateX(-40px);
-}
-
-[data-animate="slide-left"].animated {
-  transform: translateX(0);
-}
-
-[data-animate="slide-right"] {
-  transform: translateX(40px);
-}
-
-[data-animate="slide-right"].animated {
-  transform: translateX(0);
-}
-
-[data-animate="scale"] {
-  transform: scale(0.9);
-}
-
-[data-animate="scale"].animated {
-  transform: scale(1);
-}
-
-/* Stagger delays for children */
-[data-stagger] > *:nth-child(1) { transition-delay: 0ms; }
-[data-stagger] > *:nth-child(2) { transition-delay: 100ms; }
-[data-stagger] > *:nth-child(3) { transition-delay: 200ms; }
-[data-stagger] > *:nth-child(4) { transition-delay: 300ms; }
-[data-stagger] > *:nth-child(5) { transition-delay: 400ms; }
-[data-stagger] > *:nth-child(6) { transition-delay: 500ms; }
-[data-stagger] > *:nth-child(7) { transition-delay: 600ms; }
-[data-stagger] > *:nth-child(8) { transition-delay: 700ms; }
-
-/* ========================================
-   EFECTOS DE TEXTO
-   ======================================== */
-
-.text-shadow-soft {
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.text-shadow-glow {
-  text-shadow: 0 0 20px rgba(var(--green-500), 0.5);
-}
-
 /* ========================================
    ESTILOS PARA PÁGINAS LEGALES (PROSE)
    ======================================== */
 
 .prose {
-  color: #374151;
+  color: var(--foreground);
   line-height: 1.75;
 }
 
@@ -836,28 +259,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose p.lead {
   font-size: 1.25rem;
-  color: #4b5563;
+  color: var(--foreground-muted);
   line-height: 1.6;
 }
 
+/* Titulares de prosa: tamaño de H3 de la escala (24px), así que llevan su
+   tracking e interlineado; el peso 600 y la familia vienen de la base. */
 .prose h2 {
-  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
-  color: #111827;
-  font-weight: 700;
+  color: var(--foreground);
   font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   margin-top: 2em;
   margin-bottom: 1em;
-  line-height: 1.3;
 }
 
 .prose h3 {
-  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
-  color: #1f2937;
-  font-weight: 600;
+  color: var(--foreground);
   font-size: 1.25rem;
   margin-top: 1.6em;
   margin-bottom: 0.6em;
-  line-height: 1.4;
 }
 
 .prose ul {
@@ -887,15 +308,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose strong {
-  color: #111827;
+  color: var(--foreground);
   font-weight: 600;
 }
 
+/* Enlace de la guía: green-700, subrayado fino con separación, hover 800 */
 .prose a {
-  color: var(--green-600);
+  color: var(--green-700);
   text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease-out;
 }
 
 .prose a:hover {
@@ -903,11 +326,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose code {
-  background: #f3f4f6;
+  background: var(--surface-secondary);
+  border: 1px solid var(--line);
   padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-sm);
   font-size: 0.875em;
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
 }
 
 .prose table {
@@ -919,19 +343,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose thead {
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 1px solid var(--line-strong);
 }
 
 .prose th {
   padding: 0.75rem 1rem;
   text-align: left;
   font-weight: 600;
-  color: #111827;
+  color: var(--foreground);
 }
 
 .prose td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--line);
 }
 
 .prose tbody tr:last-child td {
@@ -940,31 +364,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose-lg {
   font-size: 1.125rem;
-}
-
-.prose-gray a {
-  color: var(--green-600);
-}
-
-/* ========================================
-   OPTIMIZACIÓN MÓVIL
-   ======================================== */
-
-/* Reducir animaciones en pantallas pequeñas para mejor rendimiento */
-@media (max-width: 639px) {
-  .animate-blob {
-    animation: none;
-  }
-
-  .animate-float,
-  .animate-float-slow,
-  .animate-float-delayed {
-    animation-duration: 8s;
-  }
-
-  .animate-pulse-soft {
-    animation-duration: 5s;
-  }
 }
 
 /* ========================================
@@ -980,11 +379,6 @@ p, li {
   text-wrap: pretty;
 }
 
-/* Números dinámicos sin saltos de layout */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
-
 /* Datos técnicos en mono tabular (ha, dosis, UF, fechas, importes, SIGPAC).
    Da el carácter "herramienta de trabajo" de la app. Aplicar a cifras/códigos,
    no a texto corrido. */
@@ -995,26 +389,23 @@ p, li {
   letter-spacing: -0.01em;
 }
 
-/* Outline sutil en imágenes para profundidad consistente */
-.img-outline {
-  outline: 1px solid rgba(0, 0, 0, 0.06);
-  outline-offset: -1px;
-}
-
-/* Scale on press: feedback táctil en elementos interactivos.
-   Solo transiciona scale (nunca `all`). 0.96 según guía de detalle. */
+/* Pulsación (brand-visual.md › Botones): scale(0.97) al pulsar y nada más.
+   Lleva también la transición de color del hover (150 ms ease-out), así que
+   los botones con data-press no necesitan utilidades transition-*. */
 [data-press],
 .press {
-  transition: scale 0.18s cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 0.18s cubic-bezier(0.2, 0, 0, 1);
+  transition-property: scale, color, background-color, border-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
 }
 
 [data-press]:active,
 .press:active {
-  scale: 0.96;
+  scale: 0.97;
 }
 
-/* Respetar preferencia de movimiento reducido */
+/* Respetar preferencia de movimiento reducido: sin desplazamientos ni
+   desenfoques; el caret queda fijo y visible. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1024,24 +415,17 @@ p, li {
     transition-duration: 0.01ms !important;
   }
 
-  [data-animate] {
-    opacity: 1;
-    transform: none;
-    filter: none;
+  .animate-enter {
+    animation: none;
   }
 
+  [data-animate],
   [data-animate="stagger"] > * {
     opacity: 1;
     transform: none;
     filter: none;
   }
 
-  /* La card no se eleva; el glow del borde se mantiene como único feedback */
-  .card-glow:hover {
-    transform: none;
-  }
-
-  /* El caret del eyebrow queda visible y fijo */
   .eyebrow-caret {
     animation: none !important;
     opacity: 1;
@@ -1070,7 +454,9 @@ p, li {
   }
 }
 
-/* Orbiting Circles (sección Asistente IA): órbitas 100% CSS, sin JS */
+/* Orbiting Circles (sección Asistente IA): diagrama estático. Cada nodo se
+   coloca en su ángulo del anillo; no gira (la guía prohíbe lo que gira por
+   decorar). */
 .orbit-stage {
   container-type: inline-size;
 }
@@ -1079,24 +465,5 @@ p, li {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: orbit var(--duration, 30s) linear infinite;
-  will-change: transform;
-}
-
-@keyframes orbit {
-  0% {
-    transform: rotate(var(--angle)) translateY(var(--radius)) rotate(calc(-1 * var(--angle)));
-  }
-  100% {
-    transform: rotate(calc(var(--angle) + 360deg)) translateY(var(--radius))
-      rotate(calc(-1 * var(--angle) - 360deg));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit-node {
-    animation: none;
-    /* Posición estática en su ángulo, sin girar */
-    transform: rotate(var(--angle)) translateY(var(--radius)) rotate(calc(-1 * var(--angle)));
-  }
+  transform: rotate(var(--angle)) translateY(var(--radius)) rotate(calc(-1 * var(--angle)));
 }

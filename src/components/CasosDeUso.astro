@@ -35,19 +35,13 @@ const iconPaths: Record<string, string> = {
 ---
 
 <section id="casos" class="relative py-16 sm:py-24 lg:py-32 bg-background overflow-hidden">
-  <!-- Background decoration -->
-  <div class="absolute inset-0 -z-10">
-    <div class="absolute top-0 right-1/4 w-96 h-96 bg-primary-100/30 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 left-1/4 w-80 h-80 bg-surface-secondary/30 rounded-full blur-3xl"></div>
-  </div>
-
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto" data-animate>
       <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
         Casos de uso<span class="eyebrow-caret"></span>
       </span>
-      <h2 class="mt-6 font-display text-2xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+      <h2 class="mt-6 font-display text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
         Lo dices.
         <span class="text-primary-700">Está hecho.</span>
       </h2>
@@ -59,10 +53,10 @@ const iconPaths: Record<string, string> = {
     <!-- Grid -->
     <div class="mt-12 sm:mt-16 grid gap-6 sm:grid-cols-2" data-animate="stagger">
       {casos.map((caso) => (
-        <div class="card-glow group h-full flex flex-col rounded-2xl bg-surface p-6 sm:p-7 border border-primary-100/70 shadow-lg shadow-gray-900/5">
+        <div class="h-full flex flex-col rounded-lg bg-surface p-6 sm:p-7 border border-line-strong shadow-1">
           <!-- Quote (lo que dice el asesor) -->
           <div class="flex items-start gap-3">
-            <div class="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-100 text-primary-700 transition-transform duration-500 group-hover:scale-110">
+            <div class="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[caso.icon]} />
               </svg>
@@ -74,7 +68,7 @@ const iconPaths: Record<string, string> = {
           </div>
 
           <!-- Result (lo que hace el copiloto) -->
-          <div class="mt-5 flex items-start gap-3 rounded-xl bg-primary-50/70 px-4 py-3">
+          <div class="mt-5 flex items-start gap-3 rounded-md border border-line bg-surface-secondary px-4 py-3">
             <svg class="flex-shrink-0 mt-0.5 h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>

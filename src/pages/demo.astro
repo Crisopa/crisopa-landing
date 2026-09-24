@@ -61,12 +61,12 @@ const verticales = VIDEOS.filter((v) => v.vertical)
   {
     horizontales.map((video) => (
       <section class="not-prose mb-12">
-        <h2 class="mb-3 text-xl font-semibold text-gray-900">{video.titulo}</h2>
+        <h2 class="mb-3 text-xl text-foreground">{video.titulo}</h2>
         <video
           controls
           playsinline
           preload="metadata"
-          class="w-full rounded-xl border border-gray-200 bg-black shadow-sm"
+          class="w-full rounded-lg border border-line-strong bg-dark-background shadow-2"
         >
           <source src={video.url} type="video/mp4" />
           <p>
@@ -74,7 +74,7 @@ const verticales = VIDEOS.filter((v) => v.vertical)
             <a href={video.url}>Descárgalo aquí</a>.
           </p>
         </video>
-        <p class="mt-3 text-sm text-gray-500">{video.pie}</p>
+        <p class="mt-3 text-sm text-foreground-muted">{video.pie}</p>
       </section>
     ))
   }
@@ -83,12 +83,12 @@ const verticales = VIDEOS.filter((v) => v.vertical)
     {
       verticales.map((video) => (
         <section>
-          <h2 class="mb-3 text-xl font-semibold text-gray-900">{video.titulo}</h2>
+          <h2 class="mb-3 text-xl text-foreground">{video.titulo}</h2>
           <video
             controls
             playsinline
             preload="metadata"
-            class="w-full rounded-xl border border-gray-200 bg-black shadow-sm"
+            class="w-full rounded-lg border border-line-strong bg-dark-background shadow-2"
           >
             <source src={video.url} type="video/mp4" />
             <p>
@@ -96,7 +96,7 @@ const verticales = VIDEOS.filter((v) => v.vertical)
               <a href={video.url}>Descárgalo aquí</a>.
             </p>
           </video>
-          <p class="mt-3 text-sm text-gray-500">{video.pie}</p>
+          <p class="mt-3 text-sm text-foreground-muted">{video.pie}</p>
         </section>
       ))
     }

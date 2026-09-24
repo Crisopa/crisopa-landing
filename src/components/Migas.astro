@@ -18,7 +18,7 @@ const { items } = Astro.props
     </li>
     {items.map((item, i) => (
       <>
-        <li aria-hidden="true" class="select-none text-gray-300">/</li>
+        <li aria-hidden="true" class="select-none text-line-strong">/</li>
         <li>
           {i === items.length - 1 ? (
             <span aria-current="page" class="text-foreground">{item.nombre}</span>

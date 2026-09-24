@@ -78,7 +78,7 @@ import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
      estilo de enlace al resto de la página. */
   .canales {
     margin: 2em 0;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--line);
   }
 
   .canal {
@@ -90,13 +90,13 @@ import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
     gap: 0.15rem 1.5rem;
     align-items: baseline;
     padding: 1rem 0;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--line);
   }
 
   .canal dt {
     grid-area: asunto;
     font-weight: 600;
-    color: #111827;
+    color: var(--foreground);
     align-self: center;
   }
 
@@ -111,7 +111,7 @@ import { IDENTIDAD, EMAIL_PRIVACIDAD, EMAIL_SOPORTE } from '../lib/identidad'
     margin: 0;
     text-align: right;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--foreground-muted);
   }
 
   @media (max-width: 640px) {

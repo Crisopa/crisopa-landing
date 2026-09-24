@@ -16,15 +16,7 @@ const withCrisopa = [
 ];
 ---
 
-<section id='comparativa' class='relative py-16 sm:py-24 lg:py-32 overflow-hidden'>
-  <!-- Background -->
-  <div class='absolute inset-0 -z-10'>
-    <div
-      class='absolute inset-0 bg-gradient-to-b from-background via-surface-secondary to-background'
-    >
-    </div>
-  </div>
-
+<section id='comparativa' class='relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-background'>
   <div class='mx-auto max-w-5xl px-4 sm:px-6 lg:px-8'>
     <!-- Header -->
     <div class='text-center max-w-2xl mx-auto mb-10 sm:mb-16' data-animate>
@@ -32,7 +24,7 @@ const withCrisopa = [
         Comparativa<span class="eyebrow-caret"></span>
       </span>
       <h2
-        class='mt-6 font-display text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground'
+        class='mt-6 font-display text-[2rem] sm:text-[2.5rem] lg:text-5xl text-foreground'
       >
         Deja atrás el papeleo
       </h2>
@@ -42,13 +34,13 @@ const withCrisopa = [
     <div class='grid md:grid-cols-2 gap-8 md:gap-6 lg:gap-8 mt-6 md:mt-0'>
       <!-- Without -->
       <div
-        class='relative p-6 sm:p-8 rounded-2xl bg-gray-100 border border-gray-200'
+        class='relative p-6 sm:p-8 rounded-lg bg-surface-secondary border border-line'
         data-animate
-        style="transition-delay: 100ms;"
+        style="transition-delay: 60ms;"
       >
         <div class='absolute -top-4 left-8'>
           <span
-            class='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200 text-gray-600 text-sm font-medium'
+            class='inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong bg-surface text-foreground-muted text-sm font-medium'
           >
             <svg
               class='w-4 h-4'
@@ -70,9 +62,9 @@ const withCrisopa = [
           {
             without.map((item) => (
               <li class='flex items-start gap-3'>
-                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center mt-0.5'>
+                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-line flex items-center justify-center mt-0.5'>
                   <svg
-                    class='w-3.5 h-3.5 text-gray-500'
+                    class='w-3.5 h-3.5 text-foreground-muted'
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
@@ -85,7 +77,7 @@ const withCrisopa = [
                     />
                   </svg>
                 </span>
-                <span class='text-gray-600'>{item}</span>
+                <span class='text-foreground-muted'>{item}</span>
               </li>
             ))
           }
@@ -94,13 +86,13 @@ const withCrisopa = [
 
       <!-- With Crisopa -->
       <div
-        class='relative p-6 sm:p-8 rounded-2xl bg-primary-600 border border-primary-500 shadow-xl shadow-primary-600/20'
+        class='relative p-6 sm:p-8 rounded-lg bg-surface border border-primary-200 shadow-1'
         data-animate
-        style="transition-delay: 250ms;"
+        style="transition-delay: 120ms;"
       >
         <div class='absolute -top-4 left-8'>
           <span
-            class='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-primary-700 text-sm font-semibold shadow-lg shadow-primary-900/20 border-2 border-primary-200'
+            class='inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary-200 bg-primary-50 text-primary-800 text-sm font-medium'
           >
             <svg
               class='w-4 h-4'
@@ -122,9 +114,9 @@ const withCrisopa = [
           {
             withCrisopa.map((item) => (
               <li class='flex items-start gap-3'>
-                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5'>
+                <span class='flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center mt-0.5'>
                   <svg
-                    class='w-3.5 h-3.5 text-white'
+                    class='w-3.5 h-3.5 text-primary-700'
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
@@ -137,7 +129,7 @@ const withCrisopa = [
                     />
                   </svg>
                 </span>
-                <span class='text-white'>{item}</span>
+                <span class='text-foreground'>{item}</span>
               </li>
             ))
           }

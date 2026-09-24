@@ -28,31 +28,25 @@ const iconPaths: Record<string, string> = {
 }
 ---
 
-<section id="asistente-ia" class="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
-  <!-- Background -->
-  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-white via-primary-50/40 to-white"></div>
-  <div class="absolute inset-0 -z-10 overflow-hidden">
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary-100/40 rounded-full blur-3xl"></div>
-  </div>
-
+<section id="asistente-ia" class="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-background">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto" data-animate>
       <span class="inline-block font-data text-xs font-medium uppercase tracking-[0.18em] text-primary-700">
         Lo que nadie más tiene<span class="eyebrow-caret"></span>
       </span>
-      <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+      <h2 class="mt-6 text-[2rem] text-foreground sm:text-[2.5rem] lg:text-5xl">
         Antes era una tarde de oficina,
-        <span class="block bg-gradient-to-r from-primary-700 via-primary-600 to-primary-800 bg-clip-text text-transparent">ahora es una conversación.</span>
+        <span class="block text-primary-700">ahora es una conversación.</span>
       </h2>
-      <p class="mt-6 text-lg text-gray-600 leading-relaxed">
-        Crisopa se conecta a <strong class="font-semibold text-gray-900">ChatGPT</strong> o <strong class="font-semibold text-gray-900">Claude</strong>. Le dices lo que has hecho o lo que quieres planificar, y él lee, escribe y conecta tu cuaderno con el resto de tus herramientas. Sin aprender ninguna nueva.
+      <p class="mt-6 text-lg text-foreground-muted leading-relaxed">
+        Crisopa se conecta a <strong class="font-semibold text-foreground">ChatGPT</strong> o <strong class="font-semibold text-foreground">Claude</strong>. Le dices lo que has hecho o lo que quieres planificar, y él lee, escribe y conecta tu cuaderno con el resto de tus herramientas. Sin aprender ninguna nueva.
       </p>
     </div>
 
-    <!-- Connection visual: ecosistema orbitando Crisopa -->
+    <!-- Connection visual: ecosistema alrededor de Crisopa -->
     <div class="mt-12 sm:mt-16" data-animate>
-      <div class="relative mx-auto max-w-3xl rounded-3xl border border-primary-100/80 bg-surface/70 backdrop-blur-md shadow-xl shadow-primary-900/5 px-4 py-10 sm:px-10 sm:py-12">
+      <div class="relative mx-auto max-w-3xl rounded-lg border border-line-strong bg-surface shadow-2 px-4 py-10 sm:px-10 sm:py-12">
         <OrbitingConnectors />
       </div>
     </div>
@@ -60,14 +54,14 @@ const iconPaths: Record<string, string> = {
     <!-- Benefits -->
     <div class="mt-10 sm:mt-14 grid gap-6 sm:grid-cols-3" data-animate="stagger">
       {benefits.map((benefit) => (
-        <div class="card-glow group relative p-6 rounded-2xl bg-white border border-gray-100 shadow-lg shadow-gray-900/5">
-          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary-100 text-primary-700 mb-4 transition-transform duration-500 group-hover:scale-110">
+        <div class="relative p-6 rounded-lg bg-surface border border-line-strong shadow-1">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-md border border-line bg-surface-secondary text-primary-700 mb-4">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[benefit.icon]} />
             </svg>
           </div>
-          <h3 class="text-base font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary-800">{benefit.title}</h3>
-          <p class="mt-2 text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
+          <h3 class="text-base text-foreground">{benefit.title}</h3>
+          <p class="mt-2 text-sm text-foreground-muted leading-relaxed">{benefit.description}</p>
         </div>
       ))}
     </div>
@@ -79,12 +73,10 @@ const iconPaths: Record<string, string> = {
         target="_blank"
         rel="noopener noreferrer"
         data-press
-        class="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/25 overflow-hidden transition-[background-color,box-shadow] duration-300 hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-700/30"
+        class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-8 py-4 text-base font-medium text-white hover:bg-primary-700"
       >
-        <!-- Shine único y nítido -->
-        <span class="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-        <span class="relative">Reservar demo</span>
-        <svg class="relative h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        Reservar demo
+        <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </a>

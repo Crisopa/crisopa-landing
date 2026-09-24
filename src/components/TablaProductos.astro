@@ -21,13 +21,13 @@ const ordenados = [...productos].sort(
 )
 ---
 
-<div class="mt-6 overflow-x-auto rounded-2xl border border-gray-200/80">
-  <table class="w-full min-w-[52rem] border-collapse text-left text-sm">
+<div class="mt-6 overflow-x-auto rounded-lg border border-line-strong bg-surface">
+  <table class="w-full min-w-[52rem] border-collapse text-left text-sm tabular-nums">
     <caption class="sr-only">
       Productos fitosanitarios autorizados, con sustancia activa, dosis registrada, plazo de
       seguridad y número máximo de aplicaciones.
     </caption>
-    <thead class="bg-gray-50 text-xs uppercase tracking-wider text-foreground-muted">
+    <thead class="bg-surface-secondary text-xs uppercase tracking-wider text-foreground-muted">
       <tr>
         <th scope="col" class="px-4 py-3 font-semibold">Producto</th>
         <th scope="col" class="px-4 py-3 font-semibold">Sustancia activa</th>
@@ -39,11 +39,11 @@ const ordenados = [...productos].sort(
     </thead>
     <tbody>
       {ordenados.map((p) => (
-        <tr class="border-t border-gray-200/70 align-top transition-colors hover:bg-primary-50/40">
+        <tr class="border-t border-line align-top transition-colors duration-150 ease-out hover:bg-surface-secondary">
           <td class="px-4 py-3">
             <span class="font-medium text-foreground">{p.nombre}</span>
             {p.eco && (
-              <span class="ml-2 inline-block rounded-full bg-primary-100 px-2 py-0.5 text-[0.7rem] font-semibold text-primary-800">
+              <span class="ml-2 inline-block rounded-sm bg-primary-100 px-2 py-0.5 text-[0.7rem] font-medium text-primary-800">
                 eco
               </span>
             )}

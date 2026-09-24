@@ -58,7 +58,7 @@ const migas = [
       <Migas items={migas} />
 
       <header class="mt-6">
-        <h1 class="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl [text-wrap:balance]">
+        <h1 class="font-display text-3xl text-foreground sm:text-4xl lg:text-5xl">
           Productos autorizados para {par.plaga.toLowerCase()} en {par.cultivo.toLowerCase()}
         </h1>
 
@@ -83,8 +83,8 @@ const migas = [
           { valor: String(ecologicos), etiqueta: 'aptos en ecológico' },
           { valor: plazoMin === null ? '—' : plazoMin === 0 ? 'Sin plazo' : `${plazoMin} d`, etiqueta: 'plazo mínimo' },
         ].map((dato) => (
-          <div class="rounded-2xl border border-gray-200/80 bg-surface p-5">
-            <dt class="font-data text-3xl font-bold text-primary-700">{dato.valor}</dt>
+          <div class="rounded-lg border border-line-strong bg-surface shadow-1 p-5">
+            <dt class="font-data text-3xl font-medium tabular-nums text-primary-700">{dato.valor}</dt>
             <dd class="mt-1 text-sm text-foreground-muted">{dato.etiqueta}</dd>
           </div>
         ))}
@@ -92,14 +92,14 @@ const migas = [
 
       <!-- Aviso: la fuente oficial manda. No es letra pequeña defensiva, es que
            un asesor necesita saber a qué fecha corresponde lo que está leyendo. -->
-      <p class="mt-8 rounded-2xl border border-line-strong bg-surface-secondary px-5 py-4 text-sm leading-relaxed text-foreground">
+      <p class="mt-8 rounded-lg border border-line-strong bg-surface-secondary px-5 py-4 text-sm leading-relaxed text-foreground">
         <strong>Datos del Registro de Productos Fitosanitarios del MAPA, actualizados a
         {' '}{ACTUALIZADO_TEXTO}.</strong> Las autorizaciones cambian: antes de aplicar, comprueba
         la etiqueta del envase y la ficha vigente en el registro oficial. Esta página es
         informativa y no sustituye al asesoramiento de un técnico ni a la etiqueta del producto.
       </p>
 
-      <h2 class="mt-14 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+      <h2 class="mt-14 font-display text-2xl text-foreground sm:text-3xl">
         Los {total} productos, con dosis y plazo de seguridad
       </h2>
 
@@ -108,7 +108,7 @@ const migas = [
       <!-- Sustancias activas: contenido propio que ningún competidor da, y que
            responde a la pregunta real del técnico (con qué alternar). -->
       <section class="mt-14">
-        <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        <h2 class="font-display text-2xl text-foreground sm:text-3xl">
           Sustancias activas disponibles
         </h2>
         <p class="mt-4 text-lg leading-relaxed text-foreground">
@@ -131,7 +131,7 @@ const migas = [
            las páginas del corpus, que si no quedarían aisladas. -->
       {otrosCultivos.length > 0 && (
         <section class="mt-14">
-          <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h2 class="font-display text-2xl text-foreground sm:text-3xl">
             {par.plaga} en otros cultivos
           </h2>
           <ul class="mt-6 grid gap-3 sm:grid-cols-2">
@@ -139,7 +139,7 @@ const migas = [
               <li>
                 <a
                   href={`/plagas/${otro.plagaSlug}/${otro.cultivoSlug}`}
-                  class="group flex items-center justify-between rounded-2xl border border-gray-200/80 bg-surface px-5 py-4 transition-colors hover:border-primary-300 hover:bg-primary-50/50"
+                  class="group flex items-center justify-between rounded-lg border border-line-strong bg-surface shadow-1 px-5 py-4 transition-colors duration-150 ease-out hover:border-primary-200 hover:bg-surface-secondary"
                 >
                   <span class="font-medium text-foreground">{otro.cultivo}</span>
                   <span class="font-data text-sm text-foreground-muted">

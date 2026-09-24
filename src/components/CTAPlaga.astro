@@ -17,8 +17,8 @@ const { plaga, cultivo, total } = Astro.props
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 ---
 
-<section class="card-glow relative mt-16 overflow-hidden rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-surface to-surface-secondary px-6 py-10 sm:px-10 sm:py-12">
-  <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl [text-wrap:balance]">
+<section class="relative mt-16 overflow-hidden rounded-lg border border-line-strong bg-surface shadow-1 px-6 py-10 sm:px-10 sm:py-12">
+  <h2 class="font-display text-2xl text-foreground sm:text-3xl">
     Elegido el producto, queda el papeleo
   </h2>
 
@@ -36,17 +36,17 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
       target="_blank"
       rel="noopener noreferrer"
       data-press
-      class="group inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary-600/25 transition-[background-color,box-shadow] duration-300 hover:bg-primary-700 hover:shadow-xl"
+      class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-7 py-3.5 text-base font-medium text-white hover:bg-primary-700"
     >
       Reservar demo
-      <svg class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
       </svg>
     </a>
     <a
       href="/"
       data-press
-      class="inline-flex items-center justify-center gap-2 rounded-2xl border border-primary-200 bg-surface px-7 py-3.5 text-base font-semibold text-primary-800 transition-colors duration-300 hover:border-primary-300 hover:bg-primary-50"
+      class="inline-flex items-center justify-center gap-2 rounded-md border border-line-strong bg-surface px-7 py-3.5 text-base font-medium text-foreground hover:bg-surface-secondary"
     >
       Ver qué es Crisopa
     </a>

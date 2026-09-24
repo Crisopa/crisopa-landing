@@ -23,12 +23,7 @@ const footerLinks = {
 }
 ---
 
-<footer class="relative bg-gray-950 text-gray-400 overflow-hidden">
-  <!-- Subtle gradient overlay -->
-  <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/50 to-gray-950"></div>
-
-  <!-- Top border gradient -->
-  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
+<footer class="relative bg-dark-background text-dark-foreground-muted border-t border-dark-line overflow-hidden">
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
     <div class="grid gap-8 sm:gap-12 lg:grid-cols-6">
@@ -37,7 +32,7 @@ const footerLinks = {
         <svg class="h-7" viewBox="0 0 510.42032 99.311523" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(-385.81631,-550.18079)">
             <!-- Texto -->
-            <g class="text-white" fill="currentColor">
+            <g class="text-dark-foreground" fill="currentColor">
             <path d="m 869.51978,630.4783 q -6.03135,0 -10.63149,-2.14674 -4.49796,-2.14675 -7.05361,-6.13356 -2.45343,-3.98683 -2.45343,-9.60925 0,-6.13356 2.96458,-10.01815 3.06676,-3.8846 8.48474,-5.82689 5.52023,-1.94229 12.88046,-1.94229 h 12.88053 v 8.48476 h -13.08497 q -4.90685,0 -7.56473,2.45342 -2.55565,2.3512 -2.55565,6.13356 0,3.78237 2.55565,6.13356 2.65788,2.3512 7.56473,2.3512 2.96458,0 5.41801,-1.02225 2.55565,-1.1245 4.19126,-3.68014 1.73783,-2.65787 1.94226,-7.15582 l 3.4757,3.98681 q -0.51111,5.82688 -2.86231,9.81369 -2.24898,3.98683 -6.33801,6.13357 -3.98681,2.04452 -9.81372,2.04452 z"/>
             <path d="m 884.99176,629.04713 v -16.45838 h -2.35121 V 594.2903 q 0,-4.80463 -2.3512,-7.15583 -2.35116,-2.3512 -7.25802,-2.3512 -2.55564,0 -6.13357,0.10227 -3.57792,0.10228 -7.25806,0.30668 -3.57792,0.10227 -6.44023,0.30668 v -12.06268 q 2.3512,-0.20444 5.31574,-0.40889 2.96459,-0.20446 6.03135,-0.20446 3.16903,-0.10228 5.92913,-0.10228 8.58699,0 14.20941,2.24897 5.72462,2.24897 8.58699,7.0536 2.96455,4.80461 2.96455,12.57379 v 34.45017 z"/>
             <path d="m 782.32105,649.49234 v -75.95393 h 11.24487 v 23.92089 l -1.73783,-0.10227 q 0.40888,-8.48476 3.47566,-14.20942 3.16902,-5.72465 8.38254,-8.48476 5.21353,-2.86232 11.65377,-2.86232 5.92911,0 10.63148,2.14675 4.80463,2.14674 8.17811,6.03133 3.4757,3.88458 5.31575,9.09812 1.84004,5.11129 1.84004,11.04041 v 2.14673 q 0,6.03135 -1.84004,11.24488 -1.73783,5.11129 -5.21353,9.0981 -3.37347,3.88459 -8.17805,6.13356 -4.80465,2.14675 -10.73376,2.14675 -6.2358,0 -11.44932,-2.55564 -5.11131,-2.65788 -8.28029,-8.07587 -3.16903,-5.5202 -3.57793,-14.20941 l 4.49793,6.84915 v 36.59691 z m 29.44108,-30.56558 q 4.60019,0 7.97366,-2.24897 3.47566,-2.24897 5.41797,-6.23579 1.94228,-4.08904 1.94228,-9.20034 0,-5.31575 -1.94228,-9.20035 -1.94231,-3.88458 -5.41797,-6.03133 -3.37347,-2.24897 -7.97366,-2.24897 -4.19125,0 -7.76917,1.84008 -3.47566,1.84006 -5.72464,5.41797 -2.14675,3.5779 -2.14675,8.58699 v 4.08903 q 0,4.80463 2.24898,8.17808 2.24898,3.37347 5.82685,5.21354 3.57792,1.84006 7.56473,1.84006 z"/>
@@ -59,14 +54,14 @@ const footerLinks = {
             </g>
           </g>
         </svg>
-        <p class="mt-5 text-sm text-gray-500 max-w-xs leading-relaxed">
+        <p class="mt-5 text-sm text-dark-foreground-muted max-w-xs leading-relaxed">
           El copiloto agronómico del asesor. Tú decides en campo, él se ocupa del papeleo. Hecho en España para el campo español.
         </p>
 
         <!-- Social hint (placeholder) -->
         <div class="mt-6 flex items-center gap-3">
-          <span class="text-xs text-gray-600 uppercase tracking-wider font-medium">Síguenos</span>
-          <div class="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent"></div>
+          <span class="text-xs text-dark-foreground-muted uppercase tracking-wider font-medium">Síguenos</span>
+          <div class="flex-1 h-px bg-dark-line"></div>
         </div>
       </div>
 
@@ -74,8 +69,8 @@ const footerLinks = {
       <div class="lg:col-span-4 grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3">
         <!-- Producto -->
         <div>
-          <h3 class="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-primary-400 to-primary-600"></span>
+          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-primary-400"></span>
             Producto
           </h3>
           <ul class="mt-5 space-y-3">
@@ -83,9 +78,9 @@ const footerLinks = {
               <li>
                 <a
                   href={link.href}
-                  class="group flex items-center gap-2 text-sm transition-all duration-300 hover:text-white"
+                  class="group flex items-center gap-2 text-sm transition-colors duration-150 ease-out hover:text-dark-foreground"
                 >
-                  <span class="w-0 h-px bg-primary-400 group-hover:w-3 transition-all duration-300"></span>
+                  <span class="w-0 h-px bg-primary-400 group-hover:w-3 transition-[width] duration-150 ease-out"></span>
                   {link.label}
                 </a>
               </li>
@@ -95,7 +90,7 @@ const footerLinks = {
 
         <!-- Legal -->
         <div>
-          <h3 class="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-2">
+          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-dark-foreground-muted"></span>
             Legal
           </h3>
@@ -104,9 +99,9 @@ const footerLinks = {
               <li>
                 <a
                   href={link.href}
-                  class="group flex items-center gap-2 text-sm transition-all duration-300 hover:text-white"
+                  class="group flex items-center gap-2 text-sm transition-colors duration-150 ease-out hover:text-dark-foreground"
                 >
-                  <span class="w-0 h-px bg-dark-foreground-muted group-hover:w-3 transition-all duration-300"></span>
+                  <span class="w-0 h-px bg-dark-foreground-muted group-hover:w-3 transition-[width] duration-150 ease-out"></span>
                   {link.label}
                 </a>
               </li>
@@ -116,8 +111,8 @@ const footerLinks = {
 
         <!-- Contacto -->
         <div>
-          <h3 class="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-gray-400 to-gray-500"></span>
+          <h3 class="text-sm font-semibold text-dark-foreground uppercase tracking-wider flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-dark-foreground-muted"></span>
             Contacto
           </h3>
           <ul class="mt-5 space-y-3">
@@ -125,9 +120,9 @@ const footerLinks = {
               <li>
                 <a
                   href={link.href}
-                  class="group inline-flex items-center gap-2 text-sm transition-all duration-300 hover:text-white"
+                  class="group inline-flex items-center gap-2 text-sm transition-colors duration-150 ease-out hover:text-dark-foreground"
                 >
-                  <svg class="w-4 h-4 text-gray-600 group-hover:text-primary-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg class="w-4 h-4 text-dark-foreground-muted group-hover:text-primary-400 transition-colors duration-150 ease-out"fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
                   {link.label}
@@ -137,8 +132,8 @@ const footerLinks = {
           </ul>
 
           <!-- Additional contact info -->
-          <div class="mt-6 p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-            <p class="text-xs text-gray-500 leading-relaxed">
+          <div class="mt-6 p-4 rounded-lg bg-dark-surface border border-dark-line">
+            <p class="text-xs text-dark-foreground-muted leading-relaxed">
               Respondemos en menos de 24h laborables. Escríbenos para cualquier duda.
             </p>
           </div>
@@ -147,10 +142,10 @@ const footerLinks = {
     </div>
 
     <!-- Bottom -->
-    <div class="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-gray-800/50">
+    <div class="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-dark-line">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-sm text-gray-600">
-          &copy; {currentYear} <span class="text-gray-500 font-medium">CRISOPA</span>. Todos los derechos reservados.
+        <p class="text-sm text-dark-foreground-muted">
+          &copy; {currentYear} <span class="text-dark-foreground font-medium">CRISOPA</span>. Todos los derechos reservados.
         </p>
       </div>
     </div>
