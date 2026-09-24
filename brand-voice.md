@@ -222,21 +222,8 @@ Escuetos. El técnico está ocupado.
 En texto, siempre **Crisopa**, con mayúscula inicial. Nunca «CRISOPA» ni
 «crisopa.app» como nombre de marca.
 
-## El símbolo
-
-El logo tiene varias lecturas, todas intencionadas:
-
-| Forma | Significado |
-|-------|-------------|
-| Crisálida | Transformación. Cambia cómo trabaja el asesor. |
-| Roca | Solidez. Los datos están verificados y a salvo. |
-| Gema | Valor en el detalle. Cuidamos cada dato. |
-
-## Tipografía
-
-- **Titulares y logo**: Sora (600–700).
-- **Cuerpo**: Geist (400–500).
-- **Datos y etiquetas técnicas**: Geist Mono.
+El símbolo, la tipografía, el color y todo lo visual están en
+[`brand-visual.md`](brand-visual.md).
 
 ---
 
