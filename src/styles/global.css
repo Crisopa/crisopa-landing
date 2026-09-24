@@ -21,26 +21,48 @@
   --green-900: oklch(0.298 0.080 172);
   --green-950: oklch(0.208 0.055 172);
 
-  /* Superficies cálidas — fondo crema (no blanco SaaS) y superficie/tinta.
-     Definidas como tokens para poder flipar a una variante oscura más adelante. */
-  --background: oklch(0.988 0.006 95);   /* crema muy sutil, hue cálido 95 */
-  --surface: oklch(1 0 0);               /* cards en blanco puro: despegan del crema */
-  --surface-secondary: oklch(0.972 0.006 95);
-  --foreground: oklch(0.205 0.01 160);   /* tinta casi negra con pelín de verde */
-  --foreground-muted: oklch(0.520 0.012 160);
+  /* NEUTROS TEÑIDOS — modo claro (base). Grises con una pizca del verde de
+     marca (tono 170, croma muy bajo). Ver brand-visual.md › Color. */
+  --background: oklch(0.992 0.004 170);         /* fondo de página: blanco con matiz verde */
+  --surface: oklch(1 0 0);                      /* tarjetas y ventanas de producto */
+  --surface-secondary: oklch(0.975 0.006 170);  /* zonas hundidas, fondos de tabla */
+  --line: oklch(0.920 0.010 170);               /* raíles, separadores, bordes de 1px */
+  --line-strong: oklch(0.870 0.014 170);        /* bordes de tarjeta y botón secundario */
+  --foreground-muted: oklch(0.520 0.014 170);   /* texto secundario */
+  --foreground: oklch(0.205 0.012 170);         /* tinta: negro con matiz verde */
 
-  /* ESCALA ÁMBAR (50-950) */
-  --amber-50: oklch(0.988 0.014 84);
-  --amber-100: oklch(0.973 0.034 84);
-  --amber-200: oklch(0.945 0.07 84);
-  --amber-300: oklch(0.903 0.124 84);
-  --amber-400: oklch(0.854 0.166 84);
-  --amber-500: oklch(0.793 0.19 84);
-  --amber-600: oklch(0.699 0.182 84);
-  --amber-700: oklch(0.596 0.158 84);
-  --amber-800: oklch(0.504 0.129 84);
-  --amber-900: oklch(0.418 0.101 84);
-  --amber-950: oklch(0.296 0.07 84);
+  /* NEUTROS TEÑIDOS — modo oscuro (secciones de demostración) */
+  --dark-background: oklch(0.185 0.026 172);
+  --dark-surface: oklch(0.225 0.030 172);
+  --dark-line: oklch(0.310 0.030 172);
+  --dark-foreground-muted: oklch(0.720 0.020 170);
+  --dark-foreground: oklch(0.965 0.008 170);
+
+  /* COLORES DE ESTADO — solo dentro de la interfaz del producto (demos, app).
+     No son colores de marca ni decoración. «Correcto» usa el verde de marca. */
+  --state-error: oklch(0.577 0.215 27);
+  --state-warning: oklch(0.700 0.160 70);
+}
+
+/* Superficies y movimiento de la guía. `static` hace que Tailwind emita
+   siempre estas variables en :root (aunque ninguna utilidad las use), para
+   poder usarlas también con var() en CSS propio y en <style> de componentes. */
+@theme static {
+  /* RADIOS — escala cerrada. Sobrescriben rounded-sm/md/lg/xl de Tailwind.
+     rounded-full (9999px) sigue siendo el de pastillas y avatares. */
+  --radius-sm: 6px;    /* badges, kbd, campos pequeños */
+  --radius-md: 10px;   /* botones, campos */
+  --radius-lg: 14px;   /* tarjetas, ventanas de producto */
+  --radius-xl: 24px;   /* bloques de sección oscura */
+
+  /* ELEVACIÓN — utilidades shadow-1/2/3. Color de tinta, nunca negro ni verde.
+     Nivel 0 = solo borde 1px `line`, sin sombra. */
+  --shadow-1: 0 1px 2px oklch(0.205 0.012 170 / 0.05);          /* tarjetas (+ borde line-strong) */
+  --shadow-2: 0 8px 24px -8px oklch(0.205 0.012 170 / 0.12);    /* ventanas de producto */
+  --shadow-3: 0 16px 40px -12px oklch(0.205 0.012 170 / 0.18);  /* menús, popovers */
+
+  /* MOVIMIENTO — utilidad ease-brand. Microinteracciones, entradas, demo. */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme {
@@ -51,12 +73,25 @@
   --font-logo: 'Sora', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* Superficies cálidas (mapeo Tailwind) */
+  /* Neutros teñidos (mapeo Tailwind): bg-background, border-line, text-foreground… */
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
+
+  /* Neutros de modo oscuro: bg-dark-background, border-dark-line… */
+  --color-dark-background: var(--dark-background);
+  --color-dark-surface: var(--dark-surface);
+  --color-dark-line: var(--dark-line);
+  --color-dark-foreground-muted: var(--dark-foreground-muted);
+  --color-dark-foreground: var(--dark-foreground);
+
+  /* Estado (solo UI de producto): text-state-error, bg-state-warning/10… */
+  --color-state-error: var(--state-error);
+  --color-state-warning: var(--state-warning);
 
   /* Escala verde sage - color principal */
   --color-primary-50: var(--green-50);
@@ -70,19 +105,6 @@
   --color-primary-800: var(--green-800);
   --color-primary-900: var(--green-900);
   --color-primary-950: var(--green-950);
-
-  /* Escala ámbar - acento */
-  --color-accent-50: var(--amber-50);
-  --color-accent-100: var(--amber-100);
-  --color-accent-200: var(--amber-200);
-  --color-accent-300: var(--amber-300);
-  --color-accent-400: var(--amber-400);
-  --color-accent-500: var(--amber-500);
-  --color-accent-600: var(--amber-600);
-  --color-accent-700: var(--amber-700);
-  --color-accent-800: var(--amber-800);
-  --color-accent-900: var(--amber-900);
-  --color-accent-950: var(--amber-950);
 
   /* Animaciones personalizadas */
   --animate-fade-in: fade-in 0.6s ease-out forwards;
@@ -333,7 +355,7 @@
   background: conic-gradient(
     from var(--gradient-angle),
     var(--green-400),
-    var(--amber-400),
+    var(--green-200),
     var(--green-600),
     var(--green-400)
   );
@@ -358,7 +380,7 @@
   width: 100%;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--green-500), var(--amber-400), var(--green-500));
+  background: linear-gradient(90deg, var(--green-500), var(--green-300), var(--green-500));
   background-size: 200% 100%;
   animation: gradient-shift 3s ease infinite;
 }
@@ -572,7 +594,7 @@
    ======================================== */
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--green-700), var(--green-500), var(--amber-500));
+  background: linear-gradient(135deg, var(--green-700), var(--green-500), var(--green-400));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -591,7 +613,7 @@
   position: absolute;
   inset: -2px;
   border-radius: calc(1rem + 2px);
-  background: linear-gradient(135deg, var(--green-400), var(--amber-400), var(--green-600));
+  background: linear-gradient(135deg, var(--green-400), var(--green-200), var(--green-600));
   z-index: -1;
   background-size: 200% 200%;
   animation: gradient-shift 4s ease infinite;

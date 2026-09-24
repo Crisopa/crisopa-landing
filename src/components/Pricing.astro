@@ -57,7 +57,7 @@ const plans = [
   <!-- Background decorations -->
   <div class="absolute inset-0 -z-10">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-primary-100/50 to-transparent rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-100/30 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-surface-secondary/30 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 left-0 w-80 h-80 bg-primary-100/30 rounded-full blur-3xl"></div>
   </div>
 
@@ -85,7 +85,7 @@ const plans = [
         >
           {/* Popular glow effect */}
           {plan.popular && (
-            <div class="absolute -inset-px rounded-3xl bg-gradient-to-b from-primary-400 via-primary-500 to-accent-500 opacity-75 blur-sm group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute -inset-px rounded-3xl bg-gradient-to-b from-primary-400 via-primary-500 to-primary-600 opacity-75 blur-sm group-hover:opacity-100 transition-opacity duration-500"></div>
           )}
 
           <div class={`relative h-full rounded-3xl bg-surface p-6 sm:p-8 transition-all duration-500 ${plan.popular ? 'shadow-2xl shadow-primary-900/20 ring-2 ring-primary-500' : 'shadow-xl shadow-gray-900/5 border border-primary-100/80 hover:border-primary-200 hover:shadow-2xl'} group-hover:-translate-y-2`}>
