@@ -269,6 +269,18 @@
     }
   }
 
+  /* Display (H1 de portada): Sora 600, 44 → 72px, −0,04em, interlineado 1,02.
+     El peso, el tracking y el interlineado ya los da la base de h1; la clase
+     los fija por si se usa fuera de un h1. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.75rem, 7vw, 4.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    --tw-leading: 1.02;
+  }
+
   /* Entradilla (escala: 18 → 20px, 1,55) */
   .lead {
     font-size: 1.125rem;

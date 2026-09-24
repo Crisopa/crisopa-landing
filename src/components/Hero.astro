@@ -1,88 +1,69 @@
 ---
+/**
+ * Portada (brand-visual.md › El producto como imagen). Alineada a la
+ * izquierda y dimensionada por su contenido: etiqueta, H1 en un tono,
+ * entradilla, acciones y, debajo, la ventana de producto (HeroChat).
+ *
+ * Sin pastillas-anuncio sobre el titular: «El único conectado a ChatGPT y
+ * Claude» vive como H2 de la sección de conectores (AsistenteIA).
+ */
+import Eyebrow from './Eyebrow.astro'
+import HeroChat from './HeroChat.astro'
+
 const appUrl = 'https://panel.crisopa.app'
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 ---
 
-<section class="sec relative overflow-hidden pt-32 pb-20 sm:pt-44 sm:pb-28 lg:min-h-screen flex items-center">
-  <div class="mx-auto max-w-4xl w-full text-center flex flex-col items-center">
-    <!-- Badge -->
-    <div class="mb-7 animate-enter" style="animation-delay: 100ms;">
-      <span class="inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-surface px-4 py-1.5 text-sm font-medium text-primary-800">
-        <span class="inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
-        El único conectado a ChatGPT y Claude
-      </span>
-    </div>
+<section class="sec pt-32 sm:pt-40">
+  <div class="animate-enter" style="animation-delay: 100ms;">
+    <Eyebrow>Para asesores agronómicos</Eyebrow>
+  </div>
 
-    <!-- Titular (Sora, sólido — sin degradado) -->
-    <h1 class="font-display text-5xl text-foreground sm:text-6xl lg:text-7xl animate-enter" style="animation-delay: 150ms;">
-      Tu copiloto agronómico
-    </h1>
+  <h1 class="display mt-7 max-w-[14ch] text-foreground animate-enter" style="animation-delay: 150ms;">
+    Tu copiloto agronómico
+  </h1>
 
-    <!-- Subtítulo -->
-    <p class="mt-6 text-lg leading-relaxed text-foreground sm:text-2xl sm:leading-relaxed max-w-2xl animate-enter" style="animation-delay: 200ms;">
-      El motor agronómico completo —tratamientos, abonado, riego, labores— que manejas
-      hablando con ChatGPT o Claude. <span class="font-semibold text-foreground">Todas tus fincas bajo control, en la oficina o en el campo.</span>
-    </p>
+  <p class="lead mt-6 animate-enter" style="animation-delay: 200ms;">
+    El motor agronómico completo —tratamientos, abonado, riego, labores— que controlas con ChatGPT o Claude.
+    <span class="font-medium text-foreground">Todas tus fincas bajo control, en la oficina o en el campo.</span>
+  </p>
 
-    <!-- CTAs -->
-    <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:gap-4 animate-enter" style="animation-delay: 250ms;">
+  <div class="animate-enter" style="animation-delay: 250ms;">
+    <div class="mt-9 flex flex-wrap items-center gap-3">
       <a
         href={calendlyUrl}
         target="_blank"
         rel="noopener noreferrer"
         data-press
-        class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-8 py-4 text-base font-medium text-white hover:bg-primary-700"
+        class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-6 py-3.5 text-base font-medium text-white hover:bg-primary-700"
       >
         Reservar demo
-        <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </a>
       <a
         href="#demo"
         data-press
-        class="group inline-flex items-center justify-center gap-2 rounded-md border border-line-strong bg-surface px-8 py-4 text-base font-medium text-foreground hover:bg-surface-secondary"
+        class="inline-flex items-center justify-center rounded-md border border-line-strong bg-surface px-6 py-3.5 text-base font-medium text-foreground hover:bg-surface-secondary"
       >
-        <svg class="w-5 h-5 text-foreground-muted transition-colors duration-150 ease-out group-hover:text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
         Ver cómo funciona
       </a>
     </div>
 
+    <!-- Microcopia técnica bajo el CTA (mono) -->
+    <p class="font-data mt-4 text-xs text-foreground-muted">
+      Conector MCP · ChatGPT y Claude · Verificado contra el MAPA
+    </p>
+
     <!-- Enlace discreto a prueba self-serve -->
-    <p class="mt-4 text-sm text-foreground-muted animate-enter" style="animation-delay: 300ms;">
+    <p class="mt-3 text-sm text-foreground-muted">
       ¿Prefieres probarlo por tu cuenta?
       <a href={`${appUrl}/register`} class="font-medium text-primary-700 underline decoration-1 underline-offset-[3px] hover:text-primary-800 transition-colors duration-150 ease-out">Empieza gratis</a>
     </p>
-
-    <!-- Trust indicators (dato en mono) -->
-    <div class="mt-10 animate-enter" style="animation-delay: 350ms;">
-      <div class="inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-lg border border-line bg-surface px-5 py-3">
-        <span class="inline-flex items-center gap-2 text-sm text-foreground-muted">
-          <svg class="h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          Demo en 30 min
-        </span>
-        <span class="w-px h-4 bg-line hidden sm:block"></span>
-        <span class="inline-flex items-center gap-2 text-sm text-foreground-muted">
-          <svg class="h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          Sin compromiso
-        </span>
-        <span class="w-px h-4 bg-line hidden sm:block"></span>
-        <span class="inline-flex items-center gap-2 text-sm text-foreground-muted">
-          <svg class="h-4 w-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          Verificado contra el MAPA
-        </span>
-      </div>
-    </div>
   </div>
 
-  <!-- Indicador de scroll (quieto: la guía no quiere nada que rebote por decorar) -->
-  <a href="#demo" aria-label="Ver la demo" class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-foreground-muted hover:text-primary-700 transition-colors duration-150 ease-out">
-    <span class="text-xs font-medium uppercase tracking-wider">Ver más</span>
-    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    </svg>
-  </a>
+  <div class="mt-14 sm:mt-16 animate-enter" style="animation-delay: 300ms;">
+    <HeroChat />
+  </div>
 </section>
