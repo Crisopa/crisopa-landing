@@ -78,8 +78,10 @@ export function dosisTexto(p: Producto): string {
   const { dosisMin: min, dosisMax: max, dosisUnidad: unidad } = p
   if (min === null && max === null) return '—'
   const u = unidad ?? ''
-  if (min !== null && max !== null && min !== max) return `${min}–${max} ${u}`.trim()
-  return `${max ?? min} ${u}`.trim()
+  // Coma decimal, como el resto de la web («0,75 l/ha»)
+  const n = (x: number) => String(x).replace('.', ',')
+  if (min !== null && max !== null && min !== max) return `${n(min)}–${n(max)} ${u}`.trim()
+  return `${n((max ?? min)!)} ${u}`.trim()
 }
 
 /** Plazo de seguridad en días, o el guion si el registro no lo fija. */

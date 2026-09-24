@@ -22,7 +22,7 @@ const { fecha, dark = false, class: className } = Astro.props
 ---
 
 <p class:list={['sello', dark ? 'text-dark-foreground-muted' : 'text-foreground-muted', className]}>
-  {FUENTE_MAPA} · sincronizado <time datetime={fecha}>{fecha}</time>
+  {FUENTE_MAPA} · <span class="nowrap">sincronizado <time datetime={fecha}>{fecha}</time></span>
 </p>
 
 <style>
@@ -32,6 +32,10 @@ const { fecha, dark = false, class: className } = Astro.props
     font-size: 12px;
     line-height: 1.5;
     font-variant-numeric: tabular-nums;
-    overflow-wrap: anywhere;
+  }
+
+  /* La fecha no se parte de su etiqueta al saltar de línea */
+  .nowrap {
+    white-space: nowrap;
   }
 </style>

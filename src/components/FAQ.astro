@@ -76,7 +76,8 @@ const { n } = Astro.props
   // FAQ accordion
   const faqItems = document.querySelectorAll('.faq-item')
 
-  // Estado abierto: icono en verde (estado activo). Cerrado: neutro.
+  // Estado abierto: estado activo de la guía (fondo green-50, borde green-200,
+  // icono green-700). Sin verde sólido: ese queda para la acción principal.
   const setOpen = (item: Element, open: boolean) => {
     const button = item.querySelector('.faq-button')
     const content = item.querySelector('.faq-content') as HTMLElement | null
@@ -89,10 +90,10 @@ const { n } = Astro.props
       content.style.opacity = open ? '1' : '0'
     }
     icon?.classList.toggle('rotate-180', open)
-    icon?.classList.toggle('text-white', open)
+    icon?.classList.toggle('text-primary-700', open)
     icon?.classList.toggle('text-foreground-muted', !open)
-    iconWrapper?.classList.toggle('bg-primary-600', open)
-    iconWrapper?.classList.toggle('border-primary-600', open)
+    iconWrapper?.classList.toggle('bg-primary-50', open)
+    iconWrapper?.classList.toggle('border-primary-200', open)
     iconWrapper?.classList.toggle('bg-surface-secondary', !open)
     iconWrapper?.classList.toggle('border-line', !open)
   }

@@ -12,7 +12,7 @@
  * - Los productos son filas reales del registro del MAPA (tomate × mosca
  *   blanca). No se cambian sin comprobarlos contra la ficha oficial.
  */
-import { REGISTRO_MAPA_SINCRONIZADO } from '../lib/mapa'
+import { REGISTRO_MAPA_SINCRONIZADO, FUENTE_MAPA } from '../lib/mapa'
 
 const pregunta = '¿Qué puedo usar contra mosca blanca en el tomate de la finca Los Llanos?'
 
@@ -70,7 +70,7 @@ const productos = [
         </div>
         <div class="source">
           <span class="check">✓ Verificado contra el MAPA</span>
-          <span>Fuente: Registro Oficial de Productos Fitosanitarios</span>
+          <span>{FUENTE_MAPA}</span>
         </div>
       </div>
     </div>

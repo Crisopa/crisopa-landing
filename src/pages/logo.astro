@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import Eyebrow from '../components/Eyebrow.astro'
 ---
 
-<Layout title="crisopa" description="La historia detrás de crisopa">
+<Layout title="Crisopa" description="La historia detrás de Crisopa">
   <div class="page-wrapper bg-background overflow-x-hidden">
     <!-- Hero -->
     <section class="sec hero min-h-screen flex flex-col items-center justify-center relative">
@@ -96,8 +96,12 @@ import Eyebrow from '../components/Eyebrow.astro'
 
           <!-- Interpretations -->
           <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+            <!-- Iconos de trazo 1,5px en rejilla de 24px, sin baldosa (brand-visual.md › Iconografía) -->
             <div class="symbol-card-mini">
-              <div class="symbol-icon-mini">🦋</div>
+              <svg class="symbol-icon-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3c-2.8 0-4.8 4-4.8 9s2 9 4.8 9 4.8-4 4.8-9-2-9-4.8-9z" />
+                <path d="M7.6 9h8.8M7.2 13h9.6M8 17h8" />
+              </svg>
               <div>
                 <h3 class="text-lg text-foreground">Crisálida</h3>
                 <p class="text-foreground-muted text-sm">Transformación constante</p>
@@ -105,7 +109,10 @@ import Eyebrow from '../components/Eyebrow.astro'
             </div>
 
             <div class="symbol-card-mini">
-              <div class="symbol-icon-mini">🪨</div>
+              <svg class="symbol-icon-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3.5 18.5 5.5 11l5-4.5 6 1.5 3.5 6-1.5 4.5z" />
+                <path d="M10.5 6.5 12 12l-6.5-1M12 12l6.5 6.5" />
+              </svg>
               <div>
                 <h3 class="text-lg text-foreground">Roca</h3>
                 <p class="text-foreground-muted text-sm">Solidez y confianza</p>
@@ -113,7 +120,10 @@ import Eyebrow from '../components/Eyebrow.astro'
             </div>
 
             <div class="symbol-card-mini">
-              <div class="symbol-icon-mini">💎</div>
+              <svg class="symbol-icon-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6.5 3.5h11L21.5 9 12 20.5 2.5 9z" />
+                <path d="M2.5 9h19M9 3.5 8 9l4 11.5L16 9l-1-5.5" />
+              </svg>
               <div>
                 <h3 class="text-lg text-foreground">Gema</h3>
                 <p class="text-foreground-muted text-sm">Valor en cada detalle</p>
@@ -136,9 +146,9 @@ import Eyebrow from '../components/Eyebrow.astro'
         <!-- Easter egg message -->
         <div id="founders-reveal" class="founders-message mb-12">
           <p class="text-lg md:text-xl text-foreground-muted">
-            Los socios. <span class="text-primary-700 font-semibold">Ignacio</span> y <span class="text-primary-700 font-semibold">Pablo</span>.
+            Los socios. <span class="text-primary-700 font-medium">Ignacio</span> y <span class="text-primary-700 font-medium">Pablo</span>.
           </p>
-          <p class="text-2xl md:text-3xl font-semibold text-foreground mt-2">
+          <p class="font-display text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-foreground mt-2">
             Unos depredadores.
           </p>
         </div>
@@ -147,7 +157,7 @@ import Eyebrow from '../components/Eyebrow.astro'
           <span class="pill">Fácil de decir</span>
           <span class="pill">Memorable</span>
           <span class="pill">Familiar</span>
-          <span class="pill pill-accent">100% español</span>
+          <span class="pill">100% español</span>
         </div>
 
         <p class="reveal text-xl md:text-2xl text-foreground-muted max-w-2xl mx-auto">
@@ -283,7 +293,10 @@ import Eyebrow from '../components/Eyebrow.astro'
   }
 
   .symbol-icon-mini {
-    font-size: 2rem;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    color: var(--green-600);
   }
 
   /* Pastillas */
@@ -296,12 +309,6 @@ import Eyebrow from '../components/Eyebrow.astro'
     font-weight: 500;
     color: var(--foreground);
     border: 1px solid var(--line-strong);
-  }
-
-  .pill-accent {
-    background: var(--green-600);
-    color: white;
-    border-color: var(--green-600);
   }
 
   /* Botones sobre oscuro: la acción pasa a green-400 */
@@ -331,8 +338,9 @@ import Eyebrow from '../components/Eyebrow.astro'
     color: var(--dark-background);
   }
 
+  /* Hover más claro (green-300): con green-500 el texto oscuro baja de AA */
   .btn-primary-dark:hover {
-    background: var(--green-500);
+    background: var(--green-300);
   }
 
   /* Entrada al hacer scroll: opacidad + desenfoque + 8px, una vez */

@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700;800&display=swap');
+/* Solo los pesos que usa la guía: Sora 500–600, Geist 400–500 (600 en
+   negritas de prosa y tablas), Geist Mono 400–500. */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Sora:wght@500;600&display=swap');
 @import "tailwindcss";
 
 /* ========================================
@@ -42,6 +44,11 @@
      No son colores de marca ni decoración. «Correcto» usa el verde de marca. */
   --state-error: oklch(0.577 0.215 27);
   --state-warning: oklch(0.700 0.160 70);
+
+  /* LOGOS DE TERCEROS — color oficial (Simple Icons), solo en contextos de
+     integración. Única excepción a la regla del color único. */
+  --brand-chatgpt: #0e1117;
+  --brand-claude: #d97757;
 }
 
 /* Superficies y movimiento de la guía. `static` hace que Tailwind emita
@@ -92,6 +99,10 @@
   /* Estado (solo UI de producto): text-state-error, bg-state-warning/10… */
   --color-state-error: var(--state-error);
   --color-state-warning: var(--state-warning);
+
+  /* Logos de terceros: bg-brand-chatgpt, bg-brand-claude */
+  --color-brand-chatgpt: var(--brand-chatgpt);
+  --color-brand-claude: var(--brand-claude);
 
   /* Escala verde sage - color principal */
   --color-primary-50: var(--green-50);
@@ -368,8 +379,7 @@
   animation: enter 450ms var(--ease-brand) both;
 }
 
-[data-animate],
-[data-animate="stagger"] > * {
+[data-animate] {
   opacity: 0;
   filter: blur(6px);
   transform: translateY(8px);
@@ -378,29 +388,11 @@
               transform 450ms var(--ease-brand);
 }
 
-/* El contenedor de un stagger no se anima: lo hacen sus hijos */
-[data-animate="stagger"] {
-  opacity: 1;
-  filter: none;
-  transform: none;
-}
-
-[data-animate].animated,
-[data-animate="stagger"].animated > * {
+[data-animate].animated {
   opacity: 1;
   filter: blur(0);
   transform: translateY(0);
 }
-
-[data-animate="fade"] {
-  transform: none;
-}
-
-[data-animate="stagger"] > *:nth-child(2) { transition-delay: 60ms; }
-[data-animate="stagger"] > *:nth-child(3) { transition-delay: 120ms; }
-[data-animate="stagger"] > *:nth-child(4) { transition-delay: 180ms; }
-[data-animate="stagger"] > *:nth-child(5) { transition-delay: 240ms; }
-[data-animate="stagger"] > *:nth-child(6) { transition-delay: 300ms; }
 
 /* ========================================
    SCROLL & COMPORTAMIENTO
@@ -435,10 +427,16 @@ html {
   background: var(--foreground-muted);
 }
 
-/* Focus visible para accesibilidad */
+/* Foco visible en todo lo interactivo: green-600 sobre claro; sobre oscuro
+   (secciones oscuras, footer, aviso de cookies) pasa a green-400 */
 *:focus-visible {
   outline: 2px solid var(--green-600);
   outline-offset: 2px;
+}
+
+.sec-dark :focus-visible,
+.on-dark :focus-visible {
+  outline-color: var(--green-400);
 }
 
 /* ========================================
@@ -590,15 +588,13 @@ p, li {
 /* Pulsación (brand-visual.md › Botones): scale(0.97) al pulsar y nada más.
    Lleva también la transición de color del hover (150 ms ease-out), así que
    los botones con data-press no necesitan utilidades transition-*. */
-[data-press],
-.press {
+[data-press] {
   transition-property: scale, color, background-color, border-color;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
 }
 
-[data-press]:active,
-.press:active {
+[data-press]:active {
   scale: 0.97;
 }
 
@@ -617,8 +613,7 @@ p, li {
     animation: none;
   }
 
-  [data-animate],
-  [data-animate="stagger"] > * {
+  [data-animate] {
     opacity: 1;
     transform: none;
     filter: none;

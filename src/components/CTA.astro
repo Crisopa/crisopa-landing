@@ -1,12 +1,17 @@
 ---
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
+
+const garantias = ['Demo en 30 min', 'Sin compromiso', 'Online']
 ---
 
-<!-- Sección oscura de cierre: a sangre dentro de los raíles (.sec-dark) -->
+<!-- Sección oscura de cierre: a sangre dentro de los raíles (.sec-dark).
+     Sobre oscuro la acción pasa a green-400; el hover sube a green-300 (más
+     claro, como sube el contraste del 600 → 700 sobre claro) para no perder
+     contraste AA con el texto oscuro del botón. -->
 <section class="sec sec-dark relative overflow-hidden">
 
   <div class="relative mx-auto max-w-4xl text-center" data-animate>
-    <!-- Logo -->
+    <!-- Símbolo: green-400 sobre oscuro (brand-visual.md › El símbolo) -->
     <div class="flex justify-center mb-6">
       <svg
         class="h-16 w-16 sm:h-20 sm:w-20 text-primary-400"
@@ -16,6 +21,7 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
+        aria-hidden="true"
       >
         <path d="M11.264 2.205A4 4 0 0 0 6.42 4.211l-4 8a4 4 0 0 0 1.359 5.117l6 4a4 4 0 0 0 4.438 0l6-4a4 4 0 0 0 1.576-4.592l-2-6a4 4 0 0 0-2.53-2.53z"/>
         <path d="M11.99 22 14 12l7.822 3.184"/>
@@ -23,55 +29,40 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
       </svg>
     </div>
 
-    <!-- Brand name -->
-    <h2 class="text-3xl sm:text-5xl lg:text-6xl text-dark-foreground">
-      crisopa
+    <!-- H2 a la escala común (la base de h2 en global.css) -->
+    <h2 class="text-dark-foreground">
+      Crisopa
     </h2>
 
-    <!-- Tagline -->
     <p class="mt-6 text-lg sm:text-xl text-dark-foreground-muted">
       El copiloto agronómico
-      <span class="font-semibold text-dark-foreground"> hecho para el campo español.</span>
+      <span class="font-medium text-dark-foreground"> hecho para el campo español.</span>
     </p>
 
-    <!-- CTA Button -->
     <div class="mt-10">
       <a
         href={calendlyUrl}
         target="_blank"
         rel="noopener noreferrer"
         data-press
-        class="group inline-flex items-center justify-center rounded-md bg-primary-400 px-8 py-4 text-base font-medium text-dark-background hover:bg-primary-500"
+        class="group inline-flex items-center justify-center rounded-md bg-primary-400 px-8 py-4 text-base font-medium text-dark-background hover:bg-primary-300"
       >
         Reservar demo
-        <svg class="ml-2 h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="ml-2 h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </a>
     </div>
 
-    <!-- Trust badges -->
-    <div class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-sm text-dark-foreground-muted">
-      <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
-        <span>Demo en 30 min</span>
-      </div>
-      <div class="hidden sm:block w-px h-4 bg-dark-line"></div>
-      <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
-        <span>Sin compromiso</span>
-      </div>
-      <div class="hidden sm:block w-px h-4 bg-dark-line"></div>
-      <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
-        <span>Online</span>
-      </div>
-    </div>
+    <ul class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 font-data text-xs text-dark-foreground-muted">
+      {garantias.map((g) => (
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          {g}
+        </li>
+      ))}
+    </ul>
   </div>
 </section>

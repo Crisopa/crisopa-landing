@@ -4,13 +4,14 @@
   role="dialog"
   aria-label="Aviso de cookies"
 >
-  <div class="rounded-lg bg-dark-background border border-dark-line shadow-3 p-4 sm:p-5 flex flex-col gap-3.5">
+  <div class="on-dark rounded-lg bg-dark-background border border-dark-line shadow-3 p-4 sm:p-5 flex flex-col gap-3.5">
     <p class="text-sm text-dark-foreground-muted leading-relaxed">
       Usamos cookies técnicas y, con tu permiso, de análisis y marketing para medir el rendimiento del sitio.
       <a href="/cookies" class="text-primary-400 hover:text-dark-foreground underline decoration-1 underline-offset-[3px] transition-colors duration-150 ease-out">Más info</a>.
     </p>
     <div class="flex gap-2">
       <button
+        type="button"
         id="cookie-reject"
         data-press
         class="flex-1 rounded-md border border-dark-line bg-dark-surface px-4 py-2.5 text-sm font-medium text-dark-foreground hover:bg-dark-line cursor-pointer"
@@ -18,9 +19,10 @@
         Solo esenciales
       </button>
       <button
+        type="button"
         id="cookie-accept"
         data-press
-        class="flex-1 rounded-md bg-primary-400 px-5 py-2.5 text-sm font-medium text-dark-background hover:bg-primary-500 cursor-pointer"
+        class="flex-1 rounded-md bg-primary-400 px-5 py-2.5 text-sm font-medium text-dark-background hover:bg-primary-300 cursor-pointer"
       >
         Aceptar
       </button>
