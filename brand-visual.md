@@ -304,24 +304,20 @@ Una escala cerrada. No se inventan radios ni sombras a ojo.
 
 ## El producto como imagen
 
-La pieza visual principal de Crisopa es **la ventana de producto**: una
-conversación que termina en un dato estructurado.
+La pieza visual principal de Crisopa es **la demo de producto**: una
+conversación en el móvil que termina en un dato estructurado dentro del panel.
 
 ```
-┌───────────────────────────────────────────────┐
-│ ● ● ●                                         │
-├───────────────────────────────────────────────┤
-│  ¿Qué puedo usar contra mosca blanca en       │
-│  el tomate de la finca Los Llanos?            │
-│                                               │
-│  ↳ Crisopa · buscar_productos_autorizados     │
-│                                               │
-│  ┌─────────────────────────────────────────┐  │
-│  │ PRODUCTO        Nº REGISTRO   DOSIS     │  │
-│  │ ...             ES-00000      0,75 l/ha │  │
-│  │ Plazo de seguridad: 3 días  ✓ MAPA      │  │
-│  └─────────────────────────────────────────┘  │
-└───────────────────────────────────────────────┘
+ ┌──────────┐  ┌───────────────────────────────────────────┐
+ │ ChatGPT  │  │ ● ● ●   panel.crisopa.app                  │
+ │          │  ├────────┬──────────────────────────────────┤
+ │ Orden de │  │crisopa │ Tratamientos · Órdenes            │
+ │ Karate…  │  │        │ 14 KARATE ZEON  200 ml/ha Pendiente│
+ │ ✓ ✓      │  │ Tratam.│ 13 SCORE 25 EC  0,45 l/ha Ejecutada│
+ │┌────────┐│ ╭┼────────┼──▶                                │
+ ││Orden 14├┼─╯│        │                                   │
+ │└────────┘│  │        │                                   │
+ └──────────┘  └────────┴──────────────────────────────────┘
 ```
 
 - **Contenido real del oficio.** Cultivos, plagas, productos, dosis y plazos
@@ -331,14 +327,30 @@ conversación que termina en un dato estructurado.
 - **La interfaz de chat se recrea con nuestros tokens**, de forma neutra. No se
   copia la interfaz de ChatGPT ni de Claude: su logo identifica el conector, y
   nada más.
+- **Producto real, no ilustración.** Lo que sale de Crisopa es el panel de
+  verdad, recreado a partir de `crisopa-app`: sus menús, sus columnas, sus
+  estados («Pendiente», «Ejecutada») y sus textos. No se inventan pantallas que
+  la app no tiene.
+- **Se comporta como un vídeo:** sin selección de texto ni elementos
+  clicables, salvo el botón de repetir o de pausa.
+- **El hero cuenta el ciclo; la demo oscura, el rigor.** El hero enseña el
+  viaje completo, rápido y en bucle: la orden pedida desde el móvil en ChatGPT,
+  su llegada al panel, la ejecución con un clic y el coste. La demo oscura
+  («Del chat a la orden de tratamiento») va despacio, al ritmo de lectura, y
+  se detiene en las comprobaciones contra el registro: enseña el error más
+  común (repetir un producto que solo admite una aplicación por campaña) y
+  cómo Crisopa lo para y propone una alternativa. Sin dispositivos ni
+  cursor; termina en la firma, no en el coste.
+- **Casos con cultivos de los clientes:** naranjo y almendro. Nada de
+  hortícolas de invernadero.
 - **El producto va sobre el fondo, sin nada detrás:** ni degradado, ni halo,
   ni foto, ni objeto 3D. Si hace falta separarlo, un borde de 1px y la sombra
   de nivel 2.
 - **Vídeo o animación, no captura estática**, cuando se trata del flujo
   principal. Las capturas estáticas valen para detalles.
 - **Sin pies de figura** tipo `FIG. 01`: debajo de una ventana de producto
-  parecen un artículo científico y no aportan. La ventana se explica sola. Si
-  los datos son de ejemplo, basta una nota breve (`Finca y SIGPAC de ejemplo.`).
+  parecen un artículo científico y no aportan. La ventana se explica sola.
+  Tampoco notas de «datos de ejemplo»: en una landing se da por hecho.
 - **Repetir la animación:** botón de icono discreto (28px, borde de 1px, icono
   de flecha circular) en una esquina de la ventana o de la demo, con
   `aria-label`. Con ratón aparece solo al pasar por encima (y al llegar con
@@ -417,7 +429,8 @@ Se anima lo que explica el producto. Todo lo demás, quieto o casi.
 ### Qué no se anima
 
 - Nada flota, oscila, brilla, pulsa, rebota ni gira por decorar (tampoco
-  diagramas de órbitas ni logos en carrusel).
+  diagramas de órbitas ni logos en carrusel). La única oscilación permitida
+  significa algo: el temblor horizontal de un aviso de error, una sola vez.
 - Nada de brillos que recorren textos o botones.
 - Nada de fondos animados (auroras, mallas, partículas).
 - Nada de efectos que siguen al cursor (resplandores, chispas al hacer clic,
@@ -435,9 +448,20 @@ curva:  cubic-bezier(0.22, 1, 0.36, 1)   (ease-brand)
 
 Nunca `scale(0)`, nunca rebotes, nunca desplazamientos largos (máximo 8px).
 
-La única excepción es **el apilado del hero** (ver catálogo): la ventana de
-producto sube sobre la presentación ligada al scroll. No se copia en otras
-secciones.
+Una excepción en la demo oscura, porque explica algo: la orden correcta sube
+32px (sin desenfoque, con sombra) y se monta encima del aviso de error, que
+queda tapado y luego se retira. Se lee como «la buena sustituye a la mala».
+
+Y dos en el hero, que no se copian en otras secciones:
+
+- **El apilado del hero** (ver catálogo): la demo sube sobre la presentación
+  ligada al scroll.
+- **La demo del hero** (ver catálogo): rápida, exagerada y en bucle. Aquí sí
+  hay desplazamientos largos, curvas bézier, cortes y estelas de movimiento,
+  siempre que expliquen el flujo: la orden viaja del móvil al panel por una
+  curva, con una estela corta detrás que solo existe mientras se mueve (nunca
+  se dibuja la ruta entera), y el anillo marca un clic o una llegada. Nada de
+  formas sueltas de adorno ni de trazos de diagrama sobre la interfaz. Los datos siguen siendo reales y el estado final se lee entero.
 
 ### Catálogo
 
@@ -446,9 +470,10 @@ secciones.
 | **Entrada del hero** | Etiqueta, titular y entradilla entran con el gesto de entrada, escalonados | Al cargar la página | 450ms cada uno; retrasos 100 / 150 / 200ms |
 | **Entrada de sección** | El bloque entra con el gesto de entrada | Al entrar en pantalla (10% visible, 100px antes del borde inferior); una sola vez | 450ms |
 | **Apilado del hero** | Al cargar, solo la presentación, a pantalla completa y centrada en vertical. Al bajar, la presentación se queda fija y se desvanece (a opacidad 0, escala 0,97) mientras la ventana de producto sube por encima de escala 0,94 a 1 hasta quedar centrada. Ligado al scroll: avanza y retrocede con él, no lo secuestra | Al hacer scroll, desde que la ventana asoma hasta que queda centrada | Sin duración: la marca el scroll. Solo en escritorio (≥ 861px de ancho y ≥ 640px de alto), con animaciones por scroll en CSS y sin movimiento reducido; si no, flujo normal y entrada de sección |
-| **Demo del hero** | El mensaje del asesor se escribe carácter a carácter con caret; entra la llamada a Crisopa; entra la respuesta con la tabla. El bocadillo reserva desde el principio el tamaño del texto completo: la ventana no cambia de alto al escribir | Cuando se ve el 25% de la ventana; con el apilado, la ventana sube en blanco y la demo arranca cuando su borde superior cruza la mitad de la pantalla. Una sola vez | 22ms por carácter; llamada +350ms; respuesta +1.100ms; pasos de 400ms |
-| **Demo oscura** | Mensaje, las dos llamadas, la respuesta; luego los campos de la orden uno a uno y, al final, «Verificado contra el MAPA» | Cuando se ve el 30% de la demo; una sola vez | Chat a 0 / 1.100 / 1.800 / 2.700ms; campos desde 3.900ms cada 260ms; verificación 500ms después; pasos de 450ms. Unos 6,5s en total |
-| **Repetir** | Relanza la demo desde el principio | Botón de icono en la esquina | Igual que la demo |
+| **Demo del hero** | 1) Campo: entra el móvil desde abajo, la petición se escribe en el compositor de ChatGPT y se envía; las dos llamadas a Crisopa pasan con indicador de carga; llega la respuesta y la tarjeta de la orden. 2) Viaje: la tarjeta sale del móvil por una curva bézier con una estela corta detrás (de donde estaba hace 100ms a donde está; se alarga con la velocidad y se recoge al frenar), el móvil sale girando y el panel se despeja. 3) Panel: la fila entra resaltada en Órdenes de tratamiento, «Pendiente». 4) Ejecutar: el cursor abre el menú ⋮ y pulsa «Ejecutar tratamiento»; la fila pasa a «Ejecutada». 5) Control: la tabla se retira y sale el coste, con los importes contando hasta la cifra exacta, y el acumulado de la campaña | Al verse el 30% (con el apilado, cuando su borde superior cruza la mitad de la pantalla). En bucle mientras se ve. Se para solo al salir del todo de la pantalla o con la pestaña oculta, y se queda en el principio del bucle (móvil fuera, chat vacío), el mismo estado desde el que arranca: así nunca cambia de golpe a la vista. Con el botón de pausa, sin JS o con movimiento reducido, el cartel quieto (móvil con la conversación y orden pendiente) | Unos 13s por vuelta. Tecleo de 12–30ms por carácter; entradas de 220–420ms y salidas de 560ms con curvas rápidas (`0.16, 1, 0.3, 1` y `0.7, 0, 0.2, 1`); viaje de la orden 780ms; contadores de 600–900ms; 2,6s quieto al final |
+| **Demo oscura** | El asesor pide Juvinal; las dos llamadas (ficha y historial); salta a la derecha un aviso rojo pequeño («No se puede repetir») que tiembla una vez; Crisopa se niega y propone Ovispray; el asesor acepta; validación; la orden entra encima del aviso y lo tapa, campo a campo; Crisopa da la dosis; «Verificado contra el MAPA» y la firma («Pendiente de firma» → «Firmada») | Cuando se ve el 30% de la demo; una sola vez. Sin JS o con movimiento reducido, el estado final: orden firmada, sin aviso | Guion `T` en `Showcase.astro`: aviso a 4,2s y temblor a 4,7s (420ms, ±6px); orden a 11,4s, campos cada 280ms; firma a 16,6s; pasos de 450ms. Unos 17s en total |
+| **Repetir** | Relanza la demo oscura desde el principio | Botón de icono en la esquina | Igual que la demo |
+| **Pausa** | Detiene el bucle de la demo del hero y deja el cartel; vuelve a pulsarse para reanudar | Botón de icono bajo la demo, a la derecha | Inmediato |
 | **Caret** | Parpadeo seco (encendido/apagado, sin fundido) | Siempre | Ciclo de 1,15s |
 | **Hover de botón y enlace** | Cambio de color de fondo o de texto; la flecha avanza 2px | Al pasar el ratón | 150ms `ease-out` |
 | **Pulsación** | El botón se reduce a 0,97 | Al pulsar | 150ms `ease-out` |
@@ -591,8 +616,8 @@ cambia también su sitio en el código, y al revés.
 | Qué | Componente |
 |-----|------------|
 | Etiqueta con caret | `src/components/Eyebrow.astro` (`n`, `caret`, `dark`, `as`) |
-| Ventana de producto del hero | `src/components/HeroChat.astro` |
-| Apilado del hero | `src/components/Hero.astro`: `position: sticky` y `animation-timeline` con la línea de tiempo `--hero-stage` (rango `cover 0%` → `cover 50%`). La condición de activación se repite en `STACK_QUERY` de `HeroChat.astro` |
+| Demo del hero | `src/components/HeroDemo.astro`: escenario de tamaño fijo (`--w` × `--h`) escalado al ancho con `tan(atan2())`; otro encuadre por debajo de 861px |
+| Apilado del hero | `src/components/Hero.astro`: `position: sticky` y `animation-timeline` con la línea de tiempo `--hero-stage` (rango `cover 0%` → `cover 50%`). La condición de activación se repite en `STACK_QUERY` de `HeroDemo.astro` |
 | Demo oscura | `src/components/Showcase.astro` (`#demo`) |
 | Sello de fuente del MAPA | `src/components/SelloMAPA.astro` |
 | Conectores en celdas | `src/components/Conectores.astro` |
@@ -607,7 +632,7 @@ cambia también su sitio en el código, y al revés.
 | Fecha de la orden de la demo («mañana») | `FECHA_ORDEN_DEMO`, derivada de la anterior |
 | Texto del sello de fuente | `FUENTE_MAPA` en `src/lib/mapa.ts` |
 | Fecha de los datos del corpus `/plagas` | `ACTUALIZADO_MAPA` en `src/lib/plagas.ts` |
-| Productos de la demo del hero | Array `productos` en `HeroChat.astro` (filas reales del registro; no se cambian sin comprobarlas) |
+| Datos de la demo del hero | `nueva`, `anteriores` y `coste` en `HeroDemo.astro`. Karate Zeon (nº 22398) y Score 25 EC (nº 18767) en almendro, comprobados contra la ficha del MAPA; finca, precios y tarifas de ejemplo, con importes que cuadran. No se cambian sin comprobarlos |
 
 ### Movimiento
 
@@ -618,7 +643,7 @@ cambia también su sitio en el código, y al revés.
 | Entrada al hacer scroll | Atributo `data-animate`; el `IntersectionObserver` de `Layout.astro` añade `.animated` y deja de observar. Solo se oculta si `<html>` tiene la clase `js` (la pone un script en línea de `Layout.astro`): sin JS, se ve directamente |
 | Pulsación de botones | Atributo `data-press` (escala 0,97 y transición de color de 150ms) |
 | Caret | `.eyebrow-caret` y `@keyframes caret-blink` |
-| Demos | Script propio en `HeroChat.astro` y `Showcase.astro`: clases `.playing` en el contenedor e `.in` en cada `.step` |
+| Demos | Script propio en `HeroDemo.astro` y `Showcase.astro`: clases `.playing` en el contenedor e `.in` en cada `.step`. La del hero mueve la tarjeta y el cursor con la Web Animations API por béziers muestreadas |
 | Movimiento reducido | Bloque `@media (prefers-reduced-motion: reduce)` al final de `global.css`, y comprobación en el script de cada demo |
 
 ---
