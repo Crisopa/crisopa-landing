@@ -18,7 +18,9 @@ interface Props {
 const {
   title = 'Crisopa — Copiloto agronómico con IA | Cuaderno de campo digital',
   description = 'Lleva todo tu trabajo agronómico —agenda, planificación, planes de abonado, tratamientos y el cuaderno de campo— en minutos con IA. Habla con ChatGPT o Claude o trabaja desde el ordenador. Reserva una demo.',
-  image = '/og-image.png',
+  // Generada con scripts/imagenes-marca.mjs. Nombre versionado: las apps de
+  // mensajería cachean la miniatura por URL.
+  image = '/og-image-v2.png',
   schema = []
 } = Astro.props
 
@@ -44,6 +46,7 @@ const jsonLd = {
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />

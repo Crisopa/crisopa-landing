@@ -624,6 +624,18 @@ cambia también su sitio en el código, y al revés.
 | Lista comparada (sin / con Crisopa) | `src/components/ListaComparada.astro` |
 | Tabla de productos del corpus | `src/components/TablaProductos.astro` |
 
+### Imágenes de marca — `scripts/imagenes-marca.mjs`
+
+Se generan con `node scripts/imagenes-marca.mjs` (Chrome headless) a partir de
+los tokens; no se editan a mano.
+
+| Qué | Archivo |
+|-----|---------|
+| Imagen social (`og:image`, 1200×630) | `public/og-image-v2.png`. Si cambia, cambia el nombre (las apps cachean por URL) y `image` en `Layout.astro` |
+| Logo de la organización (JSON-LD) | `public/logo.png` (512×512, símbolo green-600 sobre blanco) |
+| Icono de iOS | `public/apple-touch-icon.png` (180×180, símbolo blanco sobre green-600) |
+| Favicon | `public/favicon.svg` (círculo green-600 en hex, símbolo blanco) |
+
 ### Datos
 
 | Qué | Dónde |

@@ -24,7 +24,7 @@ export const organizationSchema = {
   '@id': ORGANIZATION_ID,
   name: 'Crisopa',
   url: SITIO,
-  logo: `${SITIO}/og-image.png`,
+  logo: `${SITIO}/logo.png`,
   description:
     'Copiloto agronómico con IA para asesores y técnicos de campo: tratamientos, abonado, riego y cuaderno de campo digital.',
   founder: {
