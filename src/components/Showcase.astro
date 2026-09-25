@@ -1,21 +1,32 @@
 ---
 /**
  * Demo oscura (brand-visual.md › Secciones oscuras · El producto como imagen):
- * la conversación con el asesor a la izquierda y, a la derecha, la orden de
- * tratamiento que sale de ella, lista para que él la revise y la firme.
+ * el rigor. El hero cuenta el ciclo entero, rápido; esta se para en lo que
+ * allí es una línea con un indicador de carga: las comprobaciones contra el
+ * registro. Enseña el error más común, repetir un producto que solo admite
+ * una aplicación por campaña, y cómo Crisopa lo detiene.
  *
+ * - Izquierda, la conversación: el asesor pide Juvinal contra piojo rojo;
+ *   Crisopa lee la ficha y el historial de la parcela, se niega y propone
+ *   una alternativa; el asesor la acepta y Crisopa pone la dosis y valida.
+ * - Derecha: un aviso rojo, pequeño, que tiembla una vez al saltar; luego la
+ *   orden correcta entra encima y lo tapa, a la altura de la conversación
+ *   que la produjo, y se firma.
  * - Es una de las dos secciones oscuras de la home (la otra, el CTA final).
- * - El HTML trae el estado final completo: sin JS o con
- *   `prefers-reduced-motion`, la demo se ve entera y quieta.
- * - Con movimiento (mismo patrón que HeroChat): los pasos se ocultan al
- *   cargar y, cuando la demo se ve (una sola vez), entran en orden: mensaje
- *   del asesor, las dos llamadas a Crisopa, la respuesta, los campos de la
- *   orden uno a uno y, al final, «Verificado contra el MAPA». Opacidad +
- *   desenfoque 6px→0 + 8px, ease-brand. El botón de la esquina la relanza.
- * - Abanto es real (Registro MAPA nº 24643: 0,75 l/ha, plazo de seguridad
- *   1 día, máx. 2 aplicaciones, autorizado en tomate de invernadero con
- *   carretilla). No se cambia sin comprobarlo contra la ficha oficial. La
- *   finca y el SIGPAC son de ejemplo, y así lo dice la nota al pie.
+ * - El HTML trae el estado final completo (orden firmada, sin aviso): sin JS
+ *   o con `prefers-reduced-motion`, la demo se ve entera y quieta.
+ * - Con movimiento: cada paso entra en su momento (`data-at`, en ms, desde
+ *   `T`), al ritmo de lectura, con el gesto de entrada de marca. El temblor,
+ *   el tapado y la firma cambian por clase en la raíz (`caught`, `resolved`,
+ *   `signed`). Una sola vez; el botón de la esquina la relanza.
+ * - Datos comprobados contra las fichas del MAPA; no se cambian sin volver a
+ *   comprobarlos:
+ *   · Juvinal 10 EC (nº 19675, piriproxifen 10 %): cítricos, piojo rojo de
+ *     California, 0,05–0,075 %, 1 aplicación por campaña sin superar 2 l/ha;
+ *     Spa 1: tampoco con otro producto con piriproxifen. P.S. 30 días.
+ *   · Ovispray (nº ES-00090, aceite de parafina 80 %): cítricos, piojo rojo,
+ *     en verano (BBCH 69–85) hasta 40 l/ha con 1.000–2.000 l/ha de caldo,
+ *     2 aplicaciones cada 60 días. P.S. no procede.
  */
 import Eyebrow from './Eyebrow.astro'
 import SelloMAPA from './SelloMAPA.astro'
@@ -28,15 +39,37 @@ interface Props {
 
 const { n } = Astro.props
 
+// Guion (ms desde que arranca). Pausas al ritmo de lectura: cada mensaje
+// deja tiempo para leerse antes del siguiente paso. `caught`, `resolved` y
+// `signed` son cambios de estado en la raíz: el aviso tiembla, la orden lo
+// tapa y se firma.
+const T = {
+  pide: 0,
+  ficha: 2400,
+  historial: 3400,
+  aviso: 4200,
+  caught: 4700,
+  niega: 5600,
+  elige: 9600,
+  valida: 10600,
+  resolved: 11400,
+  campos: 11700,
+  campo: 280,
+  hecho: 14000,
+  verificado: 14800,
+  signed: 16600,
+}
+
 const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
-  { k: 'Finca', v: 'Los Llanos · parcela 12' },
-  { k: 'SIGPAC', v: '04:079:0:0:12:45:1', mono: true },
-  { k: 'Cultivo', v: 'Tomate · invernadero' },
-  { k: 'Producto', v: 'Abanto', registro: 'Nº 24643' },
-  { k: 'Dosis', v: '0,75 l/ha · caldo 1.000 l/ha', mono: true },
+  { k: 'Finca', v: 'La Alquería · parcela 12' },
+  { k: 'SIGPAC', v: '46:244:0:0:3:118:1', mono: true },
+  { k: 'Cultivo', v: 'Naranjo · Navelina' },
+  { k: 'Plaga', v: 'Piojo rojo de California' },
+  { k: 'Producto', v: 'Ovispray', registro: 'Nº ES-00090' },
+  { k: 'Dosis', v: '30 l/ha · caldo 2.000 l/ha', mono: true },
   // «Para mañana»: el día siguiente a la sincronización del registro (lib/mapa.ts)
   { k: 'Fecha', v: FECHA_ORDEN_DEMO, mono: true },
-  { k: 'Plazo seg.', v: '1 día', mono: true },
+  { k: 'Plazo seg.', v: 'No procede' },
 ]
 ---
 
@@ -54,49 +87,74 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     </p>
   </div>
 
-  <figure class="demo" data-demo>
+  <figure
+    class="demo"
+    data-demo
+    data-caught={T.caught}
+    data-resolved={T.resolved}
+    data-signed={T.signed}
+  >
     <div class="split">
       <div class="d-card">
         <p class="d-label"><span>Conversación</span><time>09:42</time></p>
         <div class="d-chat">
-          <p class="u step">
-            Prepárame la orden con Abanto para mañana en la parcela 12 de Los
-            Llanos. Carretilla, 1.000 litros de caldo.
+          <p class="u step" data-at={T.pide}>
+            Prepárame la orden de Juvinal contra piojo rojo en la parcela 12 de
+            La Alquería, para mañana.
           </p>
-          <p class="t step"><span class="ok" aria-hidden="true">✓</span> Crisopa · leer_ficha_registro · 24643</p>
-          <p class="t step"><span class="ok" aria-hidden="true">✓</span> Crisopa · validar_tratamiento · parcela 12</p>
-          <p class="step">
-            Hecho. Dosis dentro del registro y es la primera aplicación de la
-            campaña (máximo 2). Tienes la orden lista para revisar.
+          <p class="t step" data-at={T.ficha}><span class="ok" aria-hidden="true">✓</span> Crisopa · leer_ficha_registro · 19675</p>
+          <p class="t step" data-at={T.historial}><span class="ok" aria-hidden="true">✓</span> Crisopa · listar_registros · parcela 12</p>
+          <p class="step" data-at={T.niega}>
+            No puedo: Juvinal solo admite una aplicación por campaña y esta
+            parcela ya la tiene. Alternativa autorizada: Ovispray, aceite de
+            parafina. ¿La preparo?
+          </p>
+          <p class="u step" data-at={T.elige}>Sí, con Ovispray.</p>
+          <p class="t step" data-at={T.valida}><span class="ok" aria-hidden="true">✓</span> Crisopa · validar_tratamiento · parcela 12</p>
+          <p class="step" data-at={T.hecho}>
+            Hecho: Ovispray a 30 l/ha con 2.000 l/ha de caldo, dentro del
+            registro. Lista para tu firma.
           </p>
         </div>
       </div>
 
-      <div class="d-card">
-        <p class="d-label"><span>Orden de tratamiento</span><span>Borrador</span></p>
-        <dl class="order">
-          {orden.map((f) => (
-            <div class="row step">
-              <dt>{f.k}</dt>
-              <dd class:list={[f.mono && 'mono']}>
-                {f.v}
-                {f.registro && <> · <span class="mono">{f.registro}</span></>}
-              </dd>
+      <!-- Aviso y orden comparten celda: la orden entra encima del aviso y lo
+           tapa. La celda mide ya lo que la orden, así que nada salta. -->
+      <div class="d-col">
+        <div class="aviso step" data-at={T.aviso} role="note">
+          <p class="aviso-t"><span aria-hidden="true">✕</span> No se puede repetir</p>
+          <p>Juvinal 10 EC admite 1 aplicación por campaña en cítricos y la parcela 12 ya la tiene.</p>
+          <p class="aviso-src">Ficha MAPA · Nº 19675</p>
+        </div>
+
+        <div class="d-card orden step" data-at={T.resolved}>
+          <p class="d-label"><span>Orden de tratamiento</span><span>Nº 15</span></p>
+          <dl class="order">
+            {orden.map((f, i) => (
+              <div class="row step" data-at={T.campos + i * T.campo}>
+                <dt>{f.k}</dt>
+                <dd class:list={[f.mono && 'mono']}>
+                  {f.v}
+                  {f.registro && <> · <span class="mono">{f.registro}</span></>}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div class="step" data-at={T.verificado}>
+            <div class="status">
+              <span class="ok">✓ Verificado contra el MAPA</span>
+              <span class="sign">
+                <span class="sign-pend">Pendiente de firma</span>
+                <span class="sign-done">Firmada · J. Martín</span>
+              </span>
             </div>
-          ))}
-        </dl>
-        <div class="step">
-          <div class="status">
-            <span class="ok">✓ Verificado contra el MAPA</span>
-            <span class="sign">Pendiente de tu firma</span>
+            <SelloMAPA dark fecha={REGISTRO_MAPA_SINCRONIZADO} class="mt-3.5" />
           </div>
-          <SelloMAPA dark fecha={REGISTRO_MAPA_SINCRONIZADO} class="mt-3.5" />
         </div>
       </div>
     </div>
 
     <figcaption class="fig">
-      <span>Finca y SIGPAC de ejemplo.</span>
       <button type="button" class="replay" data-replay aria-label="Repetir la animación" title="Repetir">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
@@ -116,7 +174,17 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     display: grid;
     grid-template-columns: 1fr 1.15fr;
     gap: 20px;
-    align-items: start;
+    /* Misma altura: conversación y orden se leen como un par */
+    align-items: stretch;
+  }
+
+  .d-col {
+    display: grid;
+    min-width: 0;
+  }
+
+  .d-col > * {
+    grid-area: 1 / 1;
   }
 
   @media (max-width: 860px) {
@@ -193,6 +261,95 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     color: var(--green-400);
   }
 
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Aviso de error: pequeño, rojo de estado (solo UI de producto), arriba de
+     la celda. Tiembla una vez al saltar y la orden lo tapa al llegar. */
+  .aviso {
+    align-self: start;
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px;
+    border: 1px solid oklch(from var(--state-error) l c h / 0.45);
+    border-radius: var(--radius-md);
+    background: oklch(from var(--state-error) l c h / 0.12);
+    color: var(--dark-foreground);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .aviso p {
+    margin: 0;
+  }
+
+  .aviso-t {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: oklch(from var(--state-error) 0.76 0.15 h);
+  }
+
+  .aviso-src {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dark-foreground-muted);
+  }
+
+  .caught .aviso {
+    animation: aviso-no 420ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+
+  @keyframes aviso-no {
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(6px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Tapado por la orden: se queda quieto mientras ella sube y, ya cubierto,
+     se retira detrás */
+  .resolved .aviso,
+  .demo:not(.playing) .aviso {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  .resolved .aviso {
+    transition-delay: 500ms;
+  }
+
+  /* La orden sube desde abajo y se monta encima del aviso: más recorrido que
+     el gesto de entrada (32px, sin desenfoque), opaca enseguida y con sombra
+     para que se lea como una capa encima */
+  .orden {
+    position: relative;
+    box-shadow: 0 -16px 40px -16px oklch(0 0 0 / 0.6);
+  }
+
+  .orden.step {
+    transition:
+      opacity 250ms var(--ease-brand),
+      transform 600ms var(--ease-brand);
+  }
+
+  .playing .orden.step:not(.in) {
+    filter: none;
+    transform: translateY(32px);
+  }
+
   /* Lista clave-valor: cada fila es un paso de la animación, con subgrid
      para que las claves compartan columna */
   .order {
@@ -230,11 +387,6 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     line-height: 1.4;
   }
 
-  .mono {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-  }
-
   .row dd.mono {
     font-size: 14px;
   }
@@ -262,19 +414,32 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
     border: 1px solid var(--dark-line);
     border-radius: 9999px;
     color: var(--dark-foreground);
+    transition:
+      border-color 450ms var(--ease-brand),
+      color 450ms var(--ease-brand);
   }
 
-  /* Nota de datos de ejemplo a la izquierda, repetir en la esquina derecha */
+  /* Firmada es el estado final; mientras se reproduce, pendiente hasta la firma */
+  .sign-pend,
+  .playing:not(.signed) .sign-done {
+    display: none;
+  }
+
+  .playing:not(.signed) .sign-pend {
+    display: inline;
+  }
+
+  .demo:not(.playing) .sign,
+  .signed .sign {
+    border-color: var(--green-400);
+    color: var(--green-400);
+  }
+
+  /* Pie: repetir en la esquina derecha */
   .fig {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: flex-end;
     margin-top: 14px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--dark-foreground-muted);
   }
 
   .replay {
@@ -347,28 +512,20 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
 <script>
   type Demo = HTMLElement & { _stop?: () => void }
 
-  // Momento (ms) en que entra cada paso, al ritmo de lectura: mensaje,
-  // llamadas, respuesta, campos de la orden y, al final, la verificación.
-  function schedule(count: number): number[] {
-    const chat = [0, 1100, 1800, 2700]
-    const fields = count - chat.length - 1
-    const start = 3900
-    const gap = 260
-    const rows = Array.from({ length: fields }, (_, i) => start + i * gap)
-    const verified = start + fields * gap + 500
-    return [...chat, ...rows, verified]
-  }
-
   function setup(root: Demo) {
     if (root.dataset.ready) return
     root.dataset.ready = '1'
 
-    const steps = Array.from(root.querySelectorAll<HTMLElement>('.step'))
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-at]'))
     const replay = root.querySelector<HTMLButtonElement>('[data-replay]')
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (!steps.length || reduce.matches) return
 
-    const times = schedule(steps.length)
+    // Cambios de estado en la raíz: el aviso tiembla, la orden lo tapa y se
+    // firma. Los momentos vienen del guion (T) por el HTML.
+    const FLAGS = ['caught', 'resolved', 'signed'] as const
+    const flags = FLAGS.map((cls) => ({ cls, at: Number(root.dataset[cls]) }))
+    const end = Math.max(...steps.map((s) => Number(s.dataset.at)), ...flags.map((f) => f.at)) + 500
     let timers: number[] = []
 
     const clear = () => {
@@ -376,22 +533,23 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
       timers = []
     }
 
+    const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms))
+
     // Estado final completo (el mismo que trae el HTML)
     const finish = () => {
       clear()
-      root.classList.remove('playing')
+      root.classList.remove('playing', ...FLAGS)
     }
 
     const play = () => {
       clear()
       if (reduce.matches) return finish()
+      root.classList.remove(...FLAGS)
       root.classList.add('playing')
       steps.forEach((s) => s.classList.remove('in'))
-      steps.forEach((s, i) => {
-        timers.push(window.setTimeout(() => s.classList.add('in'), times[i]))
-      })
-      const end = times[times.length - 1] + 500
-      timers.push(window.setTimeout(() => root.classList.remove('playing'), end))
+      steps.forEach((s) => later(Number(s.dataset.at), () => s.classList.add('in')))
+      flags.forEach((f) => later(f.at, () => root.classList.add(f.cls)))
+      later(end, () => root.classList.remove('playing', ...FLAGS))
     }
 
     replay?.addEventListener('click', play)
@@ -403,7 +561,7 @@ const orden: { k: string; v: string; mono?: boolean; registro?: string }[] = [
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return
         io.disconnect()
-        timers.push(window.setTimeout(play, 300))
+        later(300, play)
       },
       { threshold: 0.3 },
     )
