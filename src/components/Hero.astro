@@ -5,7 +5,7 @@
  * 1. Al cargar, solo la presentación: etiqueta, H1 en un tono, entradilla y
  *    acciones, alineadas a la izquierda y centradas en vertical en la
  *    pantalla. La ventana de producto queda por debajo del pliegue.
- * 2. Al hacer scroll, la ventana de producto (HeroChat) sube por encima: la
+ * 2. Al hacer scroll, la demo de producto (HeroDemo) sube por encima: la
  *    presentación se queda fija detrás y se desvanece, y la ventana pasa de
  *    escala 0,94 a 1 hasta quedar centrada. Va ligado al scroll (avanza y
  *    retrocede con él), no lo secuestra. La demo arranca cuando se asienta.
@@ -13,13 +13,13 @@
  * El apilado solo se activa con animaciones por scroll en CSS, pantallas de
  * escritorio con altura suficiente y sin movimiento reducido. Si no, flujo
  * normal y la ventana entra con el gesto de entrada de sección. La condición
- * se repite en el script de HeroChat (STACK_QUERY): si cambia aquí, allí.
+ * se repite en el script de HeroDemo (STACK_QUERY): si cambia aquí, allí.
  *
  * Sin pastillas-anuncio sobre el titular: «El único conectado a ChatGPT y
  * Claude» vive como H2 de la sección de conectores (AsistenteIA).
  */
 import Eyebrow from './Eyebrow.astro'
-import HeroChat from './HeroChat.astro'
+import HeroDemo from './HeroDemo.astro'
 
 const appUrl = 'https://panel.crisopa.app'
 const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
@@ -73,7 +73,7 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 
   <div class="hero-stage" data-animate>
     <div class="hero-window">
-      <HeroChat stacked />
+      <HeroDemo stacked />
     </div>
   </div>
 </section>

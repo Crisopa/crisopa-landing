@@ -1,0 +1,2192 @@
+---
+/**
+ * Demo del hero (brand-visual.md › El producto como imagen · Movimiento):
+ * el ciclo completo en un plano, rápido y en bucle. Es la única excepción de
+ * movimiento de la web: aquí sí hay desplazamientos largos, curvas y cortes.
+ *
+ * 1. Campo: en el móvil, el asesor pide la orden a ChatGPT; Crisopa comprueba
+ *    los usos autorizados y la crea.
+ * 2. Viaje: la tarjeta de la orden sale del móvil por una curva y aterriza en
+ *    el panel, en la vista real de Órdenes de tratamiento (crisopa-app,
+ *    components/ordenes-tratamiento), como fila «Pendiente» resaltada.
+ * 3. Ejecutar: el cursor abre el menú de la fila y pulsa «Ejecutar
+ *    tratamiento»; la fila pasa a «Ejecutada».
+ * 4. Control: la tabla se retira y sale el desglose de coste de la
+ *    ejecución (como en ejecutar-orden.tsx) y el acumulado de la campaña.
+ *
+ * - El HTML trae el cartel: móvil con la conversación entera y panel con la
+ *   orden pendiente. Sin JS, con `prefers-reduced-motion` o en pausa, se ve
+ *   eso, quieto.
+ * - Todo va en un escenario de tamaño fijo (--w × --h) que se escala al
+ *   ancho disponible; las trayectorias se calculan en esas coordenadas.
+ * - `stacked`: la demo sube apilada sobre el hero (ver Hero.astro) y arranca
+ *   cuando se asienta. La condición se repite en STACK_QUERY.
+ *
+ * Datos: Karate Zeon (nº 22398) y Score 25 EC (nº 18767) son reales y sus
+ * usos en almendro están comprobados contra la ficha del MAPA: Karate Zeon,
+ * 1 aplicación por campaña, máx. 200 ml/ha (0,02 % en 1.000 l/ha de caldo),
+ * nunca en floración; Score 25 EC contra mancha ocre, 2 aplicaciones cada 14
+ * días desde fin de floración, máx. 0,45 l/ha. La finca, la parcela, los
+ * precios y las tarifas son de ejemplo; los importes cuadran con ellos.
+ */
+import { LOGO_CHATGPT } from '../lib/logos'
+
+interface Props {
+  stacked?: boolean
+}
+
+const { stacked = false } = Astro.props
+
+// Id del degradado de la estela: único por si hay más de una demo en la página
+const tailId = `demo-tail-${Math.random().toString(36).slice(2, 8)}`
+
+// ---------- Iconos (trazos de Lucide, los mismos que usa la app) ----------
+
+const circle = (cx: number, cy: number, r: number) =>
+  `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0`
+const rect = (x: number, y: number, w: number, h: number, r: number) =>
+  `M${x + r} ${y}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}v${h - 2 * r}a${r} ${r} 0 0 1 ${-r} ${r}h${-(w - 2 * r)}a${r} ${r} 0 0 1 ${-r} ${-r}v${-(h - 2 * r)}a${r} ${r} 0 0 1 ${r} ${-r}z`
+
+const ic = {
+  inicio: [rect(3, 3, 7, 9, 1), rect(14, 3, 7, 5, 1), rect(14, 12, 7, 9, 1), rect(3, 16, 7, 5, 1)],
+  explotaciones: ['M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z', 'M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2', 'M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2', 'M10 6h4', 'M10 10h4', 'M10 14h4', 'M10 18h4'],
+  parcelas: ['M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0', circle(12, 10, 3)],
+  diario: ['M2 6h4', 'M2 10h4', 'M2 14h4', 'M2 18h4', rect(4, 2, 16, 20, 2), 'M16 2v20'],
+  almacen: ['M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z', 'M12 22V12', 'm3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7', 'm7.5 4.27 9 5.15'],
+  tratamientos: ['m10 11 11 .9a1 1 0 0 1 .8 1.1l-.665 4.158a1 1 0 0 1-.988.842H20', 'M16 18h-5', 'M18 5a1 1 0 0 0-1 1v5.573', 'M3 4h8.129a1 1 0 0 1 .99.863L13 11.246', 'M4 11V4', 'M7 15h.01', 'M8 10.1V4', circle(18, 18, 2), circle(7, 15, 5)],
+  fertilizacion: ['M7 20h10', 'M10 20c5.5-2.5.8-6.4 3-10', 'M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z', 'M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'],
+  riego: ['M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z', 'M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97'],
+  partes: [rect(8, 2, 8, 4, 1), 'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2', 'M12 11h4', 'M12 16h4', 'M8 11h.01', 'M8 16h.01'],
+  buscar: [circle(11, 11, 8), 'm21 21-4.3-4.3'],
+  mas: ['M5 12h14', 'M12 5v14'],
+  menu: [circle(12, 12, 1), circle(12, 5, 1), circle(12, 19, 1)],
+  ejecutar: ['M6 3 20 12 6 21Z'],
+  pdf: ['M15 3h6v6', 'M10 14 21 3', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'],
+  editar: ['M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z'],
+  abajo: ['m6 9 6 6 6-6'],
+  selector: ['m7 15 5 5 5-5', 'm7 9 5-5 5 5'],
+  plegar: [rect(3, 3, 18, 18, 2), 'M9 3v18', 'm16 15-3-3 3-3'],
+  validado: [circle(12, 12, 10), 'm9 12 2 2 4-4'],
+  atras: ['m15 18-6-6 6-6'],
+  enviar: ['m5 12 7-7 7 7', 'M12 19V5'],
+  candado: [rect(3, 11, 18, 11, 2), 'M7 11V7a5 5 0 0 1 10 0v4'],
+}
+
+// Hoja de Crisopa (isologo)
+const hoja = [
+  'M11.264 2.205A4 4 0 0 0 6.42 4.211l-4 8a4 4 0 0 0 1.359 5.117l6 4a4 4 0 0 0 4.438 0l6-4a4 4 0 0 0 1.576-4.592l-2-6a4 4 0 0 0-2.53-2.53z',
+  'M11.99 22 14 12l7.822 3.184',
+  'M14 12 8.47 2.302',
+]
+
+const operaciones = [
+  { label: 'Diario', icon: ic.diario },
+  { label: 'Almacén', icon: ic.almacen },
+  { label: 'Tratamientos', icon: ic.tratamientos, activo: true },
+  { label: 'Fertilización', icon: ic.fertilizacion },
+  { label: 'Riego', icon: ic.riego },
+  { label: 'Partes', icon: ic.partes },
+]
+
+// ---------- Datos de la demo ----------
+
+const pregunta = 'Orden de Karate Zeon contra pulgón en Almendros Lauranne para el 15 de abril'
+
+const parcela = { nombre: 'Almendros Lauranne', superficie: '8,40 ha' }
+
+// La nueva (nº 14) y las dos de Score 25 EC contra mancha ocre, ya
+// ejecutadas: 22/3 y 5/4, 14 días entre ellas, después de la floración.
+const nueva = {
+  n: 14,
+  fecha: '15/4/2027',
+  producto: 'KARATE ZEON',
+  materia: 'LAMBDA CIHALOTRIN 10% [CS] P/V',
+  plaga: 'Áfidos, pulgones',
+  dosis: '200 ml/ha',
+}
+
+const anteriores = [
+  { n: 13, fecha: '5/4/2027', producto: 'SCORE 25 EC', materia: 'DIFENOCONAZOL 25% [EC] P/V', plaga: 'Mancha ocre del almendro', dosis: '0,45 l/ha' },
+  { n: 12, fecha: '22/3/2027', producto: 'SCORE 25 EC', materia: 'DIFENOCONAZOL 25% [EC] P/V', plaga: 'Mancha ocre del almendro', dosis: '0,45 l/ha' },
+]
+
+// Coste de la ejecución, con precios y tarifas de ejemplo:
+// 0,2 l/ha × 8,40 ha = 1,68 l × 68,50 €/l = 115,08 €
+// 3,5 h × 32 €/h = 112,00 € · 3,5 h × 16,50 €/h = 57,75 €
+// Total 284,83 € → 33,91 €/ha
+const coste = [
+  { nombre: 'KARATE ZEON', detalle: '68,50 €/l · 1,68 l', importe: 115.08 },
+  { nombre: 'Tractor + atomizador', detalle: '32 €/h · 3,5 h', importe: 112 },
+  { nombre: 'Aplicador · A. Ruiz', detalle: '16,50 €/h · 3,5 h', importe: 57.75 },
+]
+const total = 284.83
+const porHa = 33.91
+
+// Acumulado de tratamientos de la parcela en la campaña: las dos de Score
+// (0,45 l/ha × 8,40 ha = 3,78 l × 96 €/l = 362,88 € + 112 + 57,75 = 532,63 €
+// cada una) más esta: 1.065,26 + 284,83 = 1.350,09 € → 160,73 €/ha
+const campana = 1350.09
+const campanaHa = 160.73
+
+const eur = (n: number) =>
+  n
+    .toFixed(2)
+    .replace('.', ',')
+    .replace(/\B(?=(\d{3})+(?!\d),)/g, '.') + ' €'
+---
+
+<figure
+  class="hero-demo"
+  data-hero-demo
+  data-stacked={stacked ? '' : undefined}
+>
+  <div class="stage-box">
+    <div
+      class="stage"
+      data-stage
+      role="img"
+      aria-label={`Demostración: desde el móvil, el asesor pide en ChatGPT una orden de Karate Zeon contra pulgón para la parcela ${parcela.nombre}. La orden aparece pendiente en el panel de Crisopa, se ejecuta con un clic y se calcula su coste: ${eur(total)}.`}
+    >
+      <!-- ================= Panel (escritorio) ================= -->
+      <div class="panel" data-panel>
+        <div class="p-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">
+            <svg viewBox="0 0 24 24">{ic.candado.map((d) => <path d={d} />)}</svg>
+            panel.crisopa.app/explotaciones/los-llanos/tratamientos
+          </span>
+        </div>
+
+        <div class="p-app">
+          <aside class="p-side">
+            <div class="p-brand">
+              <span class="p-logo">
+                <svg class="leaf" viewBox="0 0 24 24">{hoja.map((d) => <path d={d} />)}</svg>
+                crisopa
+              </span>
+              <svg class="muted-ic" viewBox="0 0 24 24">{ic.plegar.map((d) => <path d={d} />)}</svg>
+            </div>
+
+            <p class="p-group">General</p>
+            <p class="p-item"><svg viewBox="0 0 24 24">{ic.inicio.map((d) => <path d={d} />)}</svg>Inicio</p>
+            <p class="p-item"><svg viewBox="0 0 24 24">{ic.explotaciones.map((d) => <path d={d} />)}</svg>Mis explotaciones</p>
+
+            <p class="p-group">Explotación</p>
+            <div class="p-select">
+              Los Llanos
+              <svg viewBox="0 0 24 24">{ic.selector.map((d) => <path d={d} />)}</svg>
+            </div>
+            <div class="p-card">
+              <span class="k">Ubicación</span>
+              <span>Baza, Granada</span>
+              <span class="p-card-row">
+                <span><span class="k">Superficie</span>42,60 ha</span>
+                <span><span class="k">Parcelas</span>6</span>
+              </span>
+            </div>
+
+            <p class="p-group">Operaciones</p>
+            {operaciones.map((o) => (
+              <p class:list={['p-item', { on: o.activo }]}>
+                <svg viewBox="0 0 24 24">{o.icon.map((d) => <path d={d} />)}</svg>
+                {o.label}
+              </p>
+            ))}
+
+            <div class="p-user">
+              <span class="avatar">JM</span>
+              <span class="p-user-text">
+                <span>Juan Martín</span>
+                <span class="k">juan@agroasesores.es</span>
+              </span>
+            </div>
+          </aside>
+
+          <div class="p-main">
+            <!-- PageHeader con pestañas: miga, buscador ⌘K y campaña en una
+                 fila; debajo las pestañas, sobre un único divisor -->
+            <header class="p-head">
+              <div class="p-top">
+                <p class="crumbs">Los Llanos <span class="sep">/</span> <b>Tratamientos</b></p>
+                <span class="p-cmd">
+                  <svg viewBox="0 0 24 24">{ic.buscar.map((d) => <path d={d} />)}</svg>
+                  <span class="p-cmd-text">Buscar o ir a…</span>
+                  <kbd>⌘K</kbd>
+                </span>
+                <span class="p-top-end">
+                  <span class="p-campaign">Campaña 2027 <svg viewBox="0 0 24 24">{ic.abajo.map((d) => <path d={d} />)}</svg></span>
+                </span>
+              </div>
+              <div class="p-tabs">
+                <span>Tratamientos</span>
+                <span class="on">Órdenes</span>
+              </div>
+            </header>
+
+            <div class="p-body">
+              <div class="p-list" data-list>
+                <div class="p-toolbar">
+                  <span class="p-search">
+                    <svg viewBox="0 0 24 24">{ic.buscar.map((d) => <path d={d} />)}</svg>
+                    Buscar por plaga, producto o parcela…
+                  </span>
+                  <span class="p-filter">Todos los estados <svg viewBox="0 0 24 24">{ic.abajo.map((d) => <path d={d} />)}</svg></span>
+                  <span class="p-btn"><svg viewBox="0 0 24 24">{ic.mas.map((d) => <path d={d} />)}</svg>Nueva orden</span>
+                </div>
+
+                <div class="p-table">
+                  <div class="tr th">
+                    <span class="c-n">Nº</span>
+                    <span class="c-fecha">Fecha</span>
+                    <span class="c-parcela">Parcelas</span>
+                    <span class="c-prod">Producto</span>
+                    <span class="c-plaga">Plaga/Enfermedad</span>
+                    <span class="c-dosis">Dosis</span>
+                    <span class="c-estado">Estado</span>
+                    <span class="c-acc"></span>
+                  </div>
+
+                  <div class="row-wrap" data-new-wrap>
+                    <div class="row-clip">
+                    <div class="tr new" data-new-row>
+                      <span class="c-n">{nueva.n}</span>
+                      <span class="c-fecha">{nueva.fecha}</span>
+                      <span class="c-parcela">{parcela.nombre}</span>
+                      <span class="c-prod"><b>{nueva.producto}</b><small>{nueva.materia}</small></span>
+                      <span class="c-plaga">{nueva.plaga}</span>
+                      <span class="c-dosis mono">{nueva.dosis}</span>
+                      <span class="c-estado">
+                        <span class="badge pend">Pendiente</span>
+                        <span class="badge ok">Ejecutada</span>
+                      </span>
+                      <span class="c-acc" data-kebab><svg viewBox="0 0 24 24">{ic.menu.map((d) => <path d={d} />)}</svg></span>
+                    </div>
+                    </div>
+                  </div>
+
+                  {anteriores.map((o) => (
+                    <div class="tr">
+                      <span class="c-n">{o.n}</span>
+                      <span class="c-fecha">{o.fecha}</span>
+                      <span class="c-parcela">{parcela.nombre}</span>
+                      <span class="c-prod"><b>{o.producto}</b><small>{o.materia}</small></span>
+                      <span class="c-plaga">{o.plaga}</span>
+                      <span class="c-dosis mono">{o.dosis}</span>
+                      <span class="c-estado"><span class="badge ok">Ejecutada</span></span>
+                      <span class="c-acc"></span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Menú de la fila (DropdownMenu de la app) -->
+              <div class="p-menu" data-menu>
+                <span class="mi" data-run><svg viewBox="0 0 24 24">{ic.ejecutar.map((d) => <path d={d} />)}</svg>Ejecutar tratamiento</span>
+                <span class="mi"><svg viewBox="0 0 24 24">{ic.pdf.map((d) => <path d={d} />)}</svg>Abrir PDF</span>
+                <span class="mi"><svg viewBox="0 0 24 24">{ic.editar.map((d) => <path d={d} />)}</svg>Editar</span>
+              </div>
+
+              <!-- Coste de la ejecución (Desglose de ejecutar-orden.tsx) -->
+              <div class="p-cost" data-cost>
+                <p class="cost-head">
+                  <span>Orden {nueva.n}</span>
+                  <span class="badge ok">Ejecutada</span>
+                </p>
+                <p class="cost-sub">{nueva.producto} · {parcela.nombre} · {parcela.superficie}</p>
+                <div class="cost-lines">
+                  {coste.map((l) => (
+                    <div class="cost-line" data-line>
+                      <span class="cl-name">{l.nombre}</span>
+                      <span class="cl-det mono">{l.detalle}</span>
+                      <span class="cl-imp mono" data-count={l.importe}>{eur(l.importe)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div class="cost-total" data-line>
+                  <span>Coste</span>
+                  <span class="mono big" data-count={total}>{eur(total)}</span>
+                </div>
+                <p class="cost-ha mono" data-line><span data-count={porHa}>{eur(porHa)}</span>/ha</p>
+                <div class="cost-camp" data-line>
+                  <span>Tratamientos · {parcela.nombre} · campaña 2027</span>
+                  <span class="mono"><b data-count={campana}>{eur(campana)}</b> · <span data-count={campanaHa}>{eur(campanaHa)}</span>/ha</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Móvil ================= -->
+      <div class="phone" data-phone>
+        <div class="ph-screen">
+          <div class="ph-status">
+            <span>10:24</span>
+            <span class="island"></span>
+            <span class="ph-icons"><i></i><i></i><b></b></span>
+          </div>
+          <div class="ph-head">
+            <svg class="ph-back" viewBox="0 0 24 24">{ic.atras.map((d) => <path d={d} />)}</svg>
+            <span class="ph-title">
+              <span class="gpt"><svg viewBox="0 0 24 24"><path class="fill" d={LOGO_CHATGPT} /></svg></span>
+              ChatGPT
+            </span>
+            <span class="ph-chip"><svg class="leaf" viewBox="0 0 24 24">{hoja.map((d) => <path d={d} />)}</svg>Crisopa</span>
+          </div>
+
+          <div class="ph-thread">
+            <p class="ph-user step" data-step="user">{pregunta}</p>
+            <p class="ph-tool step" data-step="tool">
+              <span class="t-icon"><span class="spin"></span><span class="ok">✓</span></span>
+              Crisopa · consultar_usos_autorizados
+            </p>
+            <p class="ph-tool step" data-step="tool">
+              <span class="t-icon"><span class="spin"></span><span class="ok">✓</span></span>
+              Crisopa · crear_orden_tratamiento
+            </p>
+            <p class="ph-reply step" data-step="reply">
+              Hecho. 200 ml/ha con 1.000 l/ha de caldo: dentro del registro, y es la única aplicación que permite en la campaña.
+            </p>
+            <div class="ticket step" data-step="card" data-card>
+              <p class="tk-head"><b>Orden nº {nueva.n}</b><span class="badge pend">Pendiente</span></p>
+              <p class="tk-prod">Karate Zeon · <span class="mono">{nueva.dosis}</span></p>
+              <p class="tk-meta">{parcela.nombre} · <span class="mono">{parcela.superficie}</span></p>
+              <p class="tk-foot">
+                <span class="mono">{nueva.fecha}</span>
+                <span class="tk-ok"><svg viewBox="0 0 24 24">{ic.validado.map((d) => <path d={d} />)}</svg>Validado</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="ph-composer">
+            <span class="ph-field" data-draft data-placeholder="Pregunta lo que quieras"></span>
+            <span class="ph-send" data-send><svg viewBox="0 0 24 24">{ic.enviar.map((d) => <path d={d} />)}</svg></span>
+          </div>
+          <span class="ph-home"></span>
+        </div>
+      </div>
+
+      <!-- ================= Capa de movimiento ================= -->
+      <svg class="trail" aria-hidden="true">
+        <defs>
+          <linearGradient id={tailId} data-trail-grad gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="currentColor" stop-opacity="0" />
+            <stop offset="1" stop-color="currentColor" />
+          </linearGradient>
+        </defs>
+        <path data-trail-path stroke={`url(#${tailId})`} />
+      </svg>
+      <div class="flyer" data-flyer aria-hidden="true"></div>
+      <span class="ring" data-ring aria-hidden="true"></span>
+      <svg class="cursor" data-cursor viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 2.5v17.2l4.6-4.4 2.9 6.7 3-1.3-2.9-6.6h6.3Z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="demo-foot">
+    <button type="button" class="pause" data-pause aria-label="Pausar la animación" title="Pausar">
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14" /><path d="M16 5v14" /></svg>
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5 19 12 7 19.5Z" /></svg>
+    </button>
+  </div>
+</figure>
+
+<style>
+  /* ---------- Escenario: tamaño fijo, escalado al ancho disponible ---------- */
+
+  .hero-demo {
+    --w: 1120;
+    /* Alto con aire bajo el móvil: su sombra se apaga antes del recorte */
+    --h: 724;
+    --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-whip: cubic-bezier(0.7, 0, 0.2, 1);
+    margin: 0;
+    container-type: inline-size;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    cursor: default;
+  }
+
+  /* Móvil: otro encuadre, más estrecho, con el teléfono de protagonista */
+  @media (max-width: 860px) {
+    .hero-demo {
+      --w: 440;
+      --h: 800;
+    }
+  }
+
+  .stage-box {
+    /* Escala = ancho disponible / ancho de diseño (sin JS: tan(atan2) da el
+       cociente de dos longitudes) */
+    --s: min(1, tan(atan2(100cqw, calc(var(--w) * 1px))));
+    position: relative;
+    height: calc(var(--h) * var(--s) * 1px);
+    /* El móvil entra y sale por el borde inferior: se recorta solo ahí, para
+       que las sombras de los lados y de arriba no queden con cantos */
+    clip-path: inset(-80px -80px 0 -80px);
+  }
+
+  .stage {
+    position: absolute;
+    top: 0;
+    left: calc((100cqw - var(--w) * var(--s) * 1px) / 2);
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    transform: scale(var(--s));
+    transform-origin: 0 0;
+    transition: opacity 260ms ease-out;
+  }
+
+  .stage.blank {
+    opacity: 0;
+  }
+
+  .stage svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .leaf {
+    color: var(--green-700);
+  }
+
+  /* ---------- Panel ---------- */
+
+  .panel {
+    position: absolute;
+    left: 140px;
+    top: 24px;
+    width: 960px;
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--foreground);
+    transform-origin: 70% 50%;
+    transition:
+      transform 700ms var(--ease-snap),
+      opacity 500ms var(--ease-snap);
+  }
+
+  .panel.dim {
+    transform: scale(0.955);
+    opacity: 0.45;
+  }
+
+  @media (max-width: 860px) {
+    .panel {
+      left: 56px;
+      top: 0;
+      width: 384px;
+      height: 700px;
+    }
+  }
+
+  .p-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-secondary);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: var(--line-strong);
+  }
+
+  .url {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-inline: auto;
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--foreground-muted);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .url svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .p-app {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 216px minmax(0, 1fr);
+  }
+
+  @media (max-width: 860px) {
+    .p-app {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p-app .p-side,
+    .p-bar .url {
+      display: none;
+    }
+  }
+
+  .p-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 10px 12px;
+    border-right: 1px solid var(--line);
+    background: var(--surface-secondary);
+  }
+
+  .p-side svg {
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+  }
+
+  .p-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 -10px 4px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .p-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-logo);
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .p-logo svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .muted-ic {
+    color: var(--foreground-muted);
+  }
+
+  .p-group {
+    margin: 12px 8px 4px;
+    font-size: 11.5px;
+    color: var(--foreground-muted);
+  }
+
+  .p-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    color: oklch(from var(--foreground) l c h / 0.72);
+  }
+
+  .p-item.on {
+    background: var(--line);
+    color: var(--foreground);
+    font-weight: 500;
+  }
+
+  .p-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 4px 6px;
+    padding: 7px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-weight: 500;
+  }
+
+  .p-select svg {
+    width: 13px;
+    height: 13px;
+    color: var(--foreground-muted);
+  }
+
+  .p-card {
+    display: grid;
+    gap: 2px;
+    margin: 0 4px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: oklch(from var(--line) l c h / 0.4);
+  }
+
+  .k {
+    display: block;
+    font-size: 11px;
+    color: var(--foreground-muted);
+  }
+
+  .p-card-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 6px;
+  }
+
+  .p-user {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: auto;
+    padding: 10px 6px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    background: var(--green-100);
+    color: var(--green-800);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .p-user-text {
+    display: grid;
+    font-weight: 500;
+  }
+
+  .p-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* Cabecera con pestañas (PageHeader): un solo divisor al final, y la
+     pestaña activa apoya su borde de 2px sobre él */
+  .p-head {
+    padding: 12px 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .p-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .crumbs,
+  .p-top-end {
+    display: flex;
+    flex: 1;
+    flex-basis: 0;
+    min-width: 0;
+  }
+
+  .p-top-end {
+    justify-content: flex-end;
+  }
+
+  .crumbs {
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    white-space: nowrap;
+    color: var(--foreground-muted);
+  }
+
+  .crumbs .sep {
+    color: oklch(from var(--foreground-muted) l c h / 0.5);
+  }
+
+  .crumbs b {
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  .p-cmd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 240px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: oklch(from var(--surface-secondary) l c h / 0.6);
+    color: var(--foreground-muted);
+    font-size: 12.5px;
+  }
+
+  .p-cmd svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .p-cmd kbd {
+    margin-left: auto;
+    padding: 0 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+  }
+
+  .p-campaign {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
+  .p-campaign svg {
+    width: 13px;
+    height: 13px;
+    color: var(--foreground-muted);
+  }
+
+  .p-tabs {
+    display: flex;
+    gap: 16px;
+    color: var(--foreground-muted);
+    font-weight: 500;
+  }
+
+  .p-tabs span {
+    padding: 0 4px 11px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .p-tabs .on {
+    color: var(--foreground);
+    border-bottom-color: var(--foreground);
+  }
+
+  .p-body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 18px 24px;
+  }
+
+  @media (max-width: 860px) {
+    .p-head {
+      padding-inline: 16px;
+    }
+
+    .p-body {
+      padding: 14px 12px;
+    }
+  }
+
+  .p-list {
+    transition:
+      opacity 450ms var(--ease-snap),
+      filter 450ms var(--ease-snap),
+      transform 450ms var(--ease-snap);
+  }
+
+  .p-list.faded {
+    opacity: 0.12;
+    filter: blur(3px);
+    transform: scale(0.98);
+  }
+
+  .p-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .p-toolbar svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .p-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    color: var(--foreground-muted);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .p-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .p-filter svg {
+    color: var(--foreground-muted);
+  }
+
+  .p-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--green-700);
+    color: white;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 860px) {
+    .p-filter,
+    .p-top .p-cmd {
+      display: none;
+    }
+
+    .p-search {
+      font-size: 0;
+    }
+  }
+
+  /* Tabla (Table de la app) con divs: las filas pueden crecer desde 0 */
+  .p-table {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .tr {
+    display: grid;
+    grid-template-columns: 30px 76px 132px minmax(0, 1.5fr) minmax(0, 1.1fr) 74px 84px 28px;
+    align-items: center;
+    column-gap: 12px;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    transition: background-color 900ms ease-out;
+  }
+
+  .tr > * {
+    min-width: 0;
+  }
+
+  .p-table > :last-child {
+    border-bottom: 0;
+  }
+
+  .tr.th {
+    padding-block: 11px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--foreground-muted);
+  }
+
+  .c-n {
+    text-align: right;
+    color: var(--foreground-muted);
+  }
+
+  .c-prod b,
+  .c-prod small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .c-prod b {
+    font-weight: 500;
+  }
+
+  .c-prod small {
+    font-size: 11px;
+    color: var(--foreground-muted);
+  }
+
+  .c-plaga {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .c-dosis {
+    font-size: 12px;
+  }
+
+  .c-acc {
+    display: grid;
+    place-items: center;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    color: var(--foreground-muted);
+  }
+
+  .c-acc svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  @media (max-width: 860px) {
+    .tr {
+      grid-template-columns: 22px minmax(0, 1fr) 80px 26px;
+      column-gap: 10px;
+    }
+
+    .c-fecha,
+    .c-parcela,
+    .c-plaga,
+    .c-dosis {
+      display: none;
+    }
+  }
+
+  /* Insignias de estado (OrdenEstadoBadge): ámbar y verde, colores de estado */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .badge.pend {
+    border-color: oklch(from var(--state-warning) 0.88 0.08 h);
+    background: oklch(from var(--state-warning) 0.96 0.05 h);
+    color: oklch(from var(--state-warning) 0.5 0.13 h);
+  }
+
+  .badge.ok {
+    border-color: var(--green-200);
+    background: var(--green-50);
+    color: var(--green-700);
+  }
+
+  /* Fila nueva: crece desde 0 y llega resaltada (bg-primary/10 en la app) */
+  .row-wrap {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 420ms var(--ease-snap);
+  }
+
+  .row-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .playing .row-wrap:not(.in) {
+    grid-template-rows: 0fr;
+  }
+
+  .tr.new.hl {
+    background: var(--green-50);
+  }
+
+  .tr.new .badge.ok,
+  .tr.new.done .badge.pend {
+    display: none;
+  }
+
+  .tr.new.done .badge.ok {
+    display: inline-block;
+  }
+
+  .c-acc.hover {
+    background: var(--line);
+    color: var(--foreground);
+  }
+
+  /* Menú de la fila */
+  .p-menu {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    width: 200px;
+    padding: 4px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+    opacity: 0;
+    transform: scale(0.94) translateY(-4px);
+    transform-origin: 100% 0;
+    pointer-events: none;
+    transition:
+      opacity 140ms ease-out,
+      transform 180ms var(--ease-snap);
+  }
+
+  .p-menu.open {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mi {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .mi svg {
+    width: 14px;
+    height: 14px;
+    color: var(--foreground-muted);
+  }
+
+  .mi.hover {
+    background: var(--surface-secondary);
+  }
+
+  /* Coste de la ejecución */
+  .p-cost {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    z-index: 2;
+    width: 440px;
+    padding: 20px 22px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+    opacity: 0;
+    transform: translate(-50%, 40px) scale(0.92);
+    transition:
+      opacity 320ms var(--ease-snap),
+      transform 620ms var(--ease-snap);
+  }
+
+  .p-cost.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  @media (max-width: 860px) {
+    .p-cost {
+      top: 16px;
+      width: 350px;
+      padding: 16px;
+    }
+  }
+
+  .cost-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .cost-sub {
+    margin: 4px 0 16px;
+    font-size: 12px;
+    color: var(--foreground-muted);
+  }
+
+  .cost-lines {
+    display: grid;
+    gap: 8px;
+    padding: 14px 0;
+    border-block: 1px solid var(--line);
+  }
+
+  .cost-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 84px;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 12.5px;
+  }
+
+  .cl-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cl-det {
+    font-size: 11.5px;
+    color: var(--foreground-muted);
+  }
+
+  .cl-imp {
+    text-align: right;
+  }
+
+  .cost-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-weight: 500;
+  }
+
+  .big {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .cost-ha {
+    margin: 2px 0 0;
+    text-align: right;
+    font-size: 12px;
+    color: var(--foreground-muted);
+  }
+
+  .cost-camp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 12px;
+    margin-top: 16px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: var(--green-50);
+    color: var(--green-800);
+    font-size: 12px;
+  }
+
+  .cost-camp b {
+    font-weight: 600;
+  }
+
+  /* Pasos que entran en rápida sucesión */
+  [data-line] {
+    transition:
+      opacity 260ms var(--ease-snap),
+      transform 420ms var(--ease-snap);
+  }
+
+  .playing .p-cost [data-line]:not(.in) {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+
+  /* ---------- Móvil ---------- */
+
+  .phone {
+    position: absolute;
+    left: 24px;
+    top: 44px;
+    z-index: 4;
+    width: 300px;
+    height: 624px;
+    padding: 9px;
+    border-radius: 50px;
+    background: var(--dark-background);
+    box-shadow:
+      0 0 0 1.5px oklch(0.4 0.02 172),
+      0 24px 48px -24px oklch(0.205 0.012 170 / 0.4),
+      0 10px 20px -10px oklch(0.205 0.012 170 / 0.25);
+    transition:
+      transform 620ms var(--ease-snap),
+      opacity 300ms ease-out;
+  }
+
+  .phone.out {
+    transform: translateY(118%) rotate(7deg);
+  }
+
+  .phone.gone {
+    transform: translate(-46%, 112%) rotate(-11deg);
+    opacity: 0;
+    transition:
+      transform 560ms var(--ease-whip),
+      opacity 400ms 160ms ease-in;
+  }
+
+  @media (max-width: 860px) {
+    .phone {
+      left: 8px;
+      top: 124px;
+    }
+  }
+
+  .ph-screen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 41px;
+    background: var(--surface);
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--foreground);
+  }
+
+  .ph-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+    padding: 0 26px 0 30px;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .island {
+    width: 88px;
+    height: 25px;
+    border-radius: 9999px;
+    background: var(--dark-background);
+  }
+
+  .ph-icons {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  .ph-icons i {
+    width: 3px;
+    height: 7px;
+    border-radius: 1px;
+    background: var(--foreground);
+  }
+
+  .ph-icons i + i {
+    height: 10px;
+  }
+
+  .ph-icons b {
+    width: 22px;
+    height: 11px;
+    margin-left: 4px;
+    border: 1.5px solid var(--foreground);
+    border-radius: 3.5px;
+    background: linear-gradient(90deg, var(--foreground) 70%, transparent 0) content-box;
+    padding: 1px;
+  }
+
+  .ph-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ph-back {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ph-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+
+  .gpt {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    background: var(--brand-chatgpt);
+    color: white;
+  }
+
+  .gpt svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .stage svg path.fill {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .ph-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 9999px;
+    font-size: 11.5px;
+    font-weight: 500;
+  }
+
+  .ph-chip svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .ph-thread {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 14px 8px;
+    overflow: hidden;
+  }
+
+  .ph-user {
+    align-self: flex-end;
+    max-width: 88%;
+    margin: 0;
+    padding: 9px 13px;
+    border-radius: 18px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--line);
+  }
+
+  .ph-tool {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    white-space: nowrap;
+    color: var(--foreground-muted);
+  }
+
+  .t-icon {
+    display: grid;
+    place-items: center;
+    width: 12px;
+    height: 12px;
+  }
+
+  .t-icon > * {
+    grid-area: 1 / 1;
+  }
+
+  .t-icon .ok {
+    color: var(--green-600);
+  }
+
+  .spin {
+    display: none;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid var(--line-strong);
+    border-top-color: var(--green-600);
+    border-radius: 9999px;
+    animation: demo-spin 600ms linear infinite;
+  }
+
+  .ph-tool.running .spin {
+    display: block;
+  }
+
+  .ph-tool.running .ok {
+    display: none;
+  }
+
+  @keyframes demo-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .ph-reply {
+    margin: 2px 0 0;
+  }
+
+  /* Tarjeta de la orden: la que viaja al panel */
+  .ticket {
+    display: grid;
+    gap: 3px;
+    padding: 11px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+    font-size: 12.5px;
+  }
+
+  .ticket p {
+    margin: 0;
+  }
+
+  .tk-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px !important;
+    font-size: 13.5px;
+  }
+
+  .tk-prod {
+    font-weight: 500;
+  }
+
+  .tk-meta {
+    color: var(--foreground-muted);
+  }
+
+  .tk-foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px !important;
+    padding-top: 7px;
+    border-top: 1px solid var(--line);
+    font-size: 11.5px;
+    color: var(--foreground-muted);
+  }
+
+  .tk-ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--green-700);
+  }
+
+  .tk-ok svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .ticket.left {
+    opacity: 0.25;
+  }
+
+  .ph-composer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 12px 22px;
+    padding: 7px 7px 7px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 22px;
+    min-height: 44px;
+  }
+
+  .ph-field {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ph-field:empty::before {
+    content: attr(data-placeholder);
+    color: var(--foreground-muted);
+  }
+
+  .composing .ph-field::after {
+    content: '';
+    display: inline-block;
+    width: 1.5px;
+    height: 1.05em;
+    margin-left: 1px;
+    vertical-align: -0.18em;
+    background: var(--green-600);
+  }
+
+  .composing .ph-field:empty::before {
+    content: none;
+  }
+
+  .ph-send {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    background: var(--line);
+    color: var(--foreground-muted);
+    transition:
+      background-color 120ms ease-out,
+      transform 140ms var(--ease-snap);
+  }
+
+  .ph-send svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2.2;
+  }
+
+  .ph-send.ready {
+    background: var(--foreground);
+    color: white;
+  }
+
+  .ph-send.pressed {
+    transform: scale(0.82);
+  }
+
+  .ph-home {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    width: 110px;
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--foreground);
+    transform: translateX(-50%);
+  }
+
+  /* Mensajes del chat: entrada rápida con impulso */
+  .step {
+    transition:
+      opacity 220ms ease-out,
+      transform 420ms var(--ease-snap);
+  }
+
+  .playing .step:not(.in) {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+
+  .playing .ph-user.step:not(.in) {
+    transform: translateY(22px) scale(0.9);
+    transform-origin: 100% 100%;
+  }
+
+  /* ---------- Capa de movimiento ---------- */
+
+  .trail {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    color: var(--green-600);
+  }
+
+  /* El color lo pone el degradado (atributo stroke del trazo) */
+  .trail path {
+    stroke-width: 3;
+  }
+
+  .flyer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .flyer .ticket {
+    box-shadow: var(--shadow-3);
+  }
+
+  .ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px;
+    border: 1.5px solid var(--green-600);
+    border-radius: 9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 7;
+    width: 26px;
+    height: 26px;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 3px oklch(0.205 0.012 170 / 0.35));
+  }
+
+  .stage .cursor path {
+    fill: var(--foreground);
+    stroke: white;
+    stroke-width: 1.4;
+  }
+
+  /* ---------- Pie: pausa ---------- */
+
+  .demo-foot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  .pause {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--foreground-muted);
+    cursor: pointer;
+    transition:
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+
+  .pause:hover {
+    color: var(--foreground);
+    border-color: var(--line-strong);
+  }
+
+  .pause svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pause .i-play,
+  .paused .pause .i-pause {
+    display: none;
+  }
+
+  .paused .pause .i-play {
+    display: block;
+  }
+
+  /* Sin JS no hay bucle que pausar */
+  .hero-demo:not([data-ready]) .pause {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pause {
+      visibility: hidden;
+    }
+  }
+</style>
+
+<script>
+  type Demo = HTMLElement & { _stop?: () => void }
+
+  // La misma condición que activa el apilado en Hero.astro
+  const STACK_QUERY = '(min-width: 861px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)'
+
+  // Importe en español, con punto de millar: 1350.09 → «1.350,09 €»
+  const eur = (n: number) =>
+    n
+      .toFixed(2)
+      .replace('.', ',')
+      .replace(/\B(?=(\d{3})+(?!\d),)/g, '.') + ' €'
+
+  type Pt = { x: number; y: number }
+
+  // Punto de una bézier cúbica
+  const bez = (p0: Pt, p1: Pt, p2: Pt, p3: Pt, t: number): Pt => {
+    const u = 1 - t
+    const a = u * u * u
+    const b = 3 * u * u * t
+    const c = 3 * u * t * t
+    const d = t * t * t
+    return { x: a * p0.x + b * p1.x + c * p2.x + d * p3.x, y: a * p0.y + b * p1.y + c * p2.y + d * p3.y }
+  }
+
+  // Tramo [t0, t1] de una bézier cúbica, como otra bézier (de Casteljau)
+  const mix = (p: Pt, q: Pt, t: number): Pt => ({ x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t })
+  const split = (p0: Pt, p1: Pt, p2: Pt, p3: Pt, t: number) => {
+    const a = mix(p0, p1, t)
+    const b = mix(p1, p2, t)
+    const c = mix(p2, p3, t)
+    const d = mix(a, b, t)
+    const e = mix(b, c, t)
+    const f = mix(d, e, t)
+    return { left: [p0, a, d, f], right: [f, e, c, p3] } as { left: [Pt, Pt, Pt, Pt]; right: [Pt, Pt, Pt, Pt] }
+  }
+  const segment = (pts: [Pt, Pt, Pt, Pt], t0: number, t1: number): [Pt, Pt, Pt, Pt] => {
+    const head = split(...pts, t1).left
+    return t1 > 0 ? split(...head, t0 / t1).right : head
+  }
+
+  function setup(root: Demo) {
+    if (root.dataset.ready) return
+    root.dataset.ready = '1'
+
+    const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel)!
+    const $$ = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel))
+
+    const stage = $('[data-stage]')
+    const panel = $('[data-panel]')
+    const phone = $('[data-phone]')
+    const list = $('[data-list]')
+    const newWrap = $('[data-new-wrap]')
+    const newRow = $('[data-new-row]')
+    const kebab = $('[data-kebab]')
+    const menu = $('[data-menu]')
+    const run = $('[data-run]')
+    const cost = $('[data-cost]')
+    const lines = $$('[data-cost] [data-line]')
+    const counters = $$('[data-count]')
+    const steps = $$('.ph-thread .step')
+    const userMsg = $('[data-step="user"]')
+    const tools = $$('[data-step="tool"]')
+    const reply = $('[data-step="reply"]')
+    const card = $('[data-card]')
+    const draft = $('[data-draft]')
+    const send = $('[data-send]')
+    const trailPath = $<SVGPathElement>('[data-trail-path]')
+    const trailGrad = $<SVGLinearGradientElement>('[data-trail-grad]')
+    const flyer = $('[data-flyer]')
+    const ring = $('[data-ring]')
+    const cursor = $('[data-cursor]')
+    const pause = $<HTMLButtonElement>('[data-pause]')
+
+    const question = userMsg.textContent ?? ''
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let runId = 0
+    let timers: number[] = []
+    let paused = false
+    // `visible`: donde arranca (apilada, con el borde superior pasada la
+    // mitad de la pantalla). `onScreen`: algo de ella a la vista; solo se
+    // para al salir del todo, para que no cambie de estado mientras se ve.
+    let visible = false
+    let onScreen = false
+    let running = false
+
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timers.push(window.setTimeout(resolve, ms))
+      })
+
+    // Geometría en coordenadas del escenario (sin la escala ni el apilado)
+    const scale = () => stage.getBoundingClientRect().width / stage.offsetWidth
+    const box = (el: Element) => {
+      const s = scale()
+      const st = stage.getBoundingClientRect()
+      const r = el.getBoundingClientRect()
+      return { x: (r.left - st.left) / s, y: (r.top - st.top) / s, w: r.width / s, h: r.height / s }
+    }
+    const center = (el: Element): Pt => {
+      const b = box(el)
+      return { x: b.x + b.w / 2, y: b.y + b.h / 2 }
+    }
+
+    // Mueve un elemento por una bézier: fotogramas muestreados, y la curva
+    // de tiempo (easing) sobre el recorrido entero
+    const fly = (
+      el: HTMLElement,
+      pts: [Pt, Pt, Pt, Pt],
+      opts: { duration: number; easing: string; from?: number; to?: number; ox?: number; oy?: number },
+    ) => {
+      const { from = 1, to = 1, ox = 0, oy = 0 } = opts
+      const frames: Keyframe[] = []
+      for (let i = 0; i <= 24; i++) {
+        const t = i / 24
+        const p = bez(...pts, t)
+        const k = from + (to - from) * t
+        frames.push({ transform: `translate(${p.x - ox}px, ${p.y - oy}px) scale(${k})` })
+      }
+      return el.animate(frames, { duration: opts.duration, easing: opts.easing, fill: 'forwards' })
+    }
+
+    const pulse = (p: Pt) => {
+      ring.animate(
+        [
+          { transform: `translate(${p.x}px, ${p.y}px) scale(0.3)`, opacity: 1 },
+          { transform: `translate(${p.x}px, ${p.y}px) scale(1.5)`, opacity: 0 },
+        ],
+        { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' },
+      )
+    }
+
+    // Estela: cola de cometa detrás de lo que vuela por `pts`. Va de donde
+    // estaba hace TAIL ms a donde está ahora, así que se alarga con la
+    // velocidad y se recoge sola cuando frena al llegar. Nunca se ve la ruta
+    // entera. Sigue el progreso con easing de la animación, que en `fly` es
+    // también el parámetro de la curva.
+    const TAIL = 100
+    const tail = (anim: Animation, pts: [Pt, Pt, Pt, Pt]) => {
+      const id = runId
+      const hist: { at: number; p: number }[] = []
+      const frame = (now: number) => {
+        if (id !== runId) return
+        const p = anim.effect?.getComputedTiming().progress ?? 1
+        hist.push({ at: now, p })
+        while (hist.length > 1 && hist[1].at <= now - TAIL) hist.shift()
+        const p0 = hist[0].p
+        if (p - p0 < 0.002) {
+          trailPath.removeAttribute('d')
+        } else {
+          const [s0, s1, s2, s3] = segment(pts, p0, p)
+          trailPath.setAttribute('d', `M${s0.x} ${s0.y}C${s1.x} ${s1.y} ${s2.x} ${s2.y} ${s3.x} ${s3.y}`)
+          trailGrad.setAttribute('x1', String(s0.x))
+          trailGrad.setAttribute('y1', String(s0.y))
+          trailGrad.setAttribute('x2', String(s3.x))
+          trailGrad.setAttribute('y2', String(s3.y))
+        }
+        if (anim.playState === 'running' || p0 < p) requestAnimationFrame(frame)
+        else trailPath.removeAttribute('d')
+      }
+      requestAnimationFrame(frame)
+    }
+
+    // Contador: sube hasta el importe exacto
+    const count = (el: HTMLElement, to: number, ms: number) => {
+      const start = performance.now()
+      const id = runId
+      const tick = (now: number) => {
+        if (id !== runId) return
+        const t = Math.min(1, (now - start) / ms)
+        const e = 1 - Math.pow(1 - t, 4)
+        el.textContent = eur(to * e)
+        if (t < 1) requestAnimationFrame(tick)
+        else el.textContent = eur(to)
+      }
+      requestAnimationFrame(tick)
+    }
+
+    // ---------- Estados ----------
+
+    // Cartel: el estado del HTML (móvil con la conversación, orden pendiente)
+    const poster = () => {
+      runId++
+      running = false
+      timers.forEach(clearTimeout)
+      timers = []
+      stage.getAnimations({ subtree: true }).forEach((a) => a.cancel())
+      flyer.innerHTML = ''
+      flyer.style.opacity = '0'
+      trailPath.removeAttribute('d')
+      root.classList.remove('playing')
+      stage.classList.remove('blank')
+      phone.classList.remove('out', 'gone')
+      panel.classList.remove('dim')
+      list.classList.remove('faded')
+      cost.classList.remove('show')
+      menu.classList.remove('open')
+      newRow.classList.remove('hl', 'done')
+      kebab.classList.remove('hover')
+      run.classList.remove('hover')
+      card.classList.remove('left')
+      tools.forEach((t) => t.classList.remove('running'))
+      phone.classList.remove('composing')
+      draft.textContent = ''
+      send.classList.remove('ready', 'pressed')
+      counters.forEach((c) => (c.textContent = eur(Number(c.dataset.count))))
+    }
+
+    // Principio del bucle: panel atenuado, móvil fuera, chat vacío
+    const reset = () => {
+      root.classList.add('playing')
+      // Directo a su sitio, sin cruzar la pantalla desde donde salió
+      phone.style.transition = 'none'
+      phone.classList.remove('gone')
+      phone.classList.add('out')
+      void phone.offsetWidth
+      phone.style.transition = ''
+      panel.classList.add('dim')
+      list.classList.remove('faded')
+      cost.classList.remove('show')
+      menu.classList.remove('open')
+      newWrap.classList.remove('in')
+      newRow.classList.remove('hl', 'done')
+      kebab.classList.remove('hover')
+      run.classList.remove('hover')
+      card.classList.remove('left')
+      steps.forEach((s) => s.classList.remove('in'))
+      lines.forEach((l) => l.classList.remove('in'))
+      tools.forEach((t) => t.classList.add('running'))
+      draft.textContent = ''
+      send.classList.remove('ready', 'pressed')
+      stage.getAnimations({ subtree: true }).forEach((a) => a.cancel())
+      flyer.innerHTML = ''
+      flyer.style.opacity = '0'
+      trailPath.removeAttribute('d')
+    }
+
+    // ---------- Guion ----------
+
+    const scene = async (id: number) => {
+      const alive = () => id === runId
+
+      // 1. Campo: entra el móvil y se escribe la petición
+      await wait(200)
+      phone.classList.remove('out')
+      await wait(560)
+      if (!alive()) return
+      phone.classList.add('composing')
+      for (let i = 1; i <= question.length; i++) {
+        draft.textContent = question.slice(0, i)
+        send.classList.add('ready')
+        await wait(12 + Math.random() * 18 + (question[i - 1] === ' ' ? 24 : 0))
+        if (!alive()) return
+      }
+      await wait(220)
+      send.classList.add('pressed')
+      await wait(130)
+      send.classList.remove('pressed', 'ready')
+      phone.classList.remove('composing')
+      draft.textContent = ''
+      userMsg.classList.add('in')
+
+      await wait(380)
+      tools[0].classList.add('in')
+      await wait(420)
+      tools[0].classList.remove('running')
+      tools[1].classList.add('in')
+      await wait(520)
+      tools[1].classList.remove('running')
+      await wait(160)
+      reply.classList.add('in')
+      await wait(260)
+      card.classList.add('in')
+      await wait(900)
+      if (!alive()) return
+
+      // 2. Viaje: la tarjeta sale del móvil y aterriza en la tabla
+      const src = box(card)
+      const a: Pt = { x: src.x + src.w / 2, y: src.y + src.h / 2 }
+      panel.classList.remove('dim')
+      // Destino: donde quedará la fila nueva (misma altura que las demás)
+      await wait(40)
+      const w = box(newWrap)
+      const rowH = box(newWrap.nextElementSibling!).h
+      const b: Pt = { x: w.x + w.w * 0.42, y: w.y + rowH / 2 }
+      const c1: Pt = { x: a.x + 260, y: a.y - 260 }
+      const c2: Pt = { x: b.x - 120, y: b.y - 240 }
+
+      flyer.innerHTML = card.outerHTML
+      const clone = flyer.firstElementChild as HTMLElement
+      clone.style.width = `${src.w}px`
+      clone.classList.add('in')
+      clone.removeAttribute('data-card')
+      card.classList.add('left')
+      flyer.style.opacity = '1'
+      const trip = fly(flyer, [a, c1, c2, b], {
+        duration: 780,
+        easing: 'cubic-bezier(0.7, 0, 0.2, 1)',
+        from: 1,
+        to: 0.62,
+        ox: src.w / 2,
+        oy: src.h / 2,
+      })
+      tail(trip, [a, c1, c2, b])
+      await wait(160)
+      phone.classList.add('gone')
+      await trip.finished.catch(() => {})
+      if (!alive()) return
+
+      newWrap.classList.add('in')
+      newRow.classList.add('hl')
+      flyer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' })
+      pulse(b)
+      await wait(900)
+      if (!alive()) return
+
+      // 3. Ejecutar: el cursor abre el menú de la fila y ejecuta
+      const k = center(kebab)
+      const start: Pt = { x: k.x + 150, y: k.y + 330 }
+      cursor.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, fill: 'forwards' })
+      await fly(cursor, [start, { x: start.x - 20, y: start.y - 200 }, { x: k.x + 60, y: k.y + 20 }, k], {
+        duration: 620,
+        easing: 'cubic-bezier(0.65, 0, 0.25, 1)',
+        ox: 4,
+        oy: 3,
+      }).finished.catch(() => {})
+      if (!alive()) return
+      kebab.classList.add('hover')
+      await wait(120)
+      pulse(k)
+      const kb = box(kebab)
+      menu.style.left = `${kb.x + kb.w - 200 - box(menu.offsetParent!).x}px`
+      menu.style.top = `${kb.y + kb.h + 4 - box(menu.offsetParent!).y}px`
+      menu.classList.add('open')
+      await wait(300)
+      const r = center(run)
+      await fly(cursor, [k, { x: k.x, y: k.y + 20 }, { x: r.x + 10, y: r.y - 10 }, { x: r.x - 30, y: r.y }], {
+        duration: 280,
+        easing: 'cubic-bezier(0.65, 0, 0.25, 1)',
+        ox: 4,
+        oy: 3,
+      }).finished.catch(() => {})
+      if (!alive()) return
+      run.classList.add('hover')
+      await wait(160)
+      pulse({ x: r.x - 30, y: r.y })
+      await wait(90)
+      menu.classList.remove('open')
+      kebab.classList.remove('hover')
+      newRow.classList.add('done')
+      await wait(80)
+      newRow.classList.remove('hl')
+      await wait(520)
+      if (!alive()) return
+
+      // 4. Control: la tabla se retira y sale el coste
+      cursor.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' })
+      list.classList.add('faded')
+      cost.classList.add('show')
+      await wait(220)
+      for (const l of lines) {
+        l.classList.add('in')
+        const n = l.querySelectorAll<HTMLElement>('[data-count]')
+        n.forEach((el) => count(el, Number(el.dataset.count), l.classList.contains('cost-total') ? 900 : 600))
+        await wait(l.classList.contains('cost-total') ? 380 : 140)
+        if (!alive()) return
+      }
+      await wait(2600)
+      if (!alive()) return
+
+      // Fundido y vuelta a empezar
+      stage.classList.add('blank')
+      await wait(300)
+    }
+
+    const loop = async () => {
+      const id = ++runId
+      running = true
+      while (id === runId) {
+        reset()
+        await wait(40)
+        stage.classList.remove('blank')
+        await scene(id)
+      }
+    }
+
+    const shouldPlay = () => visible && !paused && !reduce.matches && !document.hidden
+
+    // Parada sin que nadie la vea (fuera de pantalla o pestaña oculta): se
+    // queda en el principio del bucle, el mismo estado desde el que arranca,
+    // así que al volver no salta del cartel al escenario vacío
+    const idle = () => {
+      runId++
+      running = false
+      timers.forEach(clearTimeout)
+      timers = []
+      reset()
+    }
+
+    // Solo se detiene un bucle en marcha. Con pausa, el cartel; si deja de
+    // verse, el principio del bucle. Mientras asome algo, sigue: si se
+    // parara a la vista, el móvil aparecería o desaparecería de golpe.
+    const sync = () => {
+      if (shouldPlay()) {
+        if (!running) loop()
+      } else if (running) {
+        if (paused) poster()
+        else if (document.hidden || !onScreen) idle()
+      }
+    }
+
+    pause.addEventListener('click', () => {
+      paused = !paused
+      root.classList.toggle('paused', paused)
+      pause.setAttribute('aria-label', paused ? 'Reproducir la animación' : 'Pausar la animación')
+      pause.title = paused ? 'Reproducir' : 'Pausar'
+      sync()
+    })
+
+    // Arranca al verse (apilada: cuando su borde superior cruza la mitad de
+    // la pantalla) y se detiene al salir del todo, para no gastar fuera de
+    // pantalla
+    const stacked =
+      root.dataset.stacked !== undefined &&
+      CSS.supports('animation-timeline: view()') &&
+      window.matchMedia(STACK_QUERY).matches
+    // Con movimiento, empieza ya en el principio del bucle para no enseñar el
+    // cartel y vaciarlo justo al llegar. El cartel queda para la pausa, el
+    // movimiento reducido y la página sin JS.
+    if (!reduce.matches) reset()
+    const io = new IntersectionObserver(
+      (entries) => {
+        visible = entries.some((e) => e.isIntersecting)
+        sync()
+      },
+      stacked ? { rootMargin: '0px 0px -50% 0px', threshold: 0 } : { threshold: 0.3 },
+    )
+    io.observe(root)
+    const ioScreen = new IntersectionObserver((entries) => {
+      onScreen = entries.some((e) => e.isIntersecting)
+      sync()
+    })
+    ioScreen.observe(root)
+    document.addEventListener('visibilitychange', sync)
+
+    root._stop = () => {
+      io.disconnect()
+      ioScreen.disconnect()
+      document.removeEventListener('visibilitychange', sync)
+      poster()
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<Demo>('[data-hero-demo]').forEach(setup)
+  })
+
+  // Al salir de la página (View Transitions), se cortan los temporizadores
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<Demo>('[data-hero-demo]').forEach((el) => el._stop?.())
+  })
+</script>
