@@ -5,10 +5,12 @@ const garantias = ['Demo en 30 min', 'Sin compromiso', 'Online']
 ---
 
 <!-- Sección oscura de cierre: a sangre dentro de los raíles (.sec-dark).
+     Es el único cierre de página: no se apila con otro CTA en claro, porque
+     el mismo botón en 600 y en 400 a pocos píxeles se lee como dos marcas.
      Sobre oscuro la acción pasa a green-400; el hover sube a green-300 (más
      claro, como sube el contraste del 600 → 700 sobre claro) para no perder
      contraste AA con el texto oscuro del botón. -->
-<section class="sec sec-dark relative overflow-hidden">
+<section id="reservar-demo" class="sec sec-dark relative overflow-hidden">
 
   <div class="relative mx-auto max-w-4xl text-center" data-animate>
     <!-- Símbolo: green-400 sobre oscuro (brand-visual.md › El símbolo) -->
@@ -31,12 +33,12 @@ const garantias = ['Demo en 30 min', 'Sin compromiso', 'Online']
 
     <!-- H2 a la escala común (la base de h2 en global.css) -->
     <h2 class="text-dark-foreground">
-      Crisopa
+      Reserva una demo <span class="text-dark-foreground-muted">personalizada</span>
     </h2>
 
     <p class="mt-6 text-lg sm:text-xl text-dark-foreground-muted">
-      El copiloto agronómico
-      <span class="font-medium text-dark-foreground"> hecho para el campo español.</span>
+      Te enseñamos cómo Crisopa encaja en tu día a día
+      <span class="font-medium text-dark-foreground"> en menos de 30 minutos.</span>
     </p>
 
     <div class="mt-10">
