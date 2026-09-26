@@ -6,9 +6,21 @@ no al revés. Si algo de la web la contradice, el error está en la web.
 Complementa a [`brand-voice.md`](brand-voice.md): la voz dice cómo hablamos,
 esta guía dice cómo nos vemos. Las dos cuentan lo mismo.
 
-**Alcance:** marca y web. Los fundamentos (color, tipografía, iconos, símbolo)
-sirven también para la app; sus reglas de componentes llegarán en una segunda
-fase.
+**Alcance:** marca y web (`crisopa.app`). La app (`panel.crisopa.app`) tiene
+su propia guía en `crisopa-app/docs/DESIGN_SYSTEM.md`: es una herramienta de
+uso diario y sus reglas (densidad, controles, tablas, formularios) no son las
+de una landing.
+
+**Fundamentos compartidos con la app.** Estas secciones están copiadas en la
+guía de la app y tienen que decir lo mismo en las dos: si cambias algo aquí,
+cámbialo allí.
+
+- Color: verde de marca, neutros teñidos y colores de estado.
+- Tipografía: las tres familias, sus papeles y qué va en mono (la escala de
+  tamaños es solo de la web).
+- Superficies: radios y elevación.
+- Iconografía y El símbolo.
+- Lo que nunca hacemos.
 
 ---
 
