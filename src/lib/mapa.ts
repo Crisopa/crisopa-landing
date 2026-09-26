@@ -1,6 +1,6 @@
 /**
  * Datos del Registro Oficial de Productos Fitosanitarios (MAPA) que la web
- * muestra como prueba visible (brand-visual.md › El dato vivo del MAPA).
+ * muestra como prueba visible (DESIGN_SYSTEM.md › El dato vivo del MAPA).
  *
  * Fecha de la última sincronización del registro que se enseña en la barra de
  * la ventana de producto y en el sello de fuente de la demo. Única fuente: si
@@ -26,5 +26,5 @@ export function diaSiguiente(iso: string): string {
  */
 export const FECHA_ORDEN_DEMO = diaSiguiente(REGISTRO_MAPA_SINCRONIZADO)
 
-/** Texto del sello de fuente (brand-visual.md › El dato vivo del MAPA). */
+/** Texto del sello de fuente (DESIGN_SYSTEM.md › El dato vivo del MAPA). */
 export const FUENTE_MAPA = 'Fuente: Registro Oficial de Productos Fitosanitarios · MAPA'

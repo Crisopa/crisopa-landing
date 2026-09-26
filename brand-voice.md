@@ -223,7 +223,7 @@ En texto, siempre **Crisopa**, con mayúscula inicial. Nunca «CRISOPA» ni
 «crisopa.app» como nombre de marca.
 
 El símbolo, la tipografía, el color y todo lo visual están en
-[`brand-visual.md`](brand-visual.md).
+[`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md).
 
 ---
 

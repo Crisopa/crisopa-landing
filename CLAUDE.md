@@ -19,7 +19,7 @@ Commits en Conventional Commits con ámbito y descripción en español: `feat(he
 Léelos antes de tocar lo que cubren; el código los sigue y ellos siguen al código.
 
 - `README.md` — arquitectura, SEO técnico y el corpus de plagas, con las decisiones que no hay que deshacer sin pensarlo.
-- `brand-visual.md` — sistema visual de la web (la app tiene el suyo en `crisopa-app/docs/DESIGN_SYSTEM.md`; los fundamentos compartidos están marcados al principio). Su sección **Implementación** mapea cada regla a su clase, token o componente, y exige mantener ambos sincronizados: si cambias una regla en el código, cambia la guía, y al revés. Tiene una checklist «Antes de publicar».
+- `DESIGN_SYSTEM.md` — sistema visual de la web (la app tiene el suyo en `crisopa-app/docs/DESIGN_SYSTEM.md`; los fundamentos compartidos están marcados al principio). Su sección **Implementación** mapea cada regla a su clase, token o componente, y exige mantener ambos sincronizados: si cambias una regla en el código, cambia la guía, y al revés. Tiene una checklist «Antes de publicar».
 - `brand-voice.md` — voz y copy. Se le habla al asesor agronómico, nunca al agricultor.
 - `.claude/product-marketing-context.md` — producto, audiencia, objeciones y precios, para trabajo de copy/CRO.
 - `PENDIENTE-WEB.md` — lo que falta en la web y en qué orden.

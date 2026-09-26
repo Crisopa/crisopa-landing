@@ -1,5 +1,5 @@
 // Genera las imágenes de marca de public/ con los tokens de la guía
-// (brand-visual.md › Color, El símbolo, Secciones oscuras):
+// (DESIGN_SYSTEM.md › Color, El símbolo, Secciones oscuras):
 //
 // - og-image-v2.png (1200×630): imagen social. Fondo `dark-background` con
 //   retícula de puntos, símbolo y acentos en green-400, titular en dos tonos.
