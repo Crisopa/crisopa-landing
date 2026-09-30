@@ -1,0 +1,136 @@
+---
+/**
+ * Plan de abonado y balance de NPK de una parcela de almendro. Entran los
+ * aportes y las barras se llenan contra el plan.
+ *
+ * Cuentas (UF/ha): nitrato potásico 13-0-46 a 110 kg/ha → N 14, K₂O 51;
+ * fosfato monoamónico 12-61-0 a 65 kg/ha → N 8, P₂O₅ 40; nitrato amónico
+ * cálcico 27 % a 155 kg/ha → N 42. Total N 64, P₂O₅ 40, K₂O 51 sobre un plan
+ * de 100 / 40 / 90.
+ */
+import Escena from './Escena.astro'
+
+const aportes = [
+  { producto: 'Nitrato amónico cálcico 27 %', dosis: '155 kg/ha', ufs: 'N 42' },
+  { producto: 'Fosfato monoamónico 12-61-0', dosis: '65 kg/ha', ufs: 'N 8 · P 40' },
+  { producto: 'Nitrato potásico 13-0-46', dosis: '110 kg/ha', ufs: 'N 14 · K 51' },
+]
+
+const balance = [
+  { k: 'N', hecho: 64, plan: 100 },
+  { k: 'P₂O₅', hecho: 40, plan: 40 },
+  { k: 'K₂O', hecho: 51, plan: 90 },
+]
+---
+
+<Escena class="fn-abonado" label="Plan de abonado de Almendros Lauranne: tres aportes y el balance de nitrógeno, fósforo y potasio frente al plan.">
+  <div class="win">
+    <div class="win-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url">Plan de abonado · Almendros Lauranne · 2027</span>
+    </div>
+    <div class="cuerpo">
+      <div class="aportes">
+        {aportes.map((a, i) => (
+          <p class="aporte st" style={`--d: ${i * 250}ms`}>
+            <span>{a.producto} <span class="mono dosis">{a.dosis}</span></span>
+            <span class="mono ufs">{a.ufs}</span>
+          </p>
+        ))}
+      </div>
+
+      <div class="balance">
+        <p class="k">Balance · UF/ha</p>
+        {balance.map((b, i) => (
+          <div class="barra">
+            <span class="mono nut">{b.k}</span>
+            <span class="riel">
+              <span class="lleno" style={`--p: ${(b.hecho / b.plan) * 100}%; --d: ${900 + i * 200}ms`}></span>
+            </span>
+            <span class="mono cifra">
+              <span data-cuenta={b.hecho} data-dur="900" style={`--d: ${900 + i * 200}ms`}>{b.hecho}</span> / {b.plan}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .cuerpo {
+    display: grid;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .aportes {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .aporte {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+
+  .dosis,
+  .ufs {
+    font-size: 11px;
+    color: var(--foreground-muted);
+    white-space: nowrap;
+  }
+
+  .balance {
+    display: grid;
+    gap: 10px;
+  }
+
+  .balance .k {
+    margin: 0 0 2px;
+  }
+
+  .barra {
+    display: grid;
+    grid-template-columns: 40px 1fr 64px;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .riel {
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--surface-secondary);
+    box-shadow: inset 0 0 0 1px var(--line);
+    overflow: hidden;
+  }
+
+  .lleno {
+    display: block;
+    width: var(--p);
+    height: 100%;
+    border-radius: 9999px;
+    background: var(--green-500);
+  }
+
+  :global(.run) .lleno {
+    animation: llena 900ms var(--ease-brand) var(--d) both;
+  }
+
+  @keyframes llena {
+    from {
+      width: 0;
+    }
+  }
+
+  .cifra {
+    text-align: right;
+    color: var(--foreground-muted);
+  }
+</style>

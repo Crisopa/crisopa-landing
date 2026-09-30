@@ -1,0 +1,67 @@
+---
+/**
+ * Parte de trabajo del día del tratamiento de la orden nº 14: las mismas
+ * 3,5 h de aplicador y de tractor que usa el coste del hero.
+ */
+import Escena from './Escena.astro'
+
+const lineas = [
+  { quien: 'A. Ruiz', labor: 'Tratamiento · Almendros Lauranne', horas: '3,5 h' },
+  { quien: 'Tractor + atomizador', labor: 'Tratamiento · Almendros Lauranne', horas: '3,5 h' },
+  { quien: 'A. Ruiz', labor: 'Poda en verde · Guara', horas: '4 h' },
+]
+---
+
+<Escena class="fn-partes" label="Parte de trabajo del 15/4/2027: horas de A. Ruiz y del tractor por labor y parcela.">
+  <div class="win">
+    <div class="win-bar"><span class="url">Parte de trabajo · <span class="mono">15/4/2027</span></span></div>
+    {lineas.map((l, i) => (
+      <p class="fila st" style={`--d: ${i * 250}ms`}>
+        <span class="tx">
+          <b>{l.quien}</b>
+          <span>{l.labor}</span>
+        </span>
+        <span class="mono">{l.horas}</span>
+      </p>
+    ))}
+    <p class="fila total st" style="--d: 900ms">
+      <span>Total del día</span>
+      <span class="mono" data-cuenta="11" data-dur="600" style="--d: 900ms">11</span>
+    </p>
+  </div>
+</Escena>
+
+<style>
+  .fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+
+  .tx {
+    display: grid;
+  }
+
+  .tx b {
+    font-weight: 500;
+  }
+
+  .tx span {
+    font-size: 11.5px;
+    color: var(--foreground-muted);
+  }
+
+  .total {
+    border-bottom: 0;
+    background: var(--surface-secondary);
+  }
+
+  .total .mono::after {
+    content: ' h';
+  }
+</style>

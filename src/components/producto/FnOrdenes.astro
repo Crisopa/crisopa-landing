@@ -1,0 +1,213 @@
+---
+/**
+ * Orden de tratamiento → cuaderno. La orden nº 14 (Karate Zeon contra
+ * pulgón en Almendros Lauranne, la misma del hero) se ejecuta corrigiendo lo
+ * gastado de verdad, y el tratamiento entra en el cuaderno con esa cantidad.
+ *
+ * Cuentas: previsto 0,2 l/ha × 8,40 ha = 1,68 l. Gastado 1,55 l → 185 ml/ha,
+ * por debajo del máximo de la ficha (200 ml/ha, nº 22398). Las dos filas
+ * anteriores son las de Score 25 EC del hero: 0,45 l/ha × 8,40 ha = 3,78 l.
+ */
+import Escena from './Escena.astro'
+
+const orden = [
+  { k: 'Parcela', v: 'Almendros Lauranne · 8,40 ha' },
+  { k: 'Producto', v: 'Karate Zeon · Nº 22398' },
+  { k: 'Plaga', v: 'Áfidos, pulgones' },
+  { k: 'Dosis', v: '200 ml/ha', mono: true },
+]
+
+const cuaderno = [
+  { fecha: '5/4/2027', producto: 'SCORE 25 EC', gastado: '3,78 l', dosis: '0,45 l/ha' },
+  { fecha: '22/3/2027', producto: 'SCORE 25 EC', gastado: '3,78 l', dosis: '0,45 l/ha' },
+]
+---
+
+<Escena class="fn-ordenes" label="La orden de tratamiento nº 14 se ejecuta corrigiendo lo gastado de 1,68 a 1,55 litros y entra en el cuaderno con esa cantidad.">
+  <div class="pila">
+    <div class="win">
+      <div class="win-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">Órdenes de tratamiento · Nº 14</span>
+        <span class="swap">
+          <span class="chip chip-aviso st-sale" style="--d: 2000ms">Pendiente</span>
+          <span class="chip chip-ok st" style="--d: 2000ms">Ejecutada</span>
+        </span>
+      </div>
+      <div class="cuerpo">
+        <dl class="campos">
+          {orden.map((f) => (
+            <div>
+              <dt class="k">{f.k}</dt>
+              <dd class:list={[f.mono && 'mono']}>{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+        <div class="gasto">
+          <div>
+            <p class="k">Previsto</p>
+            <p class="mono">1,68 l</p>
+          </div>
+          <div>
+            <p class="k">Gastado realmente</p>
+            <p class="campo swap">
+              <span class="mono st-sale" style="--d: 900ms">1,68 l</span>
+              <span class="mono st" style="--d: 1000ms">1,55 l</span>
+            </p>
+          </div>
+          <span class="boton">Ejecutar tratamiento</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="win cuaderno">
+      <div class="win-bar">
+        <span class="url">Cuaderno · Tratamientos · Almendros Lauranne</span>
+      </div>
+      <div class="tabla">
+        <div class="tr th">
+          <span>Fecha</span><span>Producto</span><span>Gastado</span><span class="c-dosis">Dosis</span>
+        </div>
+        <div class="tr nueva st" style="--d: 2600ms">
+          <span class="mono">15/4/2027</span><span>KARATE ZEON</span><span class="mono">1,55 l</span><span class="mono c-dosis">185 ml/ha</span>
+        </div>
+        {cuaderno.map((r) => (
+          <div class="tr">
+            <span class="mono">{r.fecha}</span><span>{r.producto}</span><span class="mono">{r.gastado}</span><span class="mono c-dosis">{r.dosis}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .pila {
+    display: grid;
+    gap: 14px;
+  }
+
+  .swap {
+    display: grid;
+  }
+
+  .swap > * {
+    grid-area: 1 / 1;
+    justify-self: start;
+  }
+
+  .win-bar .swap > * {
+    justify-self: end;
+  }
+
+  .cuerpo {
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    margin: 0;
+  }
+
+  .campos dd {
+    margin: 2px 0 0;
+  }
+
+  .gasto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .gasto p {
+    margin: 0;
+  }
+
+  .gasto .k + p {
+    margin-top: 4px;
+  }
+
+  .campo {
+    min-width: 96px;
+    padding: 5px 10px;
+    border: 1px solid var(--green-500);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 0 3px var(--green-100);
+  }
+
+  .boton {
+    margin-left: auto;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--green-600);
+    color: white;
+    font-weight: 500;
+    font-size: 12.5px;
+  }
+
+  :global(.run) .boton {
+    animation: pulsa 300ms ease-out 1700ms;
+  }
+
+  @keyframes pulsa {
+    50% {
+      scale: 0.94;
+      background: var(--green-700);
+    }
+  }
+
+  .tabla {
+    font-size: 12.5px;
+  }
+
+  .tr {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 0.8fr 0.9fr;
+    gap: 10px;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tr:last-child {
+    border-bottom: 0;
+  }
+
+  .th {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--foreground-muted);
+    background: var(--surface-secondary);
+  }
+
+  /* La fila nueva entra resaltada y se asienta */
+  :global(.run) .nueva {
+    animation:
+      esc-entra 450ms var(--ease-brand) var(--d) both,
+      asienta 1600ms ease-out calc(var(--d) + 300ms) both;
+  }
+
+  @keyframes asienta {
+    from {
+      background: var(--green-50);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .c-dosis {
+      display: none;
+    }
+
+    .tr {
+      grid-template-columns: 1fr 1.3fr 0.8fr;
+    }
+  }
+</style>

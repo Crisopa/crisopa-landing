@@ -1,0 +1,250 @@
+---
+/**
+ * Albaranes y facturas con IA: se lee el albarán, el stock sube en el
+ * almacén y lo comprado se reparte entre las parcelas hasta cuadrar.
+ *
+ * Cuentas: 10 l de Score 25 EC entre Guara (9,15 ha), Soleta (6,80 ha) y
+ * Vairo (7,25 ha), 23,20 ha → 0,431 l/ha, por debajo del máximo de la ficha
+ * en almendro (0,45 l/ha, nº 18767): 3,94 + 2,93 + 3,13 = 10,00 l.
+ */
+import Escena from './Escena.astro'
+
+const lineas = [
+  { producto: 'SCORE 25 EC', cantidad: '10 l' },
+  { producto: 'KARATE ZEON', cantidad: '5 l' },
+]
+
+const stock = [
+  { producto: 'Score 25 EC', antes: '1,22 l', despues: '11,22 l' },
+  { producto: 'Karate Zeon', antes: '0,45 l', despues: '5,45 l' },
+]
+
+const reparto = [
+  { parcela: 'Guara', ha: '9,15 ha', litros: '3,94 l' },
+  { parcela: 'Soleta', ha: '6,80 ha', litros: '2,93 l' },
+  { parcela: 'Vairo', ha: '7,25 ha', litros: '3,13 l' },
+]
+---
+
+<Escena class="fn-albaranes" label="Se escanea un albarán con 10 litros de Score 25 EC y 5 de Karate Zeon; el almacén sube y los 10 litros se reparten entre tres parcelas hasta cuadrar.">
+  <div class="dos">
+    <!-- El albarán, en papel -->
+    <div class="papel st">
+      <div class="scan" aria-hidden="true"></div>
+      <p class="p-tit">Albarán</p>
+      <p class="p-meta mono">Nº 0183 · 12/4/2027</p>
+      <div class="p-lineas">
+        {lineas.map((l, i) => (
+          <p class="p-linea" style={`--d: ${900 + i * 300}ms`}>
+            <span>{l.producto}</span>
+            <span class="mono">{l.cantidad}</span>
+          </p>
+        ))}
+      </div>
+      <p class="p-rel">
+        <span></span><span></span><span></span>
+      </p>
+    </div>
+
+    <div class="derecha">
+      <div class="win">
+        <div class="win-bar"><span class="url">Almacén</span></div>
+        {stock.map((s, i) => (
+          <p class="fila">
+            <span>{s.producto}</span>
+            <span class="swap">
+              <span class="mono st-sale" style={`--d: ${1700 + i * 200}ms`}>{s.antes}</span>
+              <span class="mono sube st" style={`--d: ${1750 + i * 200}ms`}>{s.despues}</span>
+            </span>
+          </p>
+        ))}
+      </div>
+
+      <div class="win st" style="--d: 2500ms">
+        <div class="win-bar"><span class="url">Repartir Score 25 EC · 10 l</span></div>
+        {reparto.map((r, i) => (
+          <p class="fila st" style={`--d: ${2800 + i * 200}ms`}>
+            <span>{r.parcela} <span class="ha mono">{r.ha}</span></span>
+            <span class="mono">{r.litros}</span>
+          </p>
+        ))}
+        <p class="fila total">
+          <span class="swap">
+            <span class="st-sale" style="--d: 3600ms">Repartiendo…</span>
+            <span class="chip chip-ok st" style="--d: 3600ms">✓ Cuadrado</span>
+          </span>
+          <span class="mono">10,00 l</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .dos {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  @media (max-width: 480px) {
+    .dos {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .papel {
+    position: relative;
+    padding: 18px 16px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+    rotate: -1.5deg;
+    font-size: 12.5px;
+  }
+
+  .papel p {
+    margin: 0;
+  }
+
+  .p-tit {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .p-meta {
+    margin-top: 2px !important;
+    font-size: 11px;
+    color: var(--foreground-muted);
+  }
+
+  .p-lineas {
+    display: grid;
+    gap: 4px;
+    margin: 14px 0;
+    padding: 8px 0;
+    border-block: 1px solid var(--line);
+  }
+
+  /* Cada línea leída queda marcada, como la marca la app al revisar */
+  .p-linea {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: var(--green-50);
+    box-shadow: inset 0 0 0 1px var(--green-200);
+  }
+
+  :global(.run) .p-linea {
+    animation: marca 400ms var(--ease-brand) var(--d) both;
+  }
+
+  @keyframes marca {
+    from {
+      background: transparent;
+      box-shadow: inset 0 0 0 1px transparent;
+    }
+  }
+
+  .p-rel {
+    display: grid;
+    gap: 5px;
+  }
+
+  .p-rel span {
+    height: 5px;
+    border-radius: 2px;
+    background: var(--line);
+  }
+
+  .p-rel span:nth-child(2) {
+    width: 70%;
+  }
+
+  .p-rel span:nth-child(3) {
+    width: 45%;
+  }
+
+  /* Línea de lectura: baja una vez por el albarán */
+  .scan {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background: var(--green-500);
+    box-shadow: 0 0 0 4px oklch(from var(--green-400) l c h / 0.15);
+    opacity: 0;
+  }
+
+  :global(.run) .scan {
+    animation: escanea 1300ms ease-in-out 400ms both;
+  }
+
+  @keyframes escanea {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(220px);
+    }
+  }
+
+  .derecha {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+
+  .fila:last-child {
+    border-bottom: 0;
+  }
+
+  .ha {
+    font-size: 11px;
+    color: var(--foreground-muted);
+  }
+
+  .sube {
+    color: var(--green-700);
+    font-weight: 500;
+  }
+
+  .total {
+    background: var(--surface-secondary);
+  }
+
+  .swap {
+    display: grid;
+  }
+
+  .swap > * {
+    grid-area: 1 / 1;
+    justify-self: end;
+  }
+
+  .total .swap > * {
+    justify-self: start;
+  }
+</style>

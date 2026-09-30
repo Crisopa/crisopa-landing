@@ -1,0 +1,430 @@
+---
+/**
+ * Web y móvil: el mismo cuaderno en los dos, sincronizado.
+ *
+ * 1. En el móvil, en la finca, se anota una visita y se guarda.
+ * 2. Aparece en el panel del portátil, como fila nueva del diario.
+ * 3. En el panel se crea una tarea y llega al móvil.
+ *
+ * Escenario de proporción fija que escala con su ancho: todo se mide en `em`
+ * y la letra base va en unidades de contenedor (`cqw`), así que se ve igual
+ * en escritorio y en móvil sin JS.
+ */
+import Escena from './Escena.astro'
+
+const visitas = [
+  { fecha: '3/4/2027', parcela: 'Guara', nota: 'Sin síntomas de mancha ocre' },
+  { fecha: '27/3/2027', parcela: 'Soleta', nota: 'Floración completa' },
+  { fecha: '20/3/2027', parcela: 'Vairo', nota: 'Trampas revisadas, sin capturas' },
+]
+---
+
+<Escena class="movil-web" label="Se anota una visita en el móvil y aparece en el panel del ordenador; se crea una tarea en el panel y llega al móvil.">
+  <div class="marco">
+    <div class="escenario">
+      <!-- Portátil -->
+      <div class="portatil">
+        <div class="pantalla">
+          <div class="panel">
+            <aside class="lado">
+              <p class="marca">crisopa</p>
+              <p class="it">Inicio</p>
+              <p class="it on">Diario</p>
+              <p class="it">Tratamientos</p>
+              <p class="it">Fertilización</p>
+              <p class="it">Almacén</p>
+              <p class="it">Tareas</p>
+            </aside>
+            <div class="main">
+              <p class="miga">Los Llanos <span>/</span> <b>Diario de campo</b></p>
+              <div class="tabla">
+                <p class="fila nueva st" style="--d: 2300ms">
+                  <span class="mono">10/4/2027</span>
+                  <span>Almendros Lauranne</span>
+                  <span class="nota">Pulgón en brotes, 8 % de árboles</span>
+                  <span class="chip chip-ok">Móvil</span>
+                </p>
+                {visitas.map((v) => (
+                  <p class="fila">
+                    <span class="mono">{v.fecha}</span>
+                    <span>{v.parcela}</span>
+                    <span class="nota">{v.nota}</span>
+                    <span></span>
+                  </p>
+                ))}
+              </div>
+              <div class="tarea-panel st" style="--d: 3600ms">
+                <p class="k">Nueva tarea</p>
+                <p>Revisar colonias de pulgón <span class="mono">· 17/4/2027</span></p>
+                <span class="btn">Crear</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="base"></div>
+      </div>
+
+      <!-- Móvil -->
+      <div class="movil">
+        <div class="app">
+          <p class="app-top"><b>Los Llanos</b><span class="mono">09:41</span></p>
+
+          <!-- Pantalla 1: la visita -->
+          <div class="pant pant-visita st-sale" style="--d: 3000ms">
+            <p class="app-tit">Nueva visita</p>
+            <p class="lab">Parcela</p>
+            <p class="inp"><span class="st" style="--d: 300ms">Almendros Lauranne</span></p>
+            <p class="lab">Observaciones</p>
+            <p class="inp alto"><span class="st" style="--d: 800ms">Pulgón en brotes, colonias en el 8 % de los árboles.</span></p>
+            <p class="guardar">Guardar</p>
+          </div>
+
+          <!-- Pantalla 2: las tareas -->
+          <div class="pant st" style="--d: 3100ms">
+            <p class="app-tit">Tareas</p>
+            <p class="t-item nueva-t st" style="--d: 4400ms">
+              <span class="check"></span>
+              <span>Revisar colonias de pulgón<span class="mono sub">17/4/2027</span></span>
+            </p>
+            <p class="t-item">
+              <span class="check"></span>
+              <span>Preparar orden contra pulgón<span class="mono sub">Almendros Lauranne</span></span>
+            </p>
+            <p class="t-item hecha">
+              <span class="check">✓</span>
+              <span>Visita a Almendros Lauranne<span class="mono sub">10/4/2027</span></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .marco {
+    container-type: inline-size;
+  }
+
+  /* Letra base: 13px a 900px de ancho. Todo lo demás, en em. */
+  .escenario {
+    position: relative;
+    aspect-ratio: 900 / 520;
+    font-size: 1.4444cqw;
+    line-height: 1.35;
+  }
+
+  /* ---------- Portátil ---------- */
+  .portatil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 74%;
+  }
+
+  .pantalla {
+    aspect-ratio: 16 / 10;
+    padding: 0.7em;
+    background: var(--dark-background);
+    border-radius: 1.1em 1.1em 0 0;
+    box-shadow: var(--shadow-2);
+  }
+
+  .base {
+    width: 112%;
+    height: 1.3em;
+    margin-left: -6%;
+    background: linear-gradient(var(--line-strong), var(--line));
+    border-radius: 0 0 1.2em 1.2em;
+    box-shadow: var(--shadow-2);
+  }
+
+  .panel {
+    display: grid;
+    grid-template-columns: 22% 1fr;
+    height: 100%;
+    background: var(--surface);
+    border-radius: 0.3em;
+    overflow: hidden;
+  }
+
+  .panel p {
+    margin: 0;
+  }
+
+  .lado {
+    display: grid;
+    align-content: start;
+    gap: 0.25em;
+    padding: 1em 0.8em;
+    background: var(--surface-secondary);
+    border-right: 1px solid var(--line);
+    font-size: 0.85em;
+  }
+
+  .marca {
+    margin-bottom: 0.8em !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: -0.02em;
+    color: var(--green-700);
+  }
+
+  .it {
+    padding: 0.35em 0.6em;
+    border-radius: 0.4em;
+    color: var(--foreground-muted);
+  }
+
+  .it.on {
+    background: var(--green-50);
+    color: var(--green-800);
+    font-weight: 500;
+  }
+
+  .main {
+    position: relative;
+    padding: 1em 1.2em;
+    min-width: 0;
+  }
+
+  .miga {
+    padding-bottom: 0.8em;
+    border-bottom: 1px solid var(--line);
+    color: var(--foreground-muted);
+  }
+
+  .miga span {
+    margin: 0 0.3em;
+  }
+
+  .miga b {
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  .tabla {
+    font-size: 0.9em;
+  }
+
+  .fila {
+    display: grid;
+    grid-template-columns: 6em 9.5em minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.8em;
+    padding: 0.7em 0.2em;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fila .nota {
+    color: var(--foreground-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fila .chip {
+    font-size: 0.85em;
+  }
+
+  :global(.run) .nueva,
+  :global(.run) .nueva-t {
+    animation:
+      esc-entra 450ms var(--ease-brand) var(--d) both,
+      resalta 1800ms ease-out calc(var(--d) + 300ms) both;
+  }
+
+  @keyframes resalta {
+    from {
+      background: var(--green-50);
+    }
+  }
+
+  .tarea-panel {
+    position: absolute;
+    left: 1.2em;
+    bottom: 1.2em;
+    width: 18em;
+    padding: 0.9em 1em;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 0.8em;
+    box-shadow: var(--shadow-3);
+  }
+
+  .tarea-panel .k {
+    font-size: 0.8em;
+    margin-bottom: 0.3em !important;
+  }
+
+  .tarea-panel .mono {
+    color: var(--foreground-muted);
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: 0.6em;
+    padding: 0.3em 0.9em;
+    border-radius: 0.4em;
+    background: var(--green-600);
+    color: white;
+    font-weight: 500;
+  }
+
+  /* ---------- Móvil ---------- */
+  .movil {
+    position: absolute;
+    right: 2%;
+    bottom: 0;
+    width: 25%;
+    aspect-ratio: 9 / 18.5;
+    padding: 0.55em;
+    background: var(--dark-background);
+    border-radius: 2.4em;
+    box-shadow: var(--shadow-3);
+  }
+
+  .app {
+    position: relative;
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 1fr;
+    background: var(--surface);
+    border-radius: 1.9em;
+    overflow: hidden;
+  }
+
+  .app p {
+    margin: 0;
+  }
+
+  .app-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.1em 1.3em 0.7em;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9em;
+  }
+
+  .app-top b {
+    font-weight: 600;
+  }
+
+  .app-top .mono {
+    color: var(--foreground-muted);
+  }
+
+  .pant {
+    grid-area: 2 / 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45em;
+    padding: 1em 1.1em;
+    background: var(--surface);
+    font-size: 0.92em;
+  }
+
+  .app-tit {
+    margin-bottom: 0.3em !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25em;
+    letter-spacing: -0.02em;
+  }
+
+  .lab {
+    font-size: 0.8em;
+    color: var(--foreground-muted);
+  }
+
+  .inp {
+    min-height: 2.2em;
+    padding: 0.45em 0.6em;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5em;
+  }
+
+  .inp.alto {
+    min-height: 5em;
+  }
+
+  .guardar {
+    margin-top: auto !important;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    background: var(--green-600);
+    color: white;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  :global(.run) .guardar {
+    animation: pulsa 300ms ease-out 2100ms;
+  }
+
+  @keyframes pulsa {
+    50% {
+      scale: 0.94;
+      background: var(--green-700);
+    }
+  }
+
+  .t-item {
+    display: flex;
+    gap: 0.6em;
+    padding: 0.6em 0.3em;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0.3em;
+  }
+
+  .t-item .sub {
+    display: block;
+    margin-top: 0.15em;
+    font-size: 0.8em;
+    color: var(--foreground-muted);
+  }
+
+  .check {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.1em;
+    height: 1.1em;
+    margin-top: 0.1em;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 0.3em;
+    font-size: 0.8em;
+  }
+
+  .hecha {
+    color: var(--foreground-muted);
+  }
+
+  .hecha .check {
+    border-color: var(--green-600);
+    background: var(--green-600);
+    color: white;
+  }
+
+  /* En pantallas estrechas el escenario crece en alto para que el móvil se lea */
+  @container (max-width: 520px) {
+    .escenario {
+      aspect-ratio: 900 / 700;
+      font-size: 1.9cqw;
+    }
+
+    .portatil {
+      width: 92%;
+    }
+
+    .movil {
+      width: 36%;
+      right: 0;
+    }
+
+    .tarea-panel {
+      display: none;
+    }
+  }
+</style>

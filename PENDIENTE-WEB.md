@@ -38,14 +38,12 @@ Ordenado por lo que más dudas cierra con menos trabajo.
    `/para-cooperativas` y `/para-empresas-de-servicios`. Cada una con sus
    objeciones, sus cifras y su CTA.
 8. **Páginas por funcionalidad.** Hecha la página madre, `/producto` (30 de
-   septiembre de 2026): módulos con su sitio en el menú, las comprobaciones
-   contra el MAPA, panel y chat, exportaciones, datos y requisitos. Deja
-   fuera a propósito lo que va detrás de flags (Diario, Previsiones, Partes)
-   y el envío al SIEX. Faltan las hijas, una por cada cosa que se
-   vende: validación
-   normativa del tratamiento, órdenes de tratamiento, almacén, informes y
-   exportación a SIEX, conector de IA. Alimentan el menú «Producto» y
-   posicionan por búsquedas de función. Agro4Data tiene nueve.
+   septiembre de 2026): qué no es Crisopa, puesta en marcha desde la PAC,
+   funcionalidades, web y móvil, y ChatGPT y Claude frente al formulario,
+   cada cosa con su escena animada. Faltan las hijas, una por cada cosa que
+   se vende: validación normativa del tratamiento, órdenes de tratamiento,
+   almacén, informes y exportación a SIEX, conector de IA. Alimentan el menú
+   «Producto» y posicionan por búsquedas de función. Agro4Data tiene nueve.
 9. **Página de integraciones.** El conector de ChatGPT y el de Claude son un
    diferencial claro y hoy no tienen página indexable.
 10. **Presencia social enlazada.** Cero enlaces a LinkedIn, Instagram o YouTube.

@@ -1,0 +1,387 @@
+---
+/**
+ * Motor común de las escenas animadas de /producto (DESIGN_SYSTEM.md ›
+ * Movimiento › Escenas de /producto). Cada escena es una ilustración de
+ * interfaz que se cuenta sola, una vez, cuando se ve el 30%.
+ *
+ * - El HTML trae el estado final. Sin JS o con movimiento reducido, se ve
+ *   entero y quieto.
+ * - Con JS, la escena se queda en `espera` (los pasos ocultos) hasta que se ve;
+ *   entonces pasa a `run` y cada paso entra con el gesto de entrada de marca
+ *   en su momento: `class="st"` y `style="--d: 1200ms"`.
+ * - `st-sale`: lo que está al principio y se va (un estado anterior, un
+ *   indicador de carga). En el estado final no se ve.
+ * - Animaciones propias de cada escena: en su componente, colgadas de
+ *   `:global(.run)` y con el estado final como estilo base.
+ * - `data-cuenta`: cifras que cuentan hasta su valor final (el del HTML).
+ *   `data-desde`, `data-dur` y `--d` (retraso), en ms; `data-fmt`: `reloj`
+ *   (mm:ss) o `entero`.
+ * - Botón de repetir en la esquina (DESIGN_SYSTEM.md › El producto como
+ *   imagen). `dark` para escenas sobre sección oscura.
+ */
+interface Props {
+  class?: string
+  dark?: boolean
+  label?: string
+}
+
+const { class: className, dark = false, label } = Astro.props
+---
+
+<figure class:list={['escena', dark && 'escena-dark', className]} data-escena aria-label={label}>
+  <slot />
+  <button type="button" class="esc-replay" data-esc-replay aria-label="Repetir la animación" title="Repetir">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </svg>
+  </button>
+</figure>
+
+<style is:global>
+  .escena {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    /* Se comporta como un vídeo: nada se selecciona */
+    user-select: none;
+  }
+
+  .st-sale {
+    opacity: 0;
+  }
+
+  .espera .st {
+    opacity: 0;
+  }
+
+  .espera .st-sale {
+    opacity: 1;
+  }
+
+  .run .st {
+    animation: esc-entra 450ms var(--ease-brand) var(--d, 0ms) both;
+  }
+
+  .run .st-sale {
+    animation: esc-sale 300ms var(--ease-brand) var(--d, 0ms) both;
+  }
+
+  @keyframes esc-entra {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes esc-sale {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Temblor de un aviso de error: una vez, lo único que oscila */
+  @keyframes esc-tiembla {
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(6px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(3px);
+    }
+  }
+
+  /* ---------- Piezas de interfaz comunes a las escenas ---------- */
+
+  /* Ventana de producto: superficie, borde 1px y sombra de nivel 2 */
+  .win {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+    color: var(--foreground);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .win-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-secondary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--foreground-muted);
+    white-space: nowrap;
+  }
+
+  .win-bar .dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .win-bar .dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--line-strong);
+  }
+
+  .win-bar .url {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Rótulo de bloque dentro de la interfaz */
+  .k {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--foreground-muted);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Estados, como los pinta la app */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: nowrap;
+    color: var(--foreground-muted);
+    background: var(--surface);
+  }
+
+  .chip-ok {
+    border-color: var(--green-200);
+    background: var(--green-50);
+    color: var(--green-700);
+  }
+
+  .chip-aviso {
+    border-color: oklch(from var(--state-warning) 0.85 0.09 h);
+    background: oklch(from var(--state-warning) 0.97 0.03 h);
+    color: oklch(from var(--state-warning) 0.5 0.12 h);
+  }
+
+  .chip-error {
+    border-color: oklch(from var(--state-error) 0.85 0.08 h);
+    background: oklch(from var(--state-error) 0.97 0.02 h);
+    color: var(--state-error);
+  }
+
+  /* Indicador de carga: tres puntos que se encienden por turnos */
+  .cargando {
+    display: inline-flex;
+    gap: 3px;
+  }
+
+  .cargando i {
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--foreground-muted);
+    animation: esc-carga 900ms ease-in-out infinite;
+  }
+
+  .cargando i:nth-child(2) {
+    animation-delay: 150ms;
+  }
+
+  .cargando i:nth-child(3) {
+    animation-delay: 300ms;
+  }
+
+  @keyframes esc-carga {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  .esc-replay {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--foreground-muted);
+    cursor: pointer;
+    transition:
+      opacity 200ms var(--ease-brand),
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+
+  .escena-dark .esc-replay {
+    border-color: var(--dark-line);
+    background: var(--dark-surface);
+    color: var(--dark-foreground-muted);
+  }
+
+  .esc-replay:hover {
+    color: var(--foreground);
+  }
+
+  .escena-dark .esc-replay:hover {
+    color: var(--dark-foreground);
+  }
+
+  .esc-replay svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Sin JS no hay nada que repetir */
+  html:not(.js) .esc-replay {
+    display: none;
+  }
+
+  @media (hover: hover) {
+    .esc-replay {
+      opacity: 0;
+    }
+
+    .escena:hover .esc-replay,
+    .esc-replay:focus-visible {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .esc-replay {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  type Escena = HTMLElement & { _stop?: () => void }
+
+  const fmt = (n: number, tipo?: string) => {
+    if (tipo === 'reloj') {
+      const s = Math.round(n)
+      return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
+    }
+    return Math.round(n).toLocaleString('es-ES')
+  }
+
+  function setup(root: Escena) {
+    if (root.dataset.ready) return
+    root.dataset.ready = '1'
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (reduce.matches) return
+
+    const cuentas = Array.from(root.querySelectorAll<HTMLElement>('[data-cuenta]')).map((el) => ({
+      el,
+      hasta: Number(el.dataset.cuenta),
+      desde: Number(el.dataset.desde ?? 0),
+      dur: Number(el.dataset.dur ?? 1000),
+      retraso: parseFloat(getComputedStyle(el).getPropertyValue('--d')) || 0,
+      tipo: el.dataset.fmt,
+      final: el.textContent ?? '',
+    }))
+    let timers: number[] = []
+    let frames: number[] = []
+
+    const parar = () => {
+      timers.forEach(clearTimeout)
+      frames.forEach(cancelAnimationFrame)
+      timers = []
+      frames = []
+    }
+
+    const contar = () => {
+      cuentas.forEach((c) => {
+        c.el.textContent = fmt(c.desde, c.tipo)
+        timers.push(
+          window.setTimeout(() => {
+            const t0 = performance.now()
+            const paso = (t: number) => {
+              const p = Math.min(1, (t - t0) / c.dur)
+              if (p >= 1) {
+                c.el.textContent = c.final
+                return
+              }
+              // ease-out: frena al llegar a la cifra
+              c.el.textContent = fmt(c.desde + (c.hasta - c.desde) * (1 - (1 - p) ** 3), c.tipo)
+              frames.push(requestAnimationFrame(paso))
+            }
+            frames.push(requestAnimationFrame(paso))
+          }, c.retraso),
+        )
+      })
+    }
+
+    const play = () => {
+      parar()
+      root.classList.remove('run')
+      root.classList.add('espera')
+      // Reinicia las animaciones CSS
+      void root.offsetWidth
+      root.classList.remove('espera')
+      root.classList.add('run')
+      contar()
+    }
+
+    root.querySelector('[data-esc-replay]')?.addEventListener('click', play)
+
+    root.classList.add('espera')
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        io.disconnect()
+        timers.push(window.setTimeout(play, 200))
+      },
+      { threshold: 0.3 },
+    )
+    io.observe(root)
+
+    root._stop = () => {
+      io.disconnect()
+      parar()
+      cuentas.forEach((c) => (c.el.textContent = c.final))
+      root.classList.remove('espera')
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<Escena>('[data-escena]').forEach(setup)
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll<Escena>('[data-escena]').forEach((el) => el._stop?.())
+  })
+</script>

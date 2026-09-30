@@ -1,0 +1,330 @@
+---
+/**
+ * El mismo tratamiento, registrado de dos formas y a la vez (sección oscura).
+ *
+ * - Izquierda, a mano: el formulario se rellena campo a campo (11) y el
+ *   contador sube con ellos.
+ * - Derecha, con ChatGPT o Claude: una nota de voz, las tres llamadas a
+ *   Crisopa (herramientas reales del conector) y la respuesta. Termina mucho
+ *   antes que el formulario, que sigue rellenándose.
+ *
+ * No se miden tiempos: se cuentan campos y mensajes, que son los que se ven.
+ * El tratamiento es el de la orden nº 14 (Karate Zeon, 1,55 l en Almendros
+ * Lauranne, 8,40 ha → 185 ml/ha, por debajo del máximo de 200 ml/ha).
+ */
+import Escena from './Escena.astro'
+import { LOGO_CHATGPT, LOGO_CLAUDE } from '../../lib/logos'
+
+const campos = [
+  { k: 'Fecha', v: '15/4/2027', mono: true },
+  { k: 'Explotación', v: 'Los Llanos' },
+  { k: 'Parcela', v: 'Almendros Lauranne' },
+  { k: 'Cultivo', v: 'Almendro' },
+  { k: 'Plaga', v: 'Áfidos, pulgones' },
+  { k: 'Producto', v: 'Karate Zeon' },
+  { k: 'Nº registro', v: '22398', mono: true },
+  { k: 'Cantidad', v: '1,55 l', mono: true },
+  { k: 'Superficie', v: '8,40 ha', mono: true },
+  { k: 'Aplicador', v: 'A. Ruiz' },
+  { k: 'Maquinaria', v: 'Tractor + atomizador' },
+]
+
+const PASO = 520
+const INICIO = 400
+const fin = INICIO + campos.length * PASO
+
+const llamadas = ['leer_ficha_registro · 22398', 'validar_tratamiento', 'crear_tratamiento']
+
+// Barras de la onda de la nota de voz (alturas fijas, no aleatorias)
+const onda = [4, 7, 11, 6, 9, 13, 8, 5, 10, 14, 9, 6, 11, 7, 4, 8, 12, 6, 9, 5, 3, 6, 10, 7]
+---
+
+<Escena dark class="chat-mano" label="El mismo tratamiento registrado a mano, rellenando 11 campos uno a uno, y con ChatGPT o Claude, con una sola nota de voz.">
+  <div class="dos">
+    <!-- A mano -->
+    <div class="lado">
+      <p class="cab">
+        <span>A mano</span>
+        <span class="mono cuenta">Campos <span data-cuenta={campos.length} data-dur={campos.length * PASO} style={`--d: ${INICIO}ms`}>{campos.length}</span> / {campos.length}</span>
+      </p>
+      <div class="d-card form">
+        <p class="d-tit">Nuevo tratamiento</p>
+        <div class="campos">
+          {campos.map((c, i) => (
+            <div class="campo">
+              <span class="lab">{c.k}</span>
+              <span class="inp" style={`--d: ${INICIO + i * PASO}ms`}>
+                <span class:list={['st', c.mono && 'mono']} style={`--d: ${INICIO + i * PASO + 120}ms`}>{c.v}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+        <p class="pie">
+          <span class="swap">
+            <span class="st-sale" style={`--d: ${fin + 200}ms`}>Guardar</span>
+            <span class="st ok" style={`--d: ${fin + 200}ms`}>✓ Guardado</span>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Con ChatGPT o Claude -->
+    <div class="lado">
+      <p class="cab">
+        <span class="logos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={LOGO_CHATGPT} /></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="claude"><path d={LOGO_CLAUDE} /></svg>
+          Con ChatGPT o Claude
+        </span>
+        <span class="mono cuenta">Mensajes 1</span>
+      </p>
+      <div class="d-card chat">
+        <div class="voz st" style="--d: 300ms">
+          <span class="play" aria-hidden="true">▶</span>
+          <span class="onda" aria-hidden="true">
+            {onda.map((h) => <i style={`height: ${h}px`}></i>)}
+          </span>
+          <span class="mono">0:14</span>
+        </div>
+        <p class="transc st" style="--d: 700ms">
+          «He tratado Almendros Lauranne con Karate Zeon contra pulgón. Ha tirado Antonio con el
+          atomizador, 1,55 litros.»
+        </p>
+        {llamadas.map((l, i) => (
+          <p class="tool st" style={`--d: ${1400 + i * 500}ms`}>
+            <span class="ok" aria-hidden="true">✓</span> Crisopa · {l}
+          </p>
+        ))}
+        <p class="resp st" style="--d: 3100ms">
+          Registrado en el cuaderno: Karate Zeon a 185 ml/ha en 8,40 ha, dentro del registro. Es la
+          única aplicación que permite esta campaña.
+        </p>
+        <p class="st" style="--d: 3500ms"><span class="hecho">✓ En el cuaderno</span></p>
+      </div>
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .dos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .dos {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .lado {
+    min-width: 0;
+  }
+
+  .cab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dark-foreground-muted);
+  }
+
+  .cuenta {
+    letter-spacing: 0.04em;
+    color: var(--dark-foreground);
+  }
+
+  .logos {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logos svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--dark-foreground);
+  }
+
+  .logos .claude {
+    fill: var(--brand-claude);
+  }
+
+  .d-card {
+    padding: 20px;
+    background: var(--dark-surface);
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-lg);
+    color: var(--dark-foreground);
+  }
+
+  @media (max-width: 560px) {
+    .d-card {
+      padding: 16px;
+    }
+  }
+
+  .d-card p {
+    margin: 0;
+  }
+
+  .d-tit {
+    margin-bottom: 14px !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  /* ---------- Formulario ---------- */
+  .campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 12px;
+  }
+
+  .campo {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .lab {
+    font-size: 11px;
+    color: var(--dark-foreground-muted);
+  }
+
+  .inp {
+    min-height: 30px;
+    padding: 6px 9px;
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-sm);
+    background: var(--dark-background);
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* El campo que se está rellenando se enciende un momento */
+  :global(.run) .inp {
+    animation: foco 700ms ease-out var(--d) both;
+  }
+
+  @keyframes foco {
+    0% {
+      border-color: var(--dark-line);
+    }
+    15%,
+    70% {
+      border-color: var(--green-400);
+    }
+    100% {
+      border-color: var(--dark-line);
+    }
+  }
+
+  .pie {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px !important;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  .swap {
+    display: grid;
+  }
+
+  .swap > * {
+    grid-area: 1 / 1;
+    justify-self: end;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .swap .st-sale {
+    background: var(--dark-line);
+  }
+
+  .swap .ok {
+    color: var(--green-400);
+  }
+
+  /* ---------- Chat ---------- */
+  .chat {
+    display: grid;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .voz {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--dark-background);
+    border: 1px solid var(--dark-line);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    color: var(--dark-foreground-muted);
+  }
+
+  .play {
+    font-size: 10px;
+    color: var(--dark-foreground);
+  }
+
+  .onda {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 16px;
+  }
+
+  .onda i {
+    width: 2px;
+    border-radius: 1px;
+    background: var(--green-400);
+  }
+
+  .transc {
+    justify-self: end;
+    max-width: 92%;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--dark-foreground-muted);
+    text-align: right;
+  }
+
+  .tool {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--dark-foreground-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .ok {
+    color: var(--green-400);
+  }
+
+  .hecho {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid var(--green-400);
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green-400);
+  }
+</style>

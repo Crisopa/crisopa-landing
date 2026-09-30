@@ -1,0 +1,89 @@
+---
+/**
+ * Diario de visitas y tareas: se anota la visita y salen solas las tareas que
+ * se deducen de ella. No se explica cómo: se ve.
+ */
+import Escena from './Escena.astro'
+
+const tareas = [
+  { texto: 'Preparar orden contra pulgón', meta: 'Almendros Lauranne' },
+  { texto: 'Revisar colonias de pulgón', meta: '17/4/2027' },
+]
+---
+
+<Escena class="fn-diario" label="Se anota una visita con pulgón en Almendros Lauranne y aparecen dos tareas: preparar la orden y volver a revisar en una semana.">
+  <div class="win">
+    <div class="win-bar"><span class="url">Diario de campo</span></div>
+    <div class="visita st">
+      <p class="meta"><span class="mono">10/4/2027</span> · Visita · Almendros Lauranne</p>
+      <p class="nota">Pulgón en brotes, colonias en el 8 % de los árboles. Poca fauna auxiliar.</p>
+    </div>
+    <div class="tareas">
+      <p class="k">Tareas</p>
+      {tareas.map((t, i) => (
+        <p class="tarea st" style={`--d: ${1000 + i * 300}ms`}>
+          <span class="check" aria-hidden="true"></span>
+          <span class="tx">{t.texto} <span class="mono m">{t.meta}</span></span>
+          <span class="chip chip-ok">Nueva</span>
+        </p>
+      ))}
+    </div>
+  </div>
+</Escena>
+
+<style>
+  .visita {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .visita p {
+    margin: 0;
+  }
+
+  .meta {
+    font-size: 11.5px;
+    color: var(--foreground-muted);
+  }
+
+  .nota {
+    margin-top: 6px !important;
+    font-size: 13px;
+  }
+
+  .tareas {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px 18px;
+  }
+
+  .tareas .k {
+    margin: 0;
+  }
+
+  .tarea {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 12.5px;
+  }
+
+  .check {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 4px;
+  }
+
+  .tx {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .m {
+    font-size: 11px;
+    color: var(--foreground-muted);
+  }
+</style>
