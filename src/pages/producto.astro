@@ -1,0 +1,383 @@
+---
+/**
+ * Página de producto: qué es Crisopa y qué incluye, para quien ya lo está
+ * evaluando. No sustituye a la home (que convence y lleva a la demo): aquí se
+ * informa módulo a módulo, con los nombres que el asesor verá en el panel.
+ *
+ * Todo lo que se cuenta está comprobado contra `crisopa-app` (menú de
+ * `src/lib/navegacion/rutas.ts`, reglas de `tratamiento-linting.ts`,
+ * exportaciones y política de privacidad). Quedan fuera a propósito los
+ * módulos detrás de flags o a medias: Diario, Previsiones, Partes, el envío al
+ * SIEX y la app móvil hasta que esté en las tiendas. Si se activan, se añaden.
+ *
+ * Secciones sin numerar: no es una secuencia como la home. Oscuras, dos: la
+ * demo (Showcase) y el cierre (CTA).
+ */
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Eyebrow from '../components/Eyebrow.astro'
+import Showcase from '../components/Showcase.astro'
+import SelloMAPA from '../components/SelloMAPA.astro'
+import CTA from '../components/CTA.astro'
+import Footer from '../components/Footer.astro'
+import { REGISTRO_MAPA_SINCRONIZADO } from '../lib/mapa'
+
+const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
+
+const ficha = [
+  { etiqueta: 'Para quién', valor: 'Asesores, técnicos de campo y cooperativas' },
+  { etiqueta: 'Cómo se usa', valor: 'Panel web, o hablando con ChatGPT o Claude' },
+  { etiqueta: 'Normativa', valor: 'Cuaderno de explotación del RD 1311/2012' },
+  { etiqueta: 'Registro MAPA', valor: `Sincronizado ${REGISTRO_MAPA_SINCRONIZADO}`, dato: true },
+]
+
+// `ruta`: dónde está en el panel, con las etiquetas exactas del menú.
+const modulos = [
+  {
+    titulo: 'Explotaciones y parcelas',
+    ruta: 'Mis explotaciones › Parcelas',
+    texto: 'Cada parcela con su referencia SIGPAC, validada contra el FEGA y sobre ortofoto del PNOA. Las importas desde Excel o CSV y se replican en cada campaña.',
+  },
+  {
+    titulo: 'Tratamientos y órdenes',
+    ruta: 'Operaciones › Tratamientos',
+    texto: 'Registras el tratamiento con su caldo o preparas la orden para el aplicador. La orden pasa de Pendiente a Ejecutada y sale en PDF con tu logo.',
+  },
+  {
+    titulo: 'Fertilización y plan de abonado',
+    ruta: 'Operaciones › Fertilización',
+    texto: 'Aportes con sus UF de NPK y el plan de abonado de cada parcela, conforme al RD 1051/2022.',
+  },
+  {
+    titulo: 'Riego',
+    ruta: 'Operaciones › Riego',
+    texto: 'Riegos por parcela y los datos de la concesión de agua, dentro del mismo cuaderno.',
+  },
+  {
+    titulo: 'Almacén',
+    ruta: 'Operaciones › Almacén',
+    texto: 'El stock de cada producto. Tratamientos y fertilizaciones lo descuentan solos; entradas, ajustes y bajas, a mano.',
+  },
+  {
+    titulo: 'Compras',
+    ruta: 'Operaciones › Compras',
+    texto: 'Facturas y albaranes de producto. Subes la factura, sus datos se leen con IA y solo tienes que revisarlos.',
+  },
+  {
+    titulo: 'Personal y maquinaria',
+    ruta: 'Configuración › Personal · Maquinaria',
+    texto: 'Aplicadores con su carné ROPO y equipos con su inspección. El inicio te avisa de lo que caduca en los próximos 60 días.',
+  },
+  {
+    titulo: 'Otros registros',
+    ruta: 'Operaciones › Otros registros',
+    texto: 'Eco-regímenes PAC, cosecha comercializada, semilla tratada, post-cosecha y transporte. Los apartados que pide el cuaderno.',
+  },
+  {
+    titulo: 'Documentación',
+    ruta: 'Configuración › Documentación',
+    texto: 'Carpetas por explotación para análisis, contratos y certificados. Todo junto a la finca a la que pertenece.',
+  },
+]
+
+const comprobaciones = [
+  {
+    titulo: 'Autorizado en ese cultivo',
+    texto: 'El producto figura en el registro para el cultivo y la plaga que indicas.',
+  },
+  {
+    titulo: 'Vigente',
+    texto: 'El registro sigue en vigor. Si la finca es ecológica, que sea apto para ella.',
+  },
+  {
+    titulo: 'Dosis',
+    texto: 'Dentro del mínimo y el máximo que marca la ficha para ese uso.',
+  },
+  {
+    titulo: 'Caldo y concentración',
+    texto: 'Volumen por hectárea y concentración en el rango autorizado.',
+  },
+  {
+    titulo: 'Número de aplicaciones',
+    texto: 'Por campaña, por año y por sustancia activa, aunque venga en otro formulado.',
+  },
+  {
+    titulo: 'Intervalo',
+    texto: 'Tiempo suficiente desde la última aplicación del mismo producto.',
+  },
+]
+
+const salidas = [
+  {
+    titulo: 'Cuaderno de campo en PDF',
+    texto: 'Apartado a apartado, según el modelo oficial. El que enseñas en la inspección.',
+  },
+  {
+    titulo: 'Orden de tratamiento en PDF',
+    texto: 'Con tu logo, tu color y tu nota al pie. Lista para mandar al aplicador.',
+  },
+  {
+    titulo: 'Exportación RETO',
+    texto: 'El fichero de operaciones con fitosanitarios, listo para cargar en el RETO.',
+  },
+  {
+    titulo: 'API',
+    texto: 'Claves de lectura o de lectura y escritura para conectar tu ERP o tus propias herramientas.',
+  },
+]
+
+const datos = [
+  {
+    titulo: 'Cada uno ve lo suyo',
+    texto: 'Tu organización solo ve sus explotaciones. Un técnico, solo las que tiene asignadas; el administrador, todas.',
+  },
+  {
+    titulo: 'Base de datos en la UE',
+    texto: 'Los datos se guardan en la Unión Europea y viajan cifrados.',
+  },
+  {
+    titulo: 'Soporte con fecha de caducidad',
+    texto: 'Si necesitamos entrar en tu cuenta para resolver algo, te lo decimos. El acceso caduca en una hora y queda registrado.',
+  },
+  {
+    titulo: 'Sin permanencia',
+    texto: 'Si acaba la prueba y no eliges plan, la cuenta pasa a solo lectura y no pierdes nada. Si la cierras, los datos se eliminan en 30 días.',
+  },
+]
+
+const necesitas = [
+  { que: 'Un navegador', detalle: 'En el ordenador. No se instala nada.' },
+  { que: 'ChatGPT o Claude', detalle: 'Opcional. Vale la versión gratuita; para notas de voz y conversaciones largas, mejor un plan de pago que contratas con ellos.' },
+  { que: 'Tus parcelas', detalle: 'En Excel, CSV u ODS con cultivo, superficie y referencia SIGPAC. O las das de alta a mano.' },
+]
+---
+
+<Layout
+  title="Producto: qué es Crisopa y qué incluye | Crisopa"
+  description="Crisopa módulo a módulo: parcelas SIGPAC, tratamientos y órdenes verificados contra el registro del MAPA, fertilización, riego, almacén, compras y el cuaderno en PDF. Desde el panel o desde ChatGPT y Claude."
+>
+  <Header />
+  <main>
+    <!-- Cabecera de página: el padding superior deja sitio al header fijo -->
+    <section class="sec pt-28 sm:pt-36">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Producto</Eyebrow>
+          <h1 class="mt-5 text-[2.5rem] text-foreground sm:text-5xl lg:text-6xl">
+            Crisopa, pieza por pieza
+          </h1>
+        </div>
+        <div>
+          <p class="lead">
+            El cuaderno de campo completo del asesor: parcelas, tratamientos, abonado, riego, almacén y
+            compras de todas tus fincas. Lo llevas desde el panel o hablando con ChatGPT o Claude, y cada
+            tratamiento se comprueba contra el registro del MAPA.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href={calendlyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-press
+              class="group inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-6 py-3.5 text-base font-medium text-white hover:bg-primary-700"
+            >
+              Reservar demo
+              <svg class="h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+            <a
+              href="/precios"
+              data-press
+              class="inline-flex items-center justify-center rounded-md border border-line-strong bg-surface px-6 py-3.5 text-base font-medium text-foreground hover:bg-surface-secondary"
+            >
+              Ver precios
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ficha: lo que se pregunta antes que nada, como dato -->
+      <dl class="cells mt-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4" data-animate>
+        {ficha.map((f) => (
+          <div class="p-5 sm:p-6">
+            <dt class="font-data text-xs uppercase tracking-[0.12em] text-foreground-muted">{f.etiqueta}</dt>
+            <dd class:list={['mt-3 text-[15px] leading-snug text-foreground', f.dato && 'font-data']}>{f.valor}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- Módulos, con su sitio en el menú del panel -->
+    <section id="modulos" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Qué incluye</Eyebrow>
+          <h2 class="mt-5 text-foreground">
+            Todo el cuaderno.
+            <span class="text-foreground-muted">En un solo sitio.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          Lo que pide el cuaderno de explotación y lo que necesitas para llevar muchas fincas a la vez.
+          Cada módulo, con el nombre que verás en el menú.
+        </p>
+      </div>
+
+      <div class="cells mt-12 sm:mt-16 lg:grid-cols-3" data-animate>
+        {modulos.map((m) => (
+          <div class="p-6 sm:p-7">
+            <p class="font-data text-xs text-foreground-muted">{m.ruta}</p>
+            <h3 class="mt-6 text-lg text-foreground">{m.titulo}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-foreground-muted">{m.texto}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Verificación: qué se comprueba en cada tratamiento -->
+    <section id="verificacion" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Verificado contra el MAPA</Eyebrow>
+          <h2 class="mt-5 text-foreground">
+            Seis comprobaciones.
+            <span class="text-foreground-muted">En cada tratamiento.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          Al registrar un tratamiento, Crisopa lo cruza con la ficha oficial del producto y
+          te avisa de lo que no encaja. Tú decides y firmas.
+        </p>
+      </div>
+
+      <div class="cells mt-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3" data-animate>
+        {comprobaciones.map((c, i) => (
+          <div class="p-6 sm:p-7">
+            <span class="font-data text-xs text-foreground-muted">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="mt-6 text-lg text-foreground">{c.titulo}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-foreground-muted">{c.texto}</p>
+          </div>
+        ))}
+      </div>
+
+      <SelloMAPA fecha={REGISTRO_MAPA_SINCRONIZADO} class="mt-6" />
+    </section>
+
+    <!-- La demo oscura enseña una de esas comprobaciones en marcha -->
+    <Showcase />
+
+    <!-- Dos formas de trabajar -->
+    <section id="como-se-usa" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Cómo se usa</Eyebrow>
+          <h2 class="mt-5 text-foreground">
+            Desde el panel.
+            <span class="text-foreground-muted">O desde el chat.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          Es la misma herramienta con dos entradas. Usas la que te venga mejor en cada momento.
+        </p>
+      </div>
+
+      <div class="cells mt-12 sm:mt-16 md:grid-cols-2" data-animate>
+        <div class="p-6 sm:p-8">
+          <p class="font-data text-xs text-foreground-muted">panel.crisopa.app</p>
+          <h3 class="mt-6 text-xl text-foreground">En la oficina, con todo delante</h3>
+          <p class="mt-3 text-[15px] leading-relaxed text-foreground-muted">
+            Todos los módulos en el navegador: revisar la campaña, cuadrar el almacén, sacar el cuaderno.
+            Funciona a mano, sin IA, cuando lo prefieras.
+          </p>
+        </div>
+        <div class="p-6 sm:p-8">
+          <p class="font-data text-xs text-foreground-muted">Conector MCP · ChatGPT y Claude</p>
+          <h3 class="mt-6 text-xl text-foreground">En la finca, con una nota de voz</h3>
+          <p class="mt-3 text-[15px] leading-relaxed text-foreground-muted">
+            Le dices a ChatGPT o Claude lo que has hecho y lo registra en Crisopa. Consulta qué hay
+            autorizado contra una plaga, lee la ficha del MAPA, prepara la orden de tratamiento y el plan
+            de abonado. Lo conectas una vez con tu cuenta y lo revocas cuando quieras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lo que sale de Crisopa -->
+    <section id="exportaciones" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Qué sacas</Eyebrow>
+          <h2 class="mt-5 text-foreground">Listo para la inspección</h2>
+        </div>
+        <p class="lead">
+          Lo que registras durante la campaña sale ordenado en los documentos que te piden.
+        </p>
+      </div>
+
+      <div class="cells mt-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4" data-animate>
+        {salidas.map((s) => (
+          <div class="p-6 sm:p-7">
+            <h3 class="text-lg text-foreground">{s.titulo}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-foreground-muted">{s.texto}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Datos y seguridad -->
+    <section id="datos" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Tus datos</Eyebrow>
+          <h2 class="mt-5 text-foreground">
+            Son tuyos.
+            <span class="text-foreground-muted">Y de nadie más.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          Llevas las fincas de tus clientes. Esto es lo que hacemos para que sus datos estén a salvo.
+        </p>
+      </div>
+
+      <div class="cells mt-12 sm:mt-16 sm:grid-cols-2" data-animate>
+        {datos.map((d) => (
+          <div class="p-6 sm:p-7">
+            <h3 class="text-lg text-foreground">{d.titulo}</h3>
+            <p class="mt-2 text-[15px] leading-relaxed text-foreground-muted">{d.texto}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-6 text-sm text-foreground-muted" data-animate>
+        Los proveedores que tratan datos, y dónde, están en la
+        <a href="/privacidad" class="text-primary-700 underline decoration-1 underline-offset-4 hover:text-primary-800">política de privacidad</a>.
+      </p>
+    </section>
+
+    <!-- Requisitos para empezar -->
+    <section id="empezar" class="sec">
+      <div class="sec-head" data-animate>
+        <div>
+          <Eyebrow>Para empezar</Eyebrow>
+          <h2 class="mt-5 text-foreground">Qué necesitas</h2>
+        </div>
+        <p class="lead">
+          En la demo lo ponemos en marcha con una de tus fincas. Después, sigues tú.
+        </p>
+      </div>
+
+      <dl class="mt-12 border-t border-line sm:mt-16" data-animate>
+        {necesitas.map((n) => (
+          <div class="grid gap-2 border-b border-line py-5 md:grid-cols-[16rem_1fr] md:gap-14">
+            <dt class="font-display text-lg font-semibold tracking-[-0.02em] text-foreground">{n.que}</dt>
+            <dd class="max-w-[65ch] text-[15px] leading-relaxed text-foreground-muted">{n.detalle}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <CTA />
+  </main>
+  <Footer />
+</Layout>

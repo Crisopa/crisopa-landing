@@ -37,7 +37,12 @@ Ordenado por lo que más dudas cierra con menos trabajo.
    para asesores y distribuidores es su mejor página de venta), luego
    `/para-cooperativas` y `/para-empresas-de-servicios`. Cada una con sus
    objeciones, sus cifras y su CTA.
-8. **Páginas por funcionalidad.** Una por cada cosa que se vende: validación
+8. **Páginas por funcionalidad.** Hecha la página madre, `/producto` (30 de
+   septiembre de 2026): módulos con su sitio en el menú, las comprobaciones
+   contra el MAPA, panel y chat, exportaciones, datos y requisitos. Deja
+   fuera a propósito lo que va detrás de flags (Diario, Previsiones, Partes),
+   el envío al SIEX y la app móvil. Faltan las hijas, una por cada cosa que se
+   vende: validación
    normativa del tratamiento, órdenes de tratamiento, almacén, informes y
    exportación a SIEX, conector de IA. Alimentan el menú «Producto» y
    posicionan por búsquedas de función. Agro4Data tiene nueve.
