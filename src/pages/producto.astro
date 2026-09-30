@@ -7,8 +7,8 @@
  * Todo lo que se cuenta está comprobado contra `crisopa-app` (menú de
  * `src/lib/navegacion/rutas.ts`, reglas de `tratamiento-linting.ts`,
  * exportaciones y política de privacidad). Quedan fuera a propósito los
- * módulos detrás de flags o a medias: Diario, Previsiones, Partes, el envío al
- * SIEX y la app móvil hasta que esté en las tiendas. Si se activan, se añaden.
+ * módulos detrás de flags o a medias: Diario, Previsiones, Partes y el envío al
+ * SIEX. Si se activan, se añaden.
  *
  * Secciones sin numerar: no es una secuencia como la home. Oscuras, dos: la
  * demo (Showcase) y el cierre (CTA).
@@ -26,7 +26,7 @@ const calendlyUrl = 'https://calendly.com/demo-crisopa/30min'
 
 const ficha = [
   { etiqueta: 'Para quién', valor: 'Asesores, técnicos de campo y cooperativas' },
-  { etiqueta: 'Cómo se usa', valor: 'Panel web, o hablando con ChatGPT o Claude' },
+  { etiqueta: 'Cómo se usa', valor: 'Web y móvil, o hablando con ChatGPT o Claude' },
   { etiqueta: 'Normativa', valor: 'Cuaderno de explotación del RD 1311/2012' },
   { etiqueta: 'Registro MAPA', valor: `Sincronizado ${REGISTRO_MAPA_SINCRONIZADO}`, dato: true },
 ]
@@ -146,7 +146,7 @@ const datos = [
 ]
 
 const necesitas = [
-  { que: 'Un navegador', detalle: 'En el ordenador. No se instala nada.' },
+  { que: 'El ordenador o el móvil', detalle: 'El panel funciona en el navegador, sin instalar nada. En el móvil, también desde la app.' },
   { que: 'ChatGPT o Claude', detalle: 'Opcional. Vale la versión gratuita; para notas de voz y conversaciones largas, mejor un plan de pago que contratas con ellos.' },
   { que: 'Tus parcelas', detalle: 'En Excel, CSV u ODS con cultivo, superficie y referencia SIGPAC. O las das de alta a mano.' },
 ]
