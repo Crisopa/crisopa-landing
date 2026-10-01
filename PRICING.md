@@ -181,8 +181,8 @@ esta tabla usaba 810/1.135/1.700 €, que son su software de *asesoramiento* AEA
   de 149 €/mes queda por debajo. No hace falta bajar más.
 - **Validación real:** el cliente actual (24 fincas) paga 1.068 €, un ~13 % sobre lo que le
   cobraría aGROSlab, y **lo ve barato**. Compra por valor, no por comparación.
-- **Pendiente:** confirmar si los precios públicos de Crisopa llevan IVA o no. Si lo llevan, toda la
-  comparativa es todavía más favorable (aGROSlab +21 %).
+- **Base comparable:** los precios de Crisopa también son **sin IVA**, igual que los de aGROSlab.
+  La comparativa es directa.
 **Decisión tomada (oct 2026):** **99 € plano hasta 50 explotaciones y 5 usuarios**; por encima,
 Enterprise con la referencia interna de §3. Es el "segundo punto" que se dejó pendiente, pero sin
 publicarlo como plan. Si con datos aparece mucha demanda en 51–150, se valorará publicarlo
@@ -273,8 +273,8 @@ competitivo, con IA e integración.
  
 - **Titular = mensual-equivalente** (49 €/mes, 99 €/mes); anual en pequeño con "se factura una vez al
   año". El público del campo ancla en el número grande que ve primero; baja el *sticker shock*. **Pero
-  el total anual siempre visible y honesto** — el rata que se siente emboscado en el checkout no
-  vuelve y lo cuenta en un sector pequeño.
+  el total anual siempre visible y honesto**, con "IVA no incluido" a la vista — el rata que se
+  siente emboscado en el checkout no vuelve y lo cuenta en un sector pequeño.
 - **Charm pricing** (49, 99): el cerebro lee el primer dígito. "99 €" se siente "noventa y pico", no
   "cien".
 - **Nada de "por explotación".** Dividir el precio entre el tope (100) para enseñar "1,24 €/finca" es
