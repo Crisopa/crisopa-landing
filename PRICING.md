@@ -110,7 +110,7 @@ anual va en letra pequeña con "se factura una vez al año".
 - **"Hasta 50 explotaciones y 5 usuarios" (antes: hasta 100, usuarios sin tope).** El tope de 100
   metía en el mismo precio a un despacho de 15 fincas y a una empresa de 100; el pequeño lo vivía
   como injusto y el grande se llevaba un regalo. 50 es el punto en el que un despacho de 2–5
-  técnicos todavía es "un despacho"; coincide además con el primer tramo de aGROSlab (§5).
+  técnicos todavía es "un despacho"; coincide además con un tramo de aGROSlab (CEX 50, §5).
   - Sigue siendo anti-medidor: dentro de 50 y 5 no se cuenta nada. El asesor entra con 24 fincas y
     crece sin que le suba el precio.
   - El tope ya no es una cifra que nadie alcanza: le dice al pequeño que **el grande paga más**, que
@@ -126,7 +126,9 @@ anual va en letra pequeña con "se factura una vez al año".
   | Más de 150, cooperativas, o negocio grande por ha/facturación | Fórmula de §6 | A medida |
 
   El salto 99 → 199 es creíble porque el cliente es el doble o el triple de grande. Se ancla en 199
-  y se concede hacia 149 si hace falta (§7: anclar arriba).
+  y se concede hacia 149 si hace falta (§7: anclar arriba). Contra aGROSlab (§5): 199 queda un
+  +17 % sobre su CEX 100 (2.040 €) y por debajo de su precio a 150 fincas (~2.640 €); 149 queda por
+  debajo en todo el tramo.
 - **Clientes actuales por encima de los topes: se respeta lo firmado** hasta la renovación, y en la
   renovación se les explica el cambio con antelación.
 ---
@@ -135,7 +137,7 @@ anual va en letra pequeña con "se factura una vez al año".
  
 | Herramienta | Modelo | Precio | Segmento |
 |---|---|---|---|
-| **aGROSlab** | Por tramos de explotaciones (asesor) | **50 → 810 €/año · 100 → 1.135 €/año · 250 → 1.700 €/año** (adicional 6,30–6,80 €/año) | Asesores y cooperativas — **el comparable directo** |
+| **aGROSlab** | Por tramos de explotaciones (asesor), cuaderno de explotación CEX/CUE | **20 → 900 €/año · 50 → 1.440 €/año · 100 → 2.040 €/año · 250 → 3.000 €/año**, sin IVA (adicional 12 €/explot./año). 1 usuario asesor en 20 y 50; 2 en 100. Incluye app de agricultor y teledetección | Asesores y cooperativas — **el comparable directo** |
 | **oSIGris** | Por explotación/tamaño | 25–40 €/mes (1 explot.) · ~75 €/mes (10 explot.) · cuaderno + VademecumIA gratis de gancho | Agricultor individual |
 | **Agroptima** | Por consulta (hectáreas + usuarios) | ~300–400 €/año (individual, filtrado en reseñas) | Agricultor individual |
 | **Farmable** | Por granja | 399 $/año (Pro) · gratis hasta 5 trabajos | Agricultor individual (origen noruego) |
@@ -154,26 +156,33 @@ donde está Crisopa con precio público; por encima, Enterprise.
  
 ## 5. Crisopa vs aGROSlab (plan Asesor)
  
-Comparativa a distintos volúmenes reales de fincas (aGROSlab sube por tramos; Crisopa es plano):
+Comparativa a distintos volúmenes reales de fincas (aGROSlab sube por tramos; Crisopa es plano).
+Precios de aGROSlab de su tienda, **sin IVA**, comprobados el 1 oct 2026. (La versión anterior de
+esta tabla usaba 810/1.135/1.700 €, que son su software de *asesoramiento* AEA, no el cuaderno.)
  
-| Nº fincas | aGROSlab | Crisopa Asesor (99 €/1.188 €) | Diferencia |
+| Nº fincas | aGROSlab (cuaderno CEX) | Crisopa | Diferencia |
 |---|---|---|---|
-| **24** (cliente actual) | 810 € (tramo 50) | 1.188 € | **+47 %** |
-| **50** | 810 € | 1.188 € | +47 % |
-| **100** | 1.135 € | Enterprise (ref. 2.388 €, suelo 1.788 €) | +58 % a +110 % |
+| **15** | 900 € (CEX 20, 1 asesor) | 1.188 € (Asesor) | +32 % |
+| **24** (cliente actual) | 948 € (CEX 20 + 4 × 12 €) | 1.188 € | +25 % |
+| **50** | 1.440 € (CEX 50, 1 asesor) | 1.188 € | **−18 %** |
+| **100** | 2.040 € (CEX 100, 2 asesores) | Enterprise: 1.788 € (suelo) – 2.388 € (ancla) | −12 % a +17 % |
+| **150** | ~2.640 € (CEX 100 + 50 × 12 €) | Enterprise: 1.788 – 2.388 € | −32 % a −10 % |
  
 **Interpretación y posicionamiento elegido:**
-- Crisopa es **premium a propósito**. aGROSlab es el incumbente "pesado y sin IA" al que se supera en
-  producto, no en precio. El asesor que solo busca lo más barato **no es el cliente** (se queda en
-  aGROSlab u oSIGris).
-- El argumento que neutraliza la comparación en frío: **"hasta 50 fincas y 5 técnicos sin coste
-  por finca ni por usuario; aGROSlab te cobra cada explotación adicional".** Se convierte la supuesta
-  desventaja (precio plano más alto en volúmenes bajos) en ventaja (sin medidor).
-- A 100 fincas Crisopa queda muy por encima de aGROSlab. Es coherente: a ese tamaño el cliente
-  compra equipo, IA y acompañamiento (Enterprise), no un cuaderno, y el precio se discute en la
-  llamada, no en una tabla.
-- **Validación real:** el cliente actual (24 fincas) ya paga ~+30 % sobre lo que le cobraría aGROSlab
-  y **lo ve barato**. Compra por valor, no por comparación.
+- **Crisopa no es mucho más cara que aGROSlab: va a la par.** Por debajo de ~30 fincas es algo más
+  cara (+25–32 %); a partir de ~40 fincas sale más barata, y además con **hasta 5 usuarios** contra
+  1 de aGROSlab. Para un despacho con 2+ técnicos la comparación es claramente favorable.
+- aGROSlab incluye cosas que Crisopa no tiene (app del agricultor, teledetección NDVI). Crisopa
+  incluye lo que ellos no tienen (copiloto IA, multiusuario con permisos). No se compite en precio,
+  pero tampoco hay un sobreprecio que justificar.
+- El argumento que neutraliza la comparación en frío: **"hasta 50 fincas y 5 técnicos por un
+  precio; aGROSlab te da 1 usuario y te cobra cada explotación adicional".**
+- En Enterprise (51–150), el ancla de 199 €/mes se mueve en el mismo rango que aGROSlab y el suelo
+  de 149 €/mes queda por debajo. No hace falta bajar más.
+- **Validación real:** el cliente actual (24 fincas) paga 1.068 €, un ~13 % sobre lo que le
+  cobraría aGROSlab, y **lo ve barato**. Compra por valor, no por comparación.
+- **Pendiente:** confirmar si los precios públicos de Crisopa llevan IVA o no. Si lo llevan, toda la
+  comparativa es todavía más favorable (aGROSlab +21 %).
 **Decisión tomada (oct 2026):** **99 € plano hasta 50 explotaciones y 5 usuarios**; por encima,
 Enterprise con la referencia interna de §3. Es el "segundo punto" que se dejó pendiente, pero sin
 publicarlo como plan. Si con datos aparece mucha demanda en 51–150, se valorará publicarlo
@@ -237,9 +246,11 @@ la organización es una empresa seria). Su **capacidad de pago no es la restricc
 - **Cláusula clave:** la tarifa de colaborador debe ser **temporal/condicional por escrito** ("vigente
   mientras dure el programa / primeros 12–24 meses"), para que la vuelta al precio estándar sea
   **automática y pactada**, no una negociación futura incómoda.
-**Validación vs competencia:** aGROSlab cobraría a esta coop ~2.040 € (300) / ~2.720 € (400) /
-~3.400 € (500). El **ancla 3.900** queda justo por encima del competidor barato; el **neto 2.900**
-cae *dentro* de su rango — competitivo de cara a la coop, con mejor producto, IA e integración.
+**Validación vs competencia:** con el cuaderno CEX de aGROSlab (250 → 3.000 € + 12 €/explot.
+adicional, sin IVA), a esta coop le cobrarían ~3.600 € (300) / ~4.800 € (400) / ~6.000 € (500).
+(La cifra anterior, 2.040–3.400 €, salía de su software de asesoramiento AEA, no del cuaderno.) El
+**ancla 3.900** está dentro de su rango y el **neto 2.900** queda por debajo de todo él: muy
+competitivo, con IA e integración.
  
 > **Nota:** este 2.900 neto es una jugada estratégica de **primer logo + aprendizaje + relación**, no
 > el precio de lista de una cooperativa de este tamaño. El logo de una coop de 30 M abre las puertas
