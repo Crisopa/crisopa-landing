@@ -18,12 +18,15 @@ debe reflejarlo.
 3. **Segmentación por persona, no por tamaño.** Cada plan es para un **comprador distinto**, con un
    **decisor distinto** y un **value prop distinto**. El error fatal sería venderle a uno con el
    discurso del otro.
-4. **Plan generoso, anti-medidor.** En Asesor: "hasta 100 explotaciones, y punto" y **todos los
-   técnicos incluidos**. Nada de "+X € por explotación/usuario adicional" dentro del plan: el cliente
-   del campo odia sentirse contado finca a finca. La simplicidad es, además, señal de producto
-   moderno. (Profesional es de **1 usuario**; el salto de capacidad es **cambiar de plan**, no sumar
-   asientos.)
-5. **Solo cobro anual.** El uso es estacional (por campaña), el onboarding es caro y el mensual
+4. **Topes generosos, sin medidor.** Cada plan tiene un tope claro de usuarios y explotaciones, y
+   dentro de él no se cuenta nada: nada de "+X € por explotación/usuario adicional". El cliente del
+   campo odia sentirse contado finca a finca. Cuando se sale del tope, **cambia de plan**; no suma
+   add-ons. La simplicidad es, además, señal de producto moderno.
+5. **Justo: el que es diez veces más grande no paga lo mismo.** Los topes están puestos para que
+   cada plan agrupe negocios parecidos. Un despacho de 2 técnicos con 15 fincas y una empresa de 100
+   fincas no son el mismo cliente y no pagan lo mismo (lo dijo un cliente, oct 2026: "es ridículo
+   que una empresa de 100 fincas pague lo mismo que yo").
+6. **Solo cobro anual.** El uso es estacional (por campaña), el onboarding es caro y el mensual
    invita al *churn*. La rampa de entrada es la **prueba gratis de 15 días sin tarjeta**, no el pago
    mensual.
 ---
@@ -37,7 +40,7 @@ sección). La causa real:
 
 | | **Profesional** | **Asesor** |
 |---|---|---|
-| Capacidad | **1 usuario**, hasta 10 explotaciones | **Multiusuario con permisos por explotación**, hasta 100 |
+| Capacidad | **1 usuario**, hasta 10 explotaciones | **Hasta 5 usuarios con permisos por explotación**, hasta 50 explotaciones |
 | Para qué sirve | Un técnico que lleva su(s) finca(s) | Un equipo: cada técnico ve solo lo suyo y alguien tiene la visión de conjunto |
 | Quién suele comprarlo | Técnico interno de una finca | Asesor con cartera — **pero también** una empresa con varias fincas y un técnico por finca |
 | Ángulo de venta | Cumplimiento / tranquilidad / control | Horas recuperadas / copiloto IA / cartera unificada |
@@ -64,14 +67,20 @@ por capacidad, el discurso cambia según quién decide:
 - **Decisor = beneficiario** (asesor, o responsable de la empresa con equipo): vender **horas
   recuperadas / copiloto IA / cartera unificada**. Incentivos alineados, mayor disposición a pagar.
  
+**Más de 5 usuarios o más de 50 explotaciones es Enterprise.** Asesor está pensado para un despacho
+o una empresa de **2–5 técnicos con hasta 50 fincas**. Una empresa de 100 fincas es otro negocio:
+más gente, más inspecciones, más dependencia del software, más soporte. Pasado cualquiera de los
+dos topes, se presupuesta (ver §6). Ojo: el tope es para el asesor clásico, con fincas de tamaño
+normal; para él, el nº de explotaciones sí sigue al tamaño del negocio.
+
 **Conclusión + cuidado con el sesgo "cabe en el plan, luego paga el precio del plan".** La capacidad
 de subir precio vive sobre todo en **Asesor** (multiusuario + IA); Profesional se mantiene **barato a
-propósito** como plan de un asiento. Pero el **tamaño del negocio** puede disparar Enterprise por
-encima de la capacidad: una finca única de 20.000 ha encaja en "perfil Profesional" por estructura,
-y su valor no es un plan de 49 €/mes. Igual que la cooperativa de §6 (factura 30 M€ con explotaciones
-minúsculas). **Hay un check de tamaño —hectáreas, facturación, socios— que manda a Enterprise a quien
-se salga de rango, gane el plan que gane por features.** Ni usuarios ni nº de explotaciones sirven
-para medir esto.
+propósito** como plan de un asiento. Pero el **tamaño del negocio** puede disparar Enterprise
+**aunque quepa en los topes**: una finca única de 20.000 ha encaja en "perfil Profesional" por
+estructura, y su valor no es un plan de 49 €/mes. **Hay un check de tamaño —hectáreas,
+facturación, socios— que manda a Enterprise a quien se salga de rango, gane el plan que gane por
+features.** Y al revés: la cooperativa de §6 pasa del tope por nº de explotaciones, pero sus
+explotaciones son minúsculas; ahí el precio no se calcula por recuento, sino por tamaño real.
  
 ---
  
@@ -83,8 +92,8 @@ anual va en letra pequeña con "se factura una vez al año".
 | Plan | Para | Titular | Anual | Incluye |
 |---|---|---|---|---|
 | **Profesional** | Un técnico (1 usuario) | **49 €/mes** | 588 €/año | **1 usuario** · hasta 10 explotaciones · tratamientos, fertilización, SIGPAC, informes |
-| **Asesor** | Equipo / cartera de fincas | **99 €/mes** | 1.188 €/año | **Multiusuario con permisos por explotación** · gestión multicliente · **agente IA (MCP)** · avisos de vencimientos · eco-regímenes PAC · hasta 100 explotaciones |
-| **Enterprise** | Cooperativas / grandes organizaciones | A medida | Ver §6 | Todo + integración ERP + acompañamiento |
+| **Asesor** | Equipo de 2–5 técnicos / cartera de fincas | **99 €/mes** | 1.188 €/año | **Hasta 5 usuarios con permisos por explotación** · gestión multicliente · **agente IA (MCP)** · avisos de vencimientos · eco-regímenes PAC · hasta 50 explotaciones |
+| **Enterprise** | Más de 50 explotaciones o más de 5 usuarios · cooperativas | A medida | Ver §6 | Todo + integración ERP + acompañamiento |
  
 ### Justificación
  
@@ -98,14 +107,28 @@ anual va en letra pequeña con "se factura una vez al año".
   a alta**: cada nueva alta entra al precio nuevo y se observa la conversión de la prueba; si entran
   sin fricción, se vuelve a subir. **Al cliente actual se le respeta su tarifa** (es el validador, no
   la vaca a ordeñar).
-- **"Hasta 100 explotaciones" plano = plan generoso, a propósito:**
-  - Anti-medidor: aGROSlab cobra "explotación adicional 6,30 €/año"; Crisopa dice "hasta 100, y
-    punto". Quita la ansiedad del contador.
-  - *Land-and-expand*: el asesor entra con 24 fincas y crece dentro del plan sin miedo a que suba el
-    precio. Cuando llega a 90 está "infrapagando" respecto al valor → feliz y con coste de cambio
-    brutal.
-  - Cierra más rápido en venta high-touch (un número, sin calculadora de tramos).
-  - Paz mental (estilo Notion/Linear: "no vas a chocar con el límite").
+- **"Hasta 50 explotaciones y 5 usuarios" (antes: hasta 100, usuarios sin tope).** El tope de 100
+  metía en el mismo precio a un despacho de 15 fincas y a una empresa de 100; el pequeño lo vivía
+  como injusto y el grande se llevaba un regalo. 50 es el punto en el que un despacho de 2–5
+  técnicos todavía es "un despacho"; coincide además con el primer tramo de aGROSlab (§5).
+  - Sigue siendo anti-medidor: dentro de 50 y 5 no se cuenta nada. El asesor entra con 24 fincas y
+    crece sin que le suba el precio.
+  - El tope ya no es una cifra que nadie alcanza: le dice al pequeño que **el grande paga más**, que
+    es justo lo que pedía la objeción.
+  - Cierra igual de rápido en venta high-touch: un número, sin calculadora de tramos.
+- **Al pasar de 50 explotaciones o 5 usuarios → Enterprise.** No se publica un cuarto plan (sería la
+  escalera de ERP de §1). Se presupuesta en la llamada con esta referencia interna para no
+  improvisar:
+
+  | Perfil | Referencia | Anual |
+  |---|---|---|
+  | Asesor/empresa de 51–150 explotaciones (fincas de tamaño normal) | **ancla 199 €/mes**, suelo 149 €/mes | 2.388 € (suelo 1.788 €) |
+  | Más de 150, cooperativas, o negocio grande por ha/facturación | Fórmula de §6 | A medida |
+
+  El salto 99 → 199 es creíble porque el cliente es el doble o el triple de grande. Se ancla en 199
+  y se concede hacia 149 si hace falta (§7: anclar arriba).
+- **Clientes actuales por encima de los topes: se respeta lo firmado** hasta la renovación, y en la
+  renovación se les explica el cambio con antelación.
 ---
  
 ## 4. La competencia (precios públicos, junio 2026)
@@ -124,8 +147,8 @@ anual va en letra pequeña con "se factura una vez al año".
 **Lectura:** el **único comparable real** de Crisopa es **aGROSlab** (mismo segmento asesor, precio
 público, referente con +25.000 explotaciones). El resto es agricultor individual (oSIGris,
 Agroptima, Farmable), enterprise por licencia (Isagri, VisualNACert) u opaco. **Nadie cubre el hueco
-"asesor de 10–100 explotaciones con precio transparente y producto moderno"** — que es exactamente
-donde está Crisopa.
+"asesor de 10–50 explotaciones con precio transparente y producto moderno"** — que es exactamente
+donde está Crisopa con precio público; por encima, Enterprise.
  
 ---
  
@@ -137,20 +160,24 @@ Comparativa a distintos volúmenes reales de fincas (aGROSlab sube por tramos; C
 |---|---|---|---|
 | **24** (cliente actual) | 810 € (tramo 50) | 1.188 € | **+47 %** |
 | **50** | 810 € | 1.188 € | +47 % |
-| **100** | 1.135 € | 1.188 € | +5 % |
+| **100** | 1.135 € | Enterprise (ref. 2.388 €, suelo 1.788 €) | +58 % a +110 % |
  
 **Interpretación y posicionamiento elegido:**
 - Crisopa es **premium a propósito**. aGROSlab es el incumbente "pesado y sin IA" al que se supera en
   producto, no en precio. El asesor que solo busca lo más barato **no es el cliente** (se queda en
   aGROSlab u oSIGris).
-- El argumento que neutraliza la comparación en frío: **"añade todos los clientes que quieras, sin
-  coste por finca; aGROSlab te cobra cada explotación adicional".** Se convierte la supuesta
-  desventaja (precio plano más alto en volúmenes bajos) en ventaja (generosidad, sin medidor).
+- El argumento que neutraliza la comparación en frío: **"hasta 50 fincas y 5 técnicos sin coste
+  por finca ni por usuario; aGROSlab te cobra cada explotación adicional".** Se convierte la supuesta
+  desventaja (precio plano más alto en volúmenes bajos) en ventaja (sin medidor).
+- A 100 fincas Crisopa queda muy por encima de aGROSlab. Es coherente: a ese tamaño el cliente
+  compra equipo, IA y acompañamiento (Enterprise), no un cuaderno, y el precio se discute en la
+  llamada, no en una tabla.
 - **Validación real:** el cliente actual (24 fincas) ya paga ~+30 % sobre lo que le cobraría aGROSlab
   y **lo ve barato**. Compra por valor, no por comparación.
-**Decisión tomada:** **99 € plano**, sin partir en tramos por ahora. Cuando haya más clientes y
-datos, se podrá introducir un **segundo punto** (p. ej. "hasta 40" / "hasta 120") para capturar mejor
-al *power user* sin agraviar al pequeño — **dos puntos, no cinco** (eso no es escalera de ERP).
+**Decisión tomada (oct 2026):** **99 € plano hasta 50 explotaciones y 5 usuarios**; por encima,
+Enterprise con la referencia interna de §3. Es el "segundo punto" que se dejó pendiente, pero sin
+publicarlo como plan. Si con datos aparece mucha demanda en 51–150, se valorará publicarlo
+("Empresa, 199 €") — **dos puntos de precio público como mucho, no cinco**.
  
 ---
  
@@ -242,12 +269,13 @@ cae *dentro* de su rango — competitivo de cara a la coop, con mejor producto, 
 - **Nada de "por explotación".** Dividir el precio entre el tope (100) para enseñar "1,24 €/finca" es
   engañoso (nadie tiene 100) y se nota. El reencuadre honesto es por **horas** ("menos que una tarde
   de papeleo al mes"), no por finca.
-- **No ancles el valor en "hasta 100 explotaciones".** Es la objeción nº 1 ("no tengo 100, no pago
-  99 €"). El valor de Asesor es **multiusuario + permisos / IA / multicliente**, no la cifra de
-  capacidad: esos van **primero** en la lista de features; "hasta 100" baja a cláusula anti-medidor
-  ("no chocas con el límite"). El rebuttal es **condicional al perfil**: a quien tiene equipo, "no
-  pagas por 100 fincas, pagas por que cada técnico tenga su acceso aislado"; al asesor solo, "pagas
-  por el copiloto IA, la cartera unificada y los avisos de vencimientos".
+- **No ancles el valor en el tope de explotaciones.** Con el tope en 100 era la objeción nº 1 ("no
+  tengo 100, no pago 99 €"); con 50 pesa menos, pero el valor de Asesor sigue siendo **equipo con
+  permisos / IA / multicliente**, no la cifra: esos van **primero** en la lista de features y
+  "hasta 50" va al final como tope. Si sale la objeción, el rebuttal es **condicional al perfil**: a
+  quien tiene equipo, "pagas por que cada técnico tenga su acceso aislado"; al asesor solo, "pagas
+  por el copiloto IA, la cartera unificada y los avisos de vencimientos". Y a cualquiera: "quien
+  tiene 100 fincas no paga esto, paga Enterprise".
 - **En enterprise: por socio o % de facturación.** "Menos de 5 €/socio al año" cierra; "2.900 €"
   asusta.
 - **Anclar arriba, conceder hacia el objetivo.** Quien pone el primer número manda. Abrir en el
@@ -260,10 +288,11 @@ cae *dentro* de su rango — competitivo de cara a la coop, con mejor producto, 
 |---|---|
 | Profesional 49 € (**1 usuario**) · Asesor 99 € (**multiusuario + permisos**) · anual-only | **Cerrado** — aplicado en `Pricing.astro` |
 | Segmentación por **capacidad** (no persona) + check de tamaño → Enterprise | **Cerrado** (jun 2026) |
-| Reordenar features de Asesor: multiusuario/IA/multicliente arriba, "hasta 100" como anti-medidor | **Cerrado** — aplicado en `Pricing.astro` |
+| Reordenar features de Asesor: multiusuario/IA/multicliente arriba, el tope al final | **Cerrado** — aplicado en `Pricing.astro` |
+| Asesor con tope de **50 explotaciones y 5 usuarios**; por encima, Enterprise (ref. interna 149–199 €/mes para 51–150) | **Cerrado** (oct 2026) — aplicado en `Pricing.astro` |
 | Quitar el toggle mensual y el "+10 €/usuario" | **Cerrado** — pendiente aplicar |
 | Subir Asesor alta a alta según conversión de la prueba | En curso |
 | Cliente actual asesor: respetar tarifa (colaborador) | Hecho |
 | Cooperativa: 3.900 ancla / 2.900 neto colaborador + integración aparte | **En cierre** |
-| Segundo punto en plan Asesor ("hasta 40" / "hasta 120") | Futuro (cuando haya datos) |
+| Publicar un plan "Empresa" (51–150) si hay demanda | Futuro (cuando haya datos) |
 | Formalizar programa "cliente colaborador" (design partners) | Pendiente |
